@@ -1,3 +1,2 @@
-﻿# ProjetS6
+﻿# ProjetS6 - SearchUs
 Recherche d’information dans un sous-ensemble du site avec Lucene
-Universite de Sherbrooke Tabarnak

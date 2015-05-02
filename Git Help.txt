@@ -1,0 +1,39 @@
+Configure GIT (ONCE ONLY)
+-------------------------
+git config --global user.email "YOUR EMAIL"
+git config --global user.name "YOUR FULL NAME"
+git config --global push.default current
+git config --global core.autocrlf false
+git config --global credential.helper wincred
+
+Installez Notepad++ ici: http://notepad-plus-plus.org/fr/download/v6.7.4.html , puis:
+git config --global core.editor "'C:\Program Files (x86)\Notepad++\notepad++.exe'"
+
+Pour cloner le projet:
+git clone https://github.com/Vin1000/ProjetS6.git
+
+
+Commands
+--------
+git status						STATUS
+git commit						LOCAL COMMIT (va ouvrir notepad++ et vous pourrez ecrire un commit message detaillé de plusieurs lignes)
+git commit --amend				UPDATE A LOCAL COMMIT (change the commit message)
+git push						REMOTE COMMIT
+git pull						REMOTE DOWNLOAD
+
+git add	"filename"				ADD FILE
+git add .						ADD ALL FILES
+git rm "filename"				REMOVE FILE
+
+Workflow
+--------
+1. git status
+2. git add
+3. git commit
+   peut demander de faire un pull avant
+4. git push
+
+
+Outils
+------
+-SourceTree (GUI Atlassian)

@@ -12,6 +12,14 @@ git config --global core.editor "'C:\Program Files (x86)\Notepad++\notepad++.exe
 Pour cloner le projet:
 git clone https://github.com/Vin1000/ProjetS6.git
 
+Creer la branch locale dev:
+git branch dev
+
+Acceder a la branch locale dev:
+git checkout dev
+
+Setup pour que "git pull" pull la branch origin/dev
+git branch --set-upstream-to=origin/dev dev
 
 Commands
 --------
@@ -21,17 +29,24 @@ git commit --amend				UPDATE A LOCAL COMMIT (change the commit message)
 git push						REMOTE COMMIT
 git pull						REMOTE DOWNLOAD
 
+git branch <branchname>			CREATE A NEW BRANCH
+git branch						SEE ALL YOUR BRANCHES AND THE ONE YOU'RE ON
+git checkout <branchname>		CHANGE TO BRANCH <BRANCHNAME>
+
 git add	"filename"				ADD FILE
 git add .						ADD ALL FILES
 git rm "filename"				REMOVE FILE
 
+git diff						SEE YOUR LOCAL CHANGES
+
 Workflow
 --------
-1. git status
-2. git add
-3. git commit
-   peut demander de faire un pull avant
-4. git push
+1. git pull
+2. git status
+3. git add
+4. git commit
+   (peut demander de faire un pull/merge avant)
+5. git push
 
 
 Outils

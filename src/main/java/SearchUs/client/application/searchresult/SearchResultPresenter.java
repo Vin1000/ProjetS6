@@ -29,9 +29,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
-public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers {
-    interface MyView extends View, HasUiHandlers<SearchResultUiHandlers> {
-        void setLabel(String text);
+public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers
+{
+    interface MyView extends View, HasUiHandlers<SearchResultUiHandlers>
+    {
+        void addResult(SearchResultData result);
+        void clearResults();
     }
 
     @ContentSlot
@@ -64,8 +67,12 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         dispatcher.execute(searchAction, new AsyncCallback<SearchResult>() {
             @Override //TODO: Change actions done here
             public void onSuccess(SearchResult result) {
+                getView().clearResults();
                 ArrayList<SearchResultData> searchResults = result.getSearchResults();
-                getView().setLabel(searchResults.get(0).getTitle() + " " + searchResults.get(1).getTitle());
+                for(SearchResultData res : searchResults)
+                {
+                    getView().addResult(res);
+                }
             }
 
             @Override

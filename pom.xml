@@ -296,8 +296,6 @@
             <groupId>org.jasig.cas.client</groupId>
             <artifactId>cas-client-core</artifactId>
             <version>3.3.3</version>
-            <scope>runtime</scope>
-            <type>jar</type>
         </dependency>
     </dependencies>
 </project>

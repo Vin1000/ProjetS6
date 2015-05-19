@@ -65,13 +65,13 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
             @Override //TODO: Change actions done here
             public void onSuccess(SearchResult result) {
                 ArrayList<SearchResultData> searchResults = result.getSearchResults();
-                getView().setLabel(searchResults.get(0).getTitle());
+                getView().setLabel(searchResults.get(0).getTitle() + " " + searchResults.get(1).getTitle());
             }
 
             @Override
             public void onFailure(Throwable caught) {
                 Logger logger = java.util.logging.Logger.getLogger("Error Log variable");
-                logger.log(java.util.logging.Level.SEVERE, "La recherche a échoué, veuillez réessayer plus tard");
+                logger.log(java.util.logging.Level.SEVERE, "La recherche a échouée, veuillez réessayer plus tard");
             }
         });
     }

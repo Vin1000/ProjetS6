@@ -1,4 +1,9 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-    <g:HTMLPanel>Hello World!</g:HTMLPanel>
+    <g:HTMLPanel>
+        <div>
+            <g:TextBox ui:field="textBox"></g:TextBox>
+            <g:Button ui:field="sendSearchButton">Rechercher</g:Button>
+        </div>
+    </g:HTMLPanel>
 </ui:UiBinder>

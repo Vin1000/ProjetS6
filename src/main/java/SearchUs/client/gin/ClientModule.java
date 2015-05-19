@@ -2,12 +2,14 @@ package SearchUs.client.gin;
 
 import SearchUs.client.application.ApplicationModule;
 import SearchUs.client.place.NameTokens;
+import com.gwtplatform.dispatch.rpc.client.gin.RpcDispatchAsyncModule;
 import com.gwtplatform.mvp.client.annotations.DefaultPlace;
 import com.gwtplatform.mvp.client.annotations.ErrorPlace;
 import com.gwtplatform.mvp.client.annotations.UnauthorizedPlace;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
 import com.gwtplatform.mvp.client.proxy.DefaultPlaceManager;
+import com.gwtplatform.mvp.shared.proxy.RouteTokenFormatter;
 
 /**
  * See more on setting up the PlaceManager on <a
@@ -16,8 +18,9 @@ import com.gwtplatform.mvp.client.proxy.DefaultPlaceManager;
 public class ClientModule extends AbstractPresenterModule {
     @Override
     protected void configure() {
-        install(new DefaultModule(DefaultPlaceManager.class));
+        install(new DefaultModule.Builder().tokenFormatter(RouteTokenFormatter.class).build());
         install(new ApplicationModule());
+        install(new RpcDispatchAsyncModule());
 
         // DefaultPlaceManager Places
         bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.home);

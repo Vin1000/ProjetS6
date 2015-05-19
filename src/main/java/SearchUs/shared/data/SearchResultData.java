@@ -1,6 +1,10 @@
 package SearchUs.shared.data;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
+
 
 /**
  * Created by Marc-Antoine on 2015-05-18.
@@ -8,6 +12,7 @@ import java.io.Serializable;
 public class SearchResultData implements Serializable {
     private String downloadUrl;
     private String title;
+    private String description;
 
     public SearchResultData(){ }
 
@@ -16,11 +21,14 @@ public class SearchResultData implements Serializable {
         this.downloadUrl = downloadUrl;
     }
 
-    public SearchResultData(String title, String downloadUrl, String description) {
+    @JsonCreator
+    public SearchResultData(@JsonProperty("title") String title,@JsonProperty("downloadUrl") String downloadUrl
+            ,@JsonProperty("description") String description) {
 
-        this.downloadUrl = downloadUrl;
         this.title = title;
+        this.downloadUrl = downloadUrl;
         this.description = description;
+
     }
 
     public String getDescription() {
@@ -48,5 +56,5 @@ public class SearchResultData implements Serializable {
         this.downloadUrl = downloadUrl;
     }
 
-    private String description;
+
 }

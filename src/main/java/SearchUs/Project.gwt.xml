@@ -14,6 +14,9 @@
     
     <inherits name='com.gwtplatform.mvp.MvpWithEntryPoint' />
 
+    <!-- API REST  -->
+    <inherits name="org.fusesource.restygwt.RestyGWT"/>
+
     <source path='client' />
     <source path='shared' />
 

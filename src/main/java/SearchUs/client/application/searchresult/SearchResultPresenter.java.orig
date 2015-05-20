@@ -28,12 +28,18 @@ import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+<<<<<<< HEAD
 public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers, SearchEvent.GlobalHandler {
+    interface MyView extends View, HasUiHandlers<SearchResultUiHandlers> {
+        void setLabel(String text);
+=======
+public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers
 {
     interface MyView extends View, HasUiHandlers<SearchResultUiHandlers>
     {
         void addResult(SearchResultData result);
         void clearResults();
+>>>>>>> f9e948343847a6223333436719db700037fe450e
     }
 
     @NameToken(NameTokens.SearchResult)

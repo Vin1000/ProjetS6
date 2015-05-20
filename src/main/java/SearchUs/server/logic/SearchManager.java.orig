@@ -22,9 +22,15 @@ public class SearchManager {
     public ArrayList<SearchResultData> getSearchResults(String searchText){
 
         ArrayList<SearchResultData> results = new ArrayList<SearchResultData>();
+<<<<<<< HEAD
+        results.add(new SearchResultData(searchText + " first Result", "No_URL", "This is the first result of your search"));
+        results.add(new SearchResultData(searchText+ " second Result", "No_URL","This is the second result of your search"));
+        results.add(new SearchResultData(searchText+ " thirs Result", "No_URL","This is the third result of your search"));
+=======
         results.add(new SearchResultData(searchText + ".txt", "http://www.gel.usherbrooke.ca/s6info/e15", "Text result"));
         results.add(new SearchResultData(searchText + ".pdf", "http://www.gel.usherbrooke.ca/s6info/e15", "PDF result"));
         results.add(new SearchResultData(searchText + ".docx", "http://www.gel.usherbrooke.ca/s6info/e15", "Word result"));
+>>>>>>> f9e948343847a6223333436719db700037fe450e
 
         return results;
     }

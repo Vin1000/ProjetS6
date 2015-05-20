@@ -3,8 +3,9 @@ package SearchUs.client.application.home;
 import javax.inject.Inject;
 
 import SearchUs.client.application.ApplicationPresenter;
+import SearchUs.shared.data.SearchDetails;
+import SearchUs.client.application.events.SearchEvent;
 import SearchUs.client.place.NameTokens;
-import SearchUs.client.place.TokenParameters;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -33,16 +34,17 @@ public class HomePagePresenter extends Presenter<HomePagePresenter.MyView, HomeP
                       PlaceManager placeManager) {
         super(eventBus, view, proxy, ApplicationPresenter.SLOT_SetMainContent);
         getView().setUiHandlers(this);
-        this.placeManager=placeManager;
+        this.placeManager = placeManager;
     }
+
 
     @Override
     public void sendSearch(String searchText) {
         PlaceRequest responsePlaceRequest = new PlaceRequest.Builder()
                 .nameToken(NameTokens.getSearchResult())
-                .with(TokenParameters.SEARCH_STRING, searchText)
                 .build();
-
         placeManager.revealPlace(responsePlaceRequest);
+
+        SearchEvent.fire(this, new SearchDetails(searchText));
     }
 }

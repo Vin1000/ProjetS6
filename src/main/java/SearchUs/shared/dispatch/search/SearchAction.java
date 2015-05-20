@@ -1,24 +1,25 @@
 package SearchUs.shared.dispatch.search;
 
+import SearchUs.shared.data.SearchDetails;
 import com.gwtplatform.dispatch.rpc.shared.UnsecuredActionImpl;
 
 /**
  * Created by Marc-Antoine on 2015-05-18.
  */
 public class SearchAction extends UnsecuredActionImpl<SearchResult> {
-    private String searchText;
+    private SearchDetails searchDetails;
 
-    public String getSearchText() {
-        return searchText;
+    public SearchDetails getSearchDetails() {
+        return searchDetails;
     }
 
-    public void setSearchText(String searchText) {
-        this.searchText = searchText;
+    public void setSearchDetails(SearchDetails searchDetails) {
+        this.searchDetails = searchDetails;
     }
 
     public SearchAction(){}
 
-    public SearchAction(String searchText) {
-        this.searchText = searchText;
+    public SearchAction(SearchDetails searchDetails) {
+        this.searchDetails = searchDetails;
     }
 }

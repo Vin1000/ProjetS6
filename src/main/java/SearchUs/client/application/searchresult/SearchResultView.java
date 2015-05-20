@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 
 public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers> implements SearchResultPresenter.MyView {
-    @Override
+
     public void addResult(SearchResultData result)
     {
         ResultWidgetPresenter rw = resultWidgetProvider.get();

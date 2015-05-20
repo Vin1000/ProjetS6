@@ -5,12 +5,13 @@
 package SearchUs.client.application.searchresult;
 
 import SearchUs.client.application.ApplicationPresenter;
+import SearchUs.client.application.events.SearchEvent;
 import SearchUs.client.place.NameTokens;
-import SearchUs.client.place.TokenParameters;
+import SearchUs.shared.data.SearchDetails;
 import SearchUs.shared.data.SearchResultData;
 import SearchUs.shared.dispatch.search.SearchAction;
 import SearchUs.shared.dispatch.search.SearchResult;
-import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -18,24 +19,19 @@ import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
-import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
+import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
-public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers {
+public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers, SearchEvent.GlobalHandler {
     interface MyView extends View, HasUiHandlers<SearchResultUiHandlers> {
         void setLabel(String text);
     }
-
-    @ContentSlot
-    public static final Type<RevealContentHandler<?>> SLOT_searchResult = new Type<RevealContentHandler<?>>();
 
     @NameToken(NameTokens.SearchResult)
     @ProxyStandard
@@ -43,6 +39,7 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
     }
 
     private DispatchAsync dispatcher;
+    private SearchDetails searchDetails;
 
     @Inject
     public SearchResultPresenter(
@@ -55,12 +52,10 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         getView().setUiHandlers(this);
     }
 
-    @Override
-    public void prepareFromRequest(PlaceRequest request) {
-        super.prepareFromRequest(request);
-        String searchString = request.getParameter(TokenParameters.SEARCH_STRING, null);
-        SearchAction searchAction = new SearchAction(searchString);
-
+    protected void sendSearchAction()
+    {
+        getView().setLabel((searchDetails.getSearchString()));
+        SearchAction searchAction = new SearchAction(searchDetails);
         dispatcher.execute(searchAction, new AsyncCallback<SearchResult>() {
             @Override //TODO: Change actions done here
             public void onSuccess(SearchResult result) {
@@ -76,10 +71,20 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         });
     }
 
+    @Override
+    protected void onBind() {
+        super.onBind();
+        addRegisteredHandler(SearchEvent.getType(), this);
+    }
 
+    @Override
     protected void onReset() {
         super.onReset();
     }
 
-
+    @Override
+    public void onGlobalEvent(SearchEvent event) {
+        this.searchDetails = new SearchDetails(event.getSearchDetails());
+        sendSearchAction();
+    }
 }

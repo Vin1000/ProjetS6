@@ -31,4 +31,5 @@ public class HomePageView extends ViewWithUiHandlers<HomeUiHandler> implements H
     void onSendSearch(ClickEvent event) {
         getUiHandlers().sendSearch(textBox.getText());
     }
+
 }

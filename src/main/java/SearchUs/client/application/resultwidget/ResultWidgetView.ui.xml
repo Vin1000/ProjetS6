@@ -1,0 +1,48 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+    <ui:style>
+        table
+        {
+            table-layout:fixed
+        }
+
+        td
+        {
+            vertical-align: top;
+        }
+
+        span
+        {
+            font-size: 30px;
+        }
+    </ui:style>
+    <g:HTMLPanel ui:field="panel">
+        <p>
+            <table>
+                <tr>
+                    <td colspan="2">
+                        <a href="http://www.gel.usherbrooke.ca/s6info/e15"><g:Image ui:field="imgIcon"/></a>
+                        <a href="http://www.gel.usherbrooke.ca/s6info/e15"><g:InlineHTML ui:field="lblTitle"></g:InlineHTML></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 110px;">Auteur:</td>
+                    <td><g:Label ui:field="lblAuthor"></g:Label></td>
+                </tr>
+                <tr>
+                    <td>Date d'ajout:</td>
+                    <td><g:Label ui:field="lblDate"></g:Label></td>
+                </tr>
+                <tr>
+                    <td>Description:</td>
+                    <td><g:Label ui:field="lblDescription"></g:Label></td>
+                </tr>
+                <tr>
+                    <td>Autres mots-clés:</td>
+                    <td><g:HTML ui:field="htmlOtherKeywords"></g:HTML></td>
+                </tr>
+            </table>
+        </p>
+        <hr/>
+    </g:HTMLPanel>
+</ui:UiBinder>

@@ -13,6 +13,7 @@ import com.gwtplatform.dispatch.shared.ActionException;
  * Created by Marc-Antoine on 2015-05-18.
  */
 public class SearchActionHandler implements ActionHandler<SearchAction, SearchResult> {
+
     @Inject
     SearchManager searchManager;
 
@@ -21,7 +22,7 @@ public class SearchActionHandler implements ActionHandler<SearchAction, SearchRe
             throws ActionException {
         SearchResult  result = new SearchResult();
 
-        result.setSearchResults(searchManager.getSearchResults(action.getSearchText()));
+        result.setSearchResults(searchManager.getSearchResults(action.getSearchDetails().getSearchString()));
         return result;
     }
 

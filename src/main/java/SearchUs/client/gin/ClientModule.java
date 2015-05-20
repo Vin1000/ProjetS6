@@ -1,6 +1,9 @@
 package SearchUs.client.gin;
 
 import SearchUs.client.application.ApplicationModule;
+import SearchUs.client.application.home.HomePagePresenter;
+import SearchUs.client.application.searchresult.SearchResultModule;
+import SearchUs.client.application.searchresult.SearchResultPresenter;
 import SearchUs.client.place.NameTokens;
 import com.gwtplatform.dispatch.rpc.client.gin.RpcDispatchAsyncModule;
 import com.gwtplatform.mvp.client.annotations.DefaultPlace;

@@ -29,12 +29,13 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers, SearchEvent.GlobalHandler {
-{
+
     interface MyView extends View, HasUiHandlers<SearchResultUiHandlers>
     {
         void addResult(SearchResultData result);
         void clearResults();
     }
+
 
     @NameToken(NameTokens.SearchResult)
     @ProxyStandard
@@ -55,29 +56,6 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         getView().setUiHandlers(this);
     }
 
-    protected void sendSearchAction()
-    {
-        getView().setLabel((searchDetails.getSearchString()));
-        SearchAction searchAction = new SearchAction(searchDetails);
-        dispatcher.execute(searchAction, new AsyncCallback<SearchResult>() {
-            @Override //TODO: Change actions done here
-            public void onSuccess(SearchResult result) {
-                getView().clearResults();
-                ArrayList<SearchResultData> searchResults = result.getSearchResults();
-                for(SearchResultData res : searchResults)
-                {
-                    getView().addResult(res);
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable caught) {
-                Logger logger = java.util.logging.Logger.getLogger("Error Log variable");
-                logger.log(java.util.logging.Level.SEVERE, "La recherche a échouée, veuillez réessayer plus tard");
-            }
-        });
-    }
-
     @Override
     protected void onBind() {
         super.onBind();
@@ -91,7 +69,22 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
 
     @Override
     public void onGlobalEvent(SearchEvent event) {
-        this.searchDetails = new SearchDetails(event.getSearchDetails());
-        sendSearchAction();
+        SearchAction searchAction = new SearchAction(event.getSearchDetails());
+        dispatcher.execute(searchAction, new AsyncCallback<SearchResult>() {
+            @Override //TODO: Change actions done here
+            public void onSuccess(SearchResult result) {
+                getView().clearResults();
+                ArrayList<SearchResultData> searchResults = result.getSearchResults();
+                for (SearchResultData res : searchResults) {
+                    getView().addResult(res);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable caught) {
+                Logger logger = java.util.logging.Logger.getLogger("Error Log variable");
+                logger.log(java.util.logging.Level.SEVERE, "La recherche a échouée, veuillez réessayer plus tard");
+            }
+        });
     }
 }

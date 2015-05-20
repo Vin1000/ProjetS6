@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 
 public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers> implements SearchResultPresenter.MyView {
-    @Override
+
     public void addResult(SearchResultData result)
     {
         String html = result.getTitle() + "<br/>" + result.getDescription() + "<br/>" + result.getDownloadUrl() + "<br/>";

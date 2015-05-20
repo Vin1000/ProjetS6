@@ -1,5 +1,6 @@
 package SearchUs.server.logic;
 
+import SearchUs.server.engine.ElasticManager;
 import SearchUs.server.session.UserSessionImpl;
 import SearchUs.shared.data.SearchResultData;
 import com.google.inject.Inject;
@@ -20,6 +21,11 @@ public class SearchManager {
     }
 
     public ArrayList<SearchResultData> getSearchResults(String searchText){
+
+        //todo: injecter l'objet.
+        ElasticManager searchEngine = new ElasticManager();
+
+        searchEngine.search(searchText);
 
         ArrayList<SearchResultData> results = new ArrayList<SearchResultData>();
         results.add(new SearchResultData(searchText + ".txt", "http://www.gel.usherbrooke.ca/s6info/e15", "Text result"));

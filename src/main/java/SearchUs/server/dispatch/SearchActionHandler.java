@@ -1,5 +1,6 @@
 package SearchUs.server.dispatch;
 
+import SearchUs.server.engine.ElasticManager;
 import SearchUs.server.logic.SearchManager;
 import SearchUs.shared.dispatch.search.SearchAction;
 import SearchUs.shared.dispatch.search.SearchResult;

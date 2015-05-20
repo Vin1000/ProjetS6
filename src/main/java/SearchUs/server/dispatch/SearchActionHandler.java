@@ -1,5 +1,6 @@
 package SearchUs.server.dispatch;
 
+import SearchUs.server.engine.ElasticManager;
 import SearchUs.server.logic.SearchManager;
 import SearchUs.shared.dispatch.search.SearchAction;
 import SearchUs.shared.dispatch.search.SearchResult;
@@ -19,6 +20,10 @@ public class SearchActionHandler implements ActionHandler<SearchAction, SearchRe
     public SearchResult execute(SearchAction action, ExecutionContext context)
             throws ActionException {
         SearchResult  result = new SearchResult();
+
+        ElasticManager searchEngine = new ElasticManager();
+
+        searchEngine.queryString("Salut");
 
         result.setSearchResults(searchManager.getSearchResults(action.getSearchText()));
         return result;

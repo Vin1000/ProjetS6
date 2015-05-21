@@ -1,6 +1,7 @@
 package SearchUs.server.engine;
 
 
+import com.google.gwt.thirdparty.json.JSONException;
 import com.google.gwt.thirdparty.json.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -73,8 +74,6 @@ public class ElasticManager {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
 
-            //System.out.println("Post request; Endpoint: " + endpoint + " ,Data: " + data);
-
             HttpPost httpPost = new HttpPost(this.serviceUrl+"_search");
             httpPost.setEntity(new StringEntity(data));
 
@@ -83,8 +82,7 @@ public class ElasticManager {
             // Create a custom response handler
             ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
 
-                public String handleResponse(
-                        final HttpResponse response) throws ClientProtocolException, IOException {
+                public String handleResponse( final HttpResponse response) throws IOException {
                     int status = response.getStatusLine().getStatusCode();
                     if (status >= 200 && status < 300) {
                         HttpEntity entity = response.getEntity();
@@ -96,8 +94,7 @@ public class ElasticManager {
 
             };
             responseBody = httpclient.execute(httpPost, responseHandler);
-            /*System.out.println("----------------------------------------");
-            System.out.println(responseBody);*/
+
         }
         catch (IOException ex)
         {
@@ -109,25 +106,54 @@ public class ElasticManager {
         return responseBody;
     }
 
-    public JSONObject search(String query) {
 
-        String jsonQuery =  "{\n" +
-                "  \"query\" : {\n" +
-                "    \"match_all\" : {}\n" +
-                "  }\n" +
-                "}";
-        String searchResult = makePost("_search",jsonQuery);
+    public JSONObject search(String queryString) {
+
+        String query;
+        if(queryString.equals("*"))
+        {
+            query=  "{\n" +
+                    "  \"query\" : {\n" +
+                    "    \"match_all\" : {}\n" +
+                    "  }\n" +
+                    "}";
+        }
+        else
+        {
+            JSONObject jsonQuery = new JSONObject();
+            JSONObject match = new JSONObject();
+            JSONObject completeQuery = new JSONObject();
+
+            try {
+                match.put("_all",queryString);
+                jsonQuery.put("match",match);
+                completeQuery.put("query",jsonQuery);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            query = completeQuery.toString();
+        }
+
+
+
+
+        String searchResult = makePost("_search",query);
         System.out.println("Search result: "+searchResult);
         JSONObject jsonObj = null;
+        System.out.println("query: "+query);
 
-        try
+        if(searchResult != null)
         {
-            jsonObj = new JSONObject(searchResult);
+            try
+            {
+                jsonObj = new JSONObject(searchResult);
+            }
+            catch(com.google.gwt.thirdparty.json.JSONException ex)
+            {
+                System.out.println("Json decoding exception: "+ex.toString());
+            }
         }
-        catch(com.google.gwt.thirdparty.json.JSONException ex)
-        {
-            System.out.println("Json decoding exception: "+ex.toString());
-        }
+
 
         return jsonObj;
 

@@ -1,8 +1,12 @@
 package SearchUs.server.engine;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -12,6 +16,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +33,7 @@ public class ElasticManager {
         this.serviceUrl = "http://staging.gostamp.ca/api/";
     }
 
-    private HttpEntity httpPost(String endpoint, String data )
+    /*private HttpEntity httpPost(String endpoint, String data )
     {
         HttpEntity entity = null;
 
@@ -57,13 +62,58 @@ public class ElasticManager {
         }
 
         return entity;
+    }*/
+
+    private String makePost(String endpoint, String data )
+    {
+        String responseBody = null;
+
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        try {
+
+            //System.out.println("Post request; Endpoint: " + endpoint + " ,Data: " + data);
+
+            HttpPost httpPost = new HttpPost(this.serviceUrl+"_search");
+            httpPost.setEntity(new StringEntity(data));
+
+            System.out.println("Executing request " + httpPost.getRequestLine());
+
+            // Create a custom response handler
+            ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+                public String handleResponse(
+                        final HttpResponse response) throws ClientProtocolException, IOException {
+                    int status = response.getStatusLine().getStatusCode();
+                    if (status >= 200 && status < 300) {
+                        HttpEntity entity = response.getEntity();
+                        return entity != null ? EntityUtils.toString(entity) : null;
+                    } else {
+                        throw new ClientProtocolException("Unexpected response status: " + status);
+                    }
+                }
+
+            };
+            responseBody = httpclient.execute(httpPost, responseHandler);
+            /*System.out.println("----------------------------------------");
+            System.out.println(responseBody);*/
+        }
+        catch (IOException ex)
+        {
+
+        }
+        finally {
+            try { httpclient.close(); } catch (Exception ignore) {}
+        }
+        return responseBody;
     }
 
     public void search(String query) {
 
         String jsonQuery = query;
-        InputStream inputStream = null;
-        HttpEntity queryResult = httpPost("_search",jsonQuery);
+        String searchResult = makePost("_search",jsonQuery);
+        System.out.println("Search result: "+searchResult);
+        /*InputStream inputStream = null;
+        HttpEntity queryResult = httpPost();
 
         byte[] buffer = new byte[1024];
         if (queryResult != null) {
@@ -80,7 +130,7 @@ public class ElasticManager {
             } finally {
                 try { inputStream.close(); } catch (Exception ignore) {}
             }
-        }
+        }*/
 
     }
 }

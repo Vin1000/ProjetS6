@@ -17,7 +17,7 @@ public class ResultWidgetView extends ViewImpl implements ResultWidgetPresenter.
     HTMLPanel panel;
 
     @UiField
-    Label lblTitle;
+    HTML htmlFile;
 
     @UiField
     Label lblAuthor;
@@ -31,9 +31,6 @@ public class ResultWidgetView extends ViewImpl implements ResultWidgetPresenter.
     @UiField
     HTML htmlOtherKeywords;
 
-    @UiField
-    Image imgIcon;
-
     @Inject
     ResultWidgetView(Binder binder) {
         initWidget(binder.createAndBindUi(this));
@@ -41,13 +38,15 @@ public class ResultWidgetView extends ViewImpl implements ResultWidgetPresenter.
 
     public void SetContent(String title, String imageUrl, String downloadUrl, String author, String date, String description, ArrayList<String> keywords)
     {
-        lblTitle.setText(title);
-        imgIcon.setUrl(imageUrl);
         lblAuthor.setText(author);
         lblDate.setText(date);
         lblDescription.setText(description);
 
-        //TODO: ajouter le downloadUrl sur l'image et le titre
+        String a = "<a href=\"" + downloadUrl + "\" target=\"_blank\">";
+        String img = "<img class=\"gwt-Image\" src=\"" + imageUrl + "\">";
+        String filename = "<span class=\"gwt-InlineHTML\">" + title + "</span>";
+        String a2 = "</a>";
+        htmlFile.setHTML(a + img + filename + a2);
 
         boolean first = true;
         String keys = "";

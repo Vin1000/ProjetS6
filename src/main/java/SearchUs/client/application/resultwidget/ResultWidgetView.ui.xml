@@ -26,7 +26,7 @@
             <table>
                 <tr>
                     <td colspan="2">
-                        <a href="http://www.gel.usherbrooke.ca/s6info/e15"><g:Image ui:field="imgIcon"/></a>
+                        <a href="http://www.gel.usherbrooke.ca/s6info/e15" ui:field="downloadUrl"><g:Image ui:field="imgIcon"/></a>
                         <a href="http://www.gel.usherbrooke.ca/s6info/e15"><g:InlineHTML ui:field="lblTitle"></g:InlineHTML></a>
                     </td>
                 </tr>

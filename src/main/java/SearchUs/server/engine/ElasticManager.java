@@ -36,36 +36,7 @@ public class ElasticManager {
 
         this.serviceUrl = url+":9200/files/"; //todo: verifier url
     }
-    /*private HttpEntity httpPost(String endpoint, String data )
-    {
-        HttpEntity entity = null;
 
-        try
-        {
-            CloseableHttpClient httpclient = HttpClients.createDefault();
-
-            System.out.println("Post request; Endpoint: " + endpoint + " ,Data: " + data);
-
-            HttpPost httpPost = new HttpPost(this.serviceUrl+"_search");
-
-            httpPost.setEntity(new StringEntity(data));
-            CloseableHttpResponse response2 = httpclient.execute(httpPost);
-
-            try {
-               // System.out.println("Search result: " + response2.getStatusLine());
-                entity = response2.getEntity();
-
-            } finally {
-                response2.close();
-            }
-        }
-        catch (java.io.IOException ex){
-            System.out.println("Error2 : " + ex.toString());
-
-        }
-
-        return entity;
-    }*/
 
     private String makePost(String endpoint, String data )
     {
@@ -110,19 +81,23 @@ public class ElasticManager {
     public JSONObject search(String queryString) {
 
         String query;
-        if(queryString.equals("*"))
+        JSONObject jsonQuery = new JSONObject();
+        JSONObject match = new JSONObject();
+        JSONObject completeQuery = new JSONObject();
+
+        if(queryString.contains("*"))
         {
-            query=  "{\n" +
-                    "  \"query\" : {\n" +
-                    "    \"match_all\" : {}\n" +
-                    "  }\n" +
-                    "}";
+
+            try {
+                jsonQuery.put("wildcard",new JSONObject().put("_all",queryString));
+                completeQuery.put("query",jsonQuery);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
         else
         {
-            JSONObject jsonQuery = new JSONObject();
-            JSONObject match = new JSONObject();
-            JSONObject completeQuery = new JSONObject();
 
             try {
                 match.put("_all",queryString);
@@ -131,10 +106,11 @@ public class ElasticManager {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            query = completeQuery.toString();
+
         }
 
 
+        query = completeQuery.toString();
 
 
         String searchResult = makePost("_search",query);

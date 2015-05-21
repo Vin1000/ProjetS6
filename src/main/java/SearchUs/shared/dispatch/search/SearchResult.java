@@ -11,11 +11,34 @@ import java.util.ArrayList;
 public class SearchResult implements Result {
     private ArrayList<SearchResultData> searchResults;
 
+    private int took;
+    private int totalHits;
+
     public ArrayList<SearchResultData> getSearchResults() {
         return searchResults;
     }
 
     public void setSearchResults(ArrayList<SearchResultData> searchResults) {
         this.searchResults = searchResults;
+    }
+
+    public int getTook()
+    {
+        return took;
+    }
+
+    public void setTook(int t)
+    {
+        took = t;
+    }
+
+    public int getTotalHits()
+    {
+        return totalHits;
+    }
+
+    public void setTotalHits(int h)
+    {
+        totalHits = h;
     }
 }

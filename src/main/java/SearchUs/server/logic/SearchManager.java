@@ -44,7 +44,8 @@ public class SearchManager {
             try {
                 JSONObject hits = queryResult.getJSONObject("hits");
 
-                int total = hits.getInt("total");
+                int totalHits = hits.getInt("total");
+                int took = queryResult.getInt("took");
 
                 JSONArray resultsArray =  hits.getJSONArray("hits");
 
@@ -55,13 +56,12 @@ public class SearchManager {
                 String url;
                 String description;
 
-                for(int i=0;i<total;i++)
+                for(int i=0;i<totalHits;i++)
                 {
                     hit = resultsArray.getJSONObject(i);
                     System.out.println(hit.getString("_type"));
                     if(hit.getString("_type").equals("doc") )//todo: enforce
                     {
-                        System.out.println("if begin");
                         hitSource = hit.getJSONObject("_source");
                         file = hitSource.getJSONObject("file");
                         filename = file.getString("filename");
@@ -69,11 +69,13 @@ public class SearchManager {
                         description = hitSource.getString("content");
 
                         listResults.add(new SearchResultData(filename,url,description));
-                        System.out.println("New element created");
 
                     }
 
                 }
+
+                result.setTook(took);
+                result.setTotalHits(totalHits);
 
             } catch (JSONException e) {
                 e.printStackTrace();

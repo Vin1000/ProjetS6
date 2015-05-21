@@ -1,5 +1,5 @@
 
-package SearchUs.client.application.resultwidget;
+package SearchUs.client.application.home.resultwidget;
 
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.uibinder.client.UiBinder;

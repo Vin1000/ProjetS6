@@ -3,7 +3,7 @@ package SearchUs.client.application;
 import javax.inject.Inject;
 
 import SearchUs.client.application.home.HomePagePresenter;
-import SearchUs.client.application.searchresult.SearchResultPresenter;
+import SearchUs.client.application.home.searchresult.SearchResultPresenter;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.Presenter;

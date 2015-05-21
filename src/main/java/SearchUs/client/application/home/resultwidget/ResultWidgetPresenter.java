@@ -1,5 +1,5 @@
 
-package SearchUs.client.application.resultwidget;
+package SearchUs.client.application.home.resultwidget;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;

@@ -1,7 +1,3 @@
-
-
-
-
 package SearchUs.client.application.searchresult;
 
 import SearchUs.client.application.ApplicationPresenter;

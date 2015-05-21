@@ -1,5 +1,7 @@
 package SearchUs.server.engine;
 
+
+import com.google.gwt.thirdparty.json.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -28,11 +30,11 @@ public class ElasticManager {
 
     private String serviceUrl;
 
-    public ElasticManager() {
 
-        this.serviceUrl = "http://staging.gostamp.ca/api/";
+    public ElasticManager(String url) {
+
+        this.serviceUrl = url+":9200/files/"; //todo: verifier url
     }
-
     /*private HttpEntity httpPost(String endpoint, String data )
     {
         HttpEntity entity = null;
@@ -107,30 +109,27 @@ public class ElasticManager {
         return responseBody;
     }
 
-    public void search(String query) {
+    public JSONObject search(String query) {
 
-        String jsonQuery = query;
+        String jsonQuery =  "{\n" +
+                "  \"query\" : {\n" +
+                "    \"match_all\" : {}\n" +
+                "  }\n" +
+                "}";
         String searchResult = makePost("_search",jsonQuery);
         System.out.println("Search result: "+searchResult);
-        /*InputStream inputStream = null;
-        HttpEntity queryResult = httpPost();
+        JSONObject jsonObj = null;
 
-        byte[] buffer = new byte[1024];
-        if (queryResult != null) {
-            try {
-                inputStream = queryResult.getContent();
-                int bytesRead = 0;
-                BufferedInputStream bis = new BufferedInputStream(inputStream);
-                while ((bytesRead = bis.read(buffer)) != -1) {
-                    String chunk = new String(buffer, 0, bytesRead);
-                    System.out.println("Chunk: "+ chunk);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                try { inputStream.close(); } catch (Exception ignore) {}
-            }
-        }*/
+        try
+        {
+            jsonObj = new JSONObject(searchResult);
+        }
+        catch(com.google.gwt.thirdparty.json.JSONException ex)
+        {
+            System.out.println("Json decoding exception: "+ex.toString());
+        }
+
+        return jsonObj;
 
     }
 }

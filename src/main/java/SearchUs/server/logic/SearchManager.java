@@ -31,7 +31,7 @@ public class SearchManager {
         results.add(new SearchResultData(searchText + ".txt", "http://www.gel.usherbrooke.ca/s6info/e15", "Text result"));
         results.add(new SearchResultData(searchText + ".pdf", "http://www.gel.usherbrooke.ca/s6info/e15", "PDF result"));
         results.add(new SearchResultData(searchText + ".docx", "http://www.gel.usherbrooke.ca/s6info/e15", "Word result"));
-        results.add(new SearchResultData(searchText + ".babinlenoob", "http://www.gel.usherbrooke.ca/s6info/e15", "Word result"));
+        results.add(new SearchResultData(searchText + ".babin", "http://www.gel.usherbrooke.ca/s6info/e15", "Word result"));
         results.add(new SearchResultData(searchText + ".png", "http://www.gel.usherbrooke.ca/s6info/e15", "Word result"));
         results.add(new SearchResultData(searchText + ".java", "http://www.gel.usherbrooke.ca/s6info/e15", "Word result"));
         results.add(new SearchResultData(searchText + ".zip", "http://www.gel.usherbrooke.ca/s6info/e15", "Word result"));

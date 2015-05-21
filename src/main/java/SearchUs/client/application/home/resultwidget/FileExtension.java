@@ -1,4 +1,4 @@
-package SearchUs.client.application.resultwidget;
+package SearchUs.client.application.home.resultwidget;
 
 import java.util.HashMap;
 import java.util.Map;

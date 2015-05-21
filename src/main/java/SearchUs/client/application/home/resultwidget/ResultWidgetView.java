@@ -1,5 +1,5 @@
 
-package SearchUs.client.application.resultwidget;
+package SearchUs.client.application.home.resultwidget;
 
 import SearchUs.shared.data.SearchResultData;
 import com.google.gwt.user.client.ui.*;

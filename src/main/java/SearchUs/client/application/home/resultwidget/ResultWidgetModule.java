@@ -1,5 +1,5 @@
 
-package SearchUs.client.application.resultwidget;
+package SearchUs.client.application.home.resultwidget;
 
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 

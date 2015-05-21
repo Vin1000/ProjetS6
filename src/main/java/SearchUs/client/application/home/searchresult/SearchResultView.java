@@ -1,8 +1,7 @@
-package SearchUs.client.application.searchresult;
+package SearchUs.client.application.home.searchresult;
 
-import SearchUs.client.application.resultwidget.ResultWidgetPresenter;
+import SearchUs.client.application.home.resultwidget.ResultWidgetPresenter;
 import SearchUs.shared.data.SearchResultData;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;

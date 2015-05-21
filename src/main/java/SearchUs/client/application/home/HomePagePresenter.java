@@ -3,9 +3,12 @@ package SearchUs.client.application.home;
 import javax.inject.Inject;
 
 import SearchUs.client.application.ApplicationPresenter;
+import SearchUs.client.application.home.searchbar.SearchBarPresenter;
+import SearchUs.client.application.home.searchresult.SearchResultPresenter;
 import SearchUs.shared.data.SearchDetails;
 import SearchUs.client.application.events.SearchEvent;
 import SearchUs.client.place.NameTokens;
+import SearchUs.shared.dispatch.search.SearchResult;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -20,31 +23,32 @@ public class HomePagePresenter extends Presenter<HomePagePresenter.MyView, HomeP
     public interface MyView extends View, HasUiHandlers<HomeUiHandler> {
     }
 
-    private final PlaceManager placeManager;
+    public static final Object SLOT_SEARCHBAR = new Object();
+    public static final Object SLOT_SEARCHRESULTS = new Object();
 
     @ProxyStandard
     @NameToken(NameTokens.home)
     public interface MyProxy extends ProxyPlace<HomePagePresenter> {
     }
 
+    @Inject protected SearchBarPresenter searchBarPresenter;
+    @Inject protected SearchResultPresenter searchResultPresenter;
+
+
     @Inject
     HomePagePresenter(EventBus eventBus,
                       MyView view,
-                      MyProxy proxy,
-                      PlaceManager placeManager) {
+                      MyProxy proxy) {
         super(eventBus, view, proxy, ApplicationPresenter.SLOT_SetMainContent);
-        getView().setUiHandlers(this);
-        this.placeManager = placeManager;
+
     }
 
-
     @Override
-    public void sendSearch(String searchText) {
-        PlaceRequest responsePlaceRequest = new PlaceRequest.Builder()
-                .nameToken(NameTokens.getSearchResult())
-                .build();
-        placeManager.revealPlace(responsePlaceRequest);
+    protected  void onBind()
+    {
+        super.onBind();
 
-        SearchEvent.fire(this, new SearchDetails(searchText));
+        addToSlot(SLOT_SEARCHBAR, searchBarPresenter);
+        addToSlot(SLOT_SEARCHRESULTS, searchResultPresenter);
     }
 }

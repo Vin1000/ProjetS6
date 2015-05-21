@@ -1,4 +1,12 @@
+<<<<<<< HEAD:src/main/java/SearchUs/client/application/home/searchresult/SearchResultPresenter.java
+
+
+
+
 package SearchUs.client.application.home.searchresult;
+=======
+package SearchUs.client.application.searchresult;
+>>>>>>> ce193612ee3a85d3efe9e7b6669e29f711e736cf:src/main/java/SearchUs/client/application/searchresult/SearchResultPresenter.java
 
 import SearchUs.client.application.ApplicationPresenter;
 import SearchUs.client.application.events.SearchEvent;
@@ -16,7 +24,6 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
-import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import java.util.ArrayList;
@@ -30,8 +37,10 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         void clearResults();
     }
 
+
+    @NameToken(NameTokens.SearchResult)
     @ProxyStandard
-    public interface MyProxy extends Proxy<SearchResultPresenter> {
+    public interface MyProxy extends ProxyPlace<SearchResultPresenter> {
     }
 
     private DispatchAsync dispatcher;

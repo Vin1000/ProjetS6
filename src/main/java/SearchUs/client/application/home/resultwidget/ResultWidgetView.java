@@ -1,13 +1,14 @@
 
 package SearchUs.client.application.home.resultwidget;
 
+import SearchUs.shared.data.SearchResultData;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ResultWidgetView extends ViewImpl implements ResultWidgetPresenter.MyView {
     public interface Binder extends UiBinder<HTMLPanel, ResultWidgetView> {
@@ -17,7 +18,7 @@ public class ResultWidgetView extends ViewImpl implements ResultWidgetPresenter.
     HTMLPanel panel;
 
     @UiField
-    Label lblTitle;
+    HTML htmlFile;
 
     @UiField
     Label lblAuthor;
@@ -31,26 +32,26 @@ public class ResultWidgetView extends ViewImpl implements ResultWidgetPresenter.
     @UiField
     HTML htmlOtherKeywords;
 
-    @UiField
-    Image imgIcon;
-
     @Inject
     ResultWidgetView(Binder binder) {
         initWidget(binder.createAndBindUi(this));
     }
 
-    public void SetContent(String title, String imageUrl, String downloadUrl, String author, String date, String description, ArrayList<String> keywords)
+    public void SetContent(SearchResultData result, String imageUrl)
     {
-        lblTitle.setText(title);
-        imgIcon.setUrl(imageUrl);
-        lblAuthor.setText(author);
-        lblDate.setText(date);
-        lblDescription.setText(description);
+        lblAuthor.setText(result.getAuthor());
+        lblDate.setText(result.getDate());
+        lblDescription.setText(result.getDescription());
 
-        //TODO: ajouter le downloadUrl sur l'image et le titre
+        String a = "<a href=\"" + result.getDownloadUrl() + "\" target=\"_blank\">";
+        String img = "<img class=\"gwt-Image\" src=\"" + imageUrl + "\">";
+        String filename = "<span class=\"gwt-InlineHTML\">" + result.getFilename() + "</span>";
+        String a2 = "</a>";
+        htmlFile.setHTML(a + img + filename + a2);
 
         boolean first = true;
         String keys = "";
+        List<String> keywords = result.getKeywords();
         for(String key : keywords)
         {
             if(first)

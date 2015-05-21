@@ -1,17 +1,18 @@
 
 package SearchUs.client.application.home.resultwidget;
 
+import SearchUs.shared.data.SearchResultData;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ResultWidgetPresenter extends PresenterWidget<ResultWidgetPresenter.MyView> {
     public interface MyView extends View
     {
-        void SetContent(String title, String imageUrl, String downloadUrl, String author, String date, String description, ArrayList<String> keywords);
+        void SetContent(SearchResultData result, String imageUrl);
     }
 
     @Inject
@@ -20,10 +21,10 @@ public class ResultWidgetPresenter extends PresenterWidget<ResultWidgetPresenter
 
     }
 
-    public void SetContent(String title, String downloadUrl, String author, String date, String description, ArrayList<String> keywords)
+    public void SetContent(SearchResultData result)
     {
-        String ext = title.substring(title.lastIndexOf('.') + 1);
-        getView().SetContent(title, FileExtension.getInstance().getIconUrl(ext), downloadUrl, author, date, description, keywords);
+        String ext = result.getFilename().substring(result.getFilename().lastIndexOf('.') + 1);
+        getView().SetContent(result, FileExtension.getInstance().getIconUrl(ext));
     }
 
 }

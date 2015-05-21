@@ -23,6 +23,8 @@ public class SearchBarView extends ViewWithUiHandlers<SearchBarUiHandlers> imple
     @Inject
     SearchBarView(Binder uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
+        textBox.ensureDebugId("searchTextBox");
+        sendSearchButton.ensureDebugId("sendSearchButton");
     }
 
     @UiHandler("sendSearchButton")

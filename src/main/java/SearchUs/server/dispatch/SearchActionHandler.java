@@ -20,10 +20,8 @@ public class SearchActionHandler implements ActionHandler<SearchAction, SearchRe
     @Override
     public SearchResult execute(SearchAction action, ExecutionContext context)
             throws ActionException {
-        SearchResult  result = new SearchResult();
 
-        result.setSearchResults(searchManager.getSearchResults(action.getSearchDetails().getSearchString()));
-        return result;
+        return searchManager.getSearchResults(action.getSearchDetails().getSearchString());
     }
 
     @Override

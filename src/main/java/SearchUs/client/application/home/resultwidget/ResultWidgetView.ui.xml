@@ -15,14 +15,18 @@
         {
             font-size: 30px;
         }
+
+        img
+        {
+            margin-top: -14px;
+        }
     </ui:style>
     <g:HTMLPanel ui:field="panel">
         <p>
             <table>
                 <tr>
                     <td colspan="2">
-                        <a href="http://www.gel.usherbrooke.ca/s6info/e15"><g:Image ui:field="imgIcon"/></a>
-                        <a href="http://www.gel.usherbrooke.ca/s6info/e15"><g:InlineHTML ui:field="lblTitle"></g:InlineHTML></a>
+                        <g:HTML ui:field="htmlFile"></g:HTML>
                     </td>
                 </tr>
                 <tr>

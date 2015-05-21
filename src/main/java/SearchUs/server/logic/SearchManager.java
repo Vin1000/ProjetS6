@@ -39,54 +39,49 @@ public class SearchManager {
 
         JSONObject queryResult =  searchEngine.search(searchText);
 
+        if(queryResult != null)
+        {
+            try {
+                JSONObject hits = queryResult.getJSONObject("hits");
 
-        try {
-            JSONObject hits = queryResult.getJSONObject("hits");
+                int totalHits = hits.getInt("total");
+                int took = queryResult.getInt("took");
 
-            int total = hits.getInt("total");
+                JSONArray resultsArray =  hits.getJSONArray("hits");
 
-            JSONArray resultsArray =  hits.getJSONArray("hits");
+                JSONObject hit;
+                JSONObject hitSource;
+                JSONObject file;
+                String filename ;
+                String url;
+                String description;
 
-            JSONObject hit;
-            JSONObject hitSource;
-            JSONObject file;
-            String filename ;
-            String url;
-            String description;
-
-            for(int i=0;i<total;i++)
-            {
-                hit = resultsArray.getJSONObject(i);
-                System.out.println(hit.getString("_type"));
-                if(hit.getString("_type").equals("doc") )//todo: enforce
+                for(int i=0;i<totalHits;i++)
                 {
-                    System.out.println("if begin");
-                    hitSource = hit.getJSONObject("_source");
-                    file = hitSource.getJSONObject("file");
-                    filename = file.getString("filename");
-                    url = hitSource.getJSONObject("path").getString("real").replace("/var/www/html", SERVER_URL);
-                    description = hitSource.getString("content");
+                    hit = resultsArray.getJSONObject(i);
+                    System.out.println(hit.getString("_type"));
+                    if(hit.getString("_type").equals("doc") )//todo: enforce
+                    {
+                        hitSource = hit.getJSONObject("_source");
+                        file = hitSource.getJSONObject("file");
+                        filename = file.getString("filename");
+                        url = hitSource.getJSONObject("path").getString("real").replace("/var/www/html", SERVER_URL);
+                        description = hitSource.getString("content");
 
-                    listResults.add(new SearchResultData(filename,url,description));
-                    System.out.println("New element created");
+                        listResults.add(new SearchResultData(filename,url,description));
+
+                    }
 
                 }
 
-            }
+                result.setTook(took);
+                result.setTotalHits(totalHits);
 
-        } catch (JSONException e) {
-            e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
-
-        /*results.add(new SearchResultData(result.);*/
-        /*listResults.add(new SearchResultData(searchText + ".pdf", "http://www.gel.usherbrooke.ca/s6info/e15", "PDF result"));
-        listResults.add(new SearchResultData(searchText + ".docx", "http://www.gel.usherbrooke.ca/s6info/e15", "Word result"));
-        listResults.add(new SearchResultData(searchText + ".babinlenoob", "http://www.gel.usherbrooke.ca/s6info/e15", "Word result"));
-        listResults.add(new SearchResultData(searchText + ".png", "http://www.gel.usherbrooke.ca/s6info/e15", "Word result"));
-        listResults.add(new SearchResultData(searchText + ".java", "http://www.gel.usherbrooke.ca/s6info/e15", "Word result"));
-        listResults.add(new SearchResultData(searchText + ".zip", "http://www.gel.usherbrooke.ca/s6info/e15", "Word result"));
-        listResults.add(new SearchResultData(searchText + ".doc", "http://www.gel.usherbrooke.ca/s6info/e15", "Word result"));*/
 
         result.setSearchResults(listResults);
         return result;

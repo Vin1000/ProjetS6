@@ -12,6 +12,7 @@ import com.google.inject.Inject;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Marc-Antoine on 2015-05-18.
@@ -52,9 +53,14 @@ public class SearchManager {
                 JSONObject hit;
                 JSONObject hitSource;
                 JSONObject file;
+                JSONObject meta;
                 String filename ;
                 String url;
                 String description;
+                String author;
+                String title;
+                String date;
+                List<String> keywords = null;
 
                 for(int i=0;i<totalHits;i++)
                 {
@@ -68,7 +74,12 @@ public class SearchManager {
                         url = hitSource.getJSONObject("path").getString("real").replace("/var/www/html", SERVER_URL);
                         description = hitSource.getString("content");
 
-                        listResults.add(new SearchResultData(filename,url,description));
+                        meta = hitSource.getJSONObject("meta");
+                        author = meta.getString("author");
+                        title = meta.getString("title");
+                        date = meta.getString("date");
+
+                        listResults.add(new SearchResultData(filename, url, description,author,title,date,keywords));
 
                     }
 

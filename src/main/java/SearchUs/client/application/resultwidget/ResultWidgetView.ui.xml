@@ -15,6 +15,11 @@
         {
             font-size: 30px;
         }
+
+        img
+        {
+            margin-top: -14px;
+        }
     </ui:style>
     <g:HTMLPanel ui:field="panel">
         <p>

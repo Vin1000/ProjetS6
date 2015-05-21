@@ -1,9 +1,7 @@
 package SearchUs.client.application.resultwidget;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Vincent on 2015-05-20.
@@ -87,7 +85,6 @@ public class FileExtension
     }
 
     private Map<String, String> dictionary = new HashMap<String, String>();
-    //"icons/" + ext + ".png"
 
     public String getIconUrl(String extension)
     {

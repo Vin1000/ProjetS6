@@ -1,16 +1,12 @@
-
-
-
-
-package SearchUs.client.application.searchresult;
+package SearchUs.client.application.home.searchresult;
 
 import SearchUs.client.application.ApplicationPresenter;
+import SearchUs.client.application.events.SearchEvent;
 import SearchUs.client.place.NameTokens;
-import SearchUs.client.place.TokenParameters;
+import SearchUs.shared.data.SearchDetails;
 import SearchUs.shared.data.SearchResultData;
 import SearchUs.shared.dispatch.search.SearchAction;
 import SearchUs.shared.dispatch.search.SearchResult;
-import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -18,31 +14,30 @@ import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
+import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
-import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
-import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
-public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers {
-    interface MyView extends View, HasUiHandlers<SearchResultUiHandlers> {
-        void setLabel(String text);
+public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers, SearchEvent.GlobalHandler {
+
+    interface MyView extends View, HasUiHandlers<SearchResultUiHandlers>
+    {
+        void addResult(SearchResultData result);
+        void addNoResultMessage();
+        void addTimeElapsed_totalHits(int timeElapsed, int totalHits);
+        void clearResults();
     }
 
-    @ContentSlot
-    public static final Type<RevealContentHandler<?>> SLOT_searchResult = new Type<RevealContentHandler<?>>();
-
-    @NameToken(NameTokens.SearchResult)
     @ProxyStandard
-    public interface MyProxy extends ProxyPlace<SearchResultPresenter> {
+    public interface MyProxy extends Proxy<SearchResultPresenter> {
     }
 
     private DispatchAsync dispatcher;
+    private SearchDetails searchDetails;
 
     @Inject
     public SearchResultPresenter(
@@ -56,30 +51,45 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
     }
 
     @Override
-    public void prepareFromRequest(PlaceRequest request) {
-        super.prepareFromRequest(request);
-        String searchString = request.getParameter(TokenParameters.SEARCH_STRING, null);
-        SearchAction searchAction = new SearchAction(searchString);
+    protected void onBind() {
+        super.onBind();
+        addRegisteredHandler(SearchEvent.getType(), this);
+    }
 
+    @Override
+    protected void onReset() {
+        super.onReset();
+    }
+
+    @Override
+    public void onGlobalEvent(SearchEvent event) {
+        SearchAction searchAction = new SearchAction(event.getSearchDetails());
         dispatcher.execute(searchAction, new AsyncCallback<SearchResult>() {
             @Override //TODO: Change actions done here
             public void onSuccess(SearchResult result) {
+                getView().clearResults();
                 ArrayList<SearchResultData> searchResults = result.getSearchResults();
-                getView().setLabel(searchResults.get(0).getTitle());
+
+                getView().addTimeElapsed_totalHits(result.getTimeElapsed(), result.getTotalHits());
+
+                if(!searchResults.isEmpty())
+                {
+                    for (SearchResultData res : searchResults)
+                    {
+                        getView().addResult(res);
+                    }
+                }
+                else
+                {
+                    getView().addNoResultMessage();
+                }
             }
 
             @Override
             public void onFailure(Throwable caught) {
                 Logger logger = java.util.logging.Logger.getLogger("Error Log variable");
-                logger.log(java.util.logging.Level.SEVERE, "La recherche a échoué, veuillez réessayer plus tard");
+                logger.log(java.util.logging.Level.SEVERE, "La recherche a échouée, veuillez réessayer plus tard");
             }
         });
     }
-
-
-    protected void onReset() {
-        super.onReset();
-    }
-
-
 }

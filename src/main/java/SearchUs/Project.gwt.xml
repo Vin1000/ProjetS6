@@ -14,6 +14,10 @@
     
     <inherits name='com.gwtplatform.mvp.MvpWithEntryPoint' />
 
+    <inherits name="com.github.gwtbootstrap.Bootstrap"/>
+
+    <inherits name='com.google.gwt.user.Debug' />
+
     <source path='client' />
     <source path='shared' />
 

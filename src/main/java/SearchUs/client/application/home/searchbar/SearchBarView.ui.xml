@@ -1,0 +1,26 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:style>
+        body
+        {
+            padding:0px;
+        }
+        hr
+        {
+            margin: 10px 0px;
+        }
+        input[type="text"]
+        {
+            margin-bottom:0px;
+        }
+    </ui:style>
+    <g:HTMLPanel>
+        <div align="center">
+            <g:Image url="SearchUsLogo.png" ui:field="topImage" width="500px"/><br/>
+            <g:Image url="SearchUsLogo.png" ui:field="sideImage" width="200px"/>
+            <g:TextBox ui:field="textBox"></g:TextBox>
+            <g:Button ui:field="sendSearchButton">Rechercher</g:Button>
+        </div>
+    </g:HTMLPanel>
+</ui:UiBinder>

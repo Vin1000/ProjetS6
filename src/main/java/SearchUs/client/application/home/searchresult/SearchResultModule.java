@@ -1,4 +1,4 @@
-package SearchUs.client.application.searchresult;
+package SearchUs.client.application.home.searchresult;
 
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 

@@ -6,9 +6,6 @@ git config --global push.default current
 git config --global core.autocrlf false
 git config --global credential.helper wincred
 
-Installez Notepad++ ici: http://notepad-plus-plus.org/fr/download/v6.7.4.html , puis:
-git config --global core.editor "'C:\Program Files (x86)\Notepad++\notepad++.exe'"
-
 Pour cloner le projet:
 git clone https://github.com/Vin1000/ProjetS6.git
 
@@ -24,7 +21,7 @@ git branch --set-upstream-to=origin/dev dev
 Commands
 --------
 git status						STATUS
-git commit						LOCAL COMMIT (va ouvrir notepad++ et vous pourrez ecrire un commit message detaillé de plusieurs lignes)
+git commit						LOCAL COMMIT (va ouvrir notepad++ et vous pourrez ecrire un commit message detaillï¿½ de plusieurs lignes)
 git commit --amend				UPDATE A LOCAL COMMIT (change the commit message)
 git push						REMOTE COMMIT
 git pull						REMOTE DOWNLOAD
@@ -52,3 +49,12 @@ Workflow
 Outils
 ------
 -SourceTree (GUI Atlassian)
+- Kdiff3 (merge tool)
+   -Set up:
+      install Kdiff3
+      git config --global merge.tool kdiff3
+      git config --global mergetool.kdiff3.cmd '"C:\\Program Files (x86)\\KDiff3\\kdiff3" $BASE $LOCAL $REMOTE -o $MERGED'
+- NotePad ++
+   -set up:
+      install Notepad ++ http://notepad-plus-plus.org/fr/download/v6.7.4.html
+      git config --global core.editor "'C:\Program Files (x86)\Notepad++\notepad++.exe'"

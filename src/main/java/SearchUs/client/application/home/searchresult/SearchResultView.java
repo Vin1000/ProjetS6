@@ -44,6 +44,7 @@ public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers>
     @Inject
     SearchResultView(Binder uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
+        timeElapsed_totalHits_Label.getElement().getStyle().setProperty("paddingLeft", "7px");
     }
 
     @Inject

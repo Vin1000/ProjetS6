@@ -77,6 +77,50 @@ public class ElasticManager {
         return responseBody;
     }
 
+    private String makeGet(String endpoint)
+    {
+        String responseBody =  null;
+
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        try
+        {
+            HttpGet httpget = new HttpGet(this.serviceUrl+endpoint);
+
+            System.out.println("Executing request " + httpget.getRequestLine());
+
+            // Create a custom response handler
+            ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+                public String handleResponse(
+                        final HttpResponse response) throws ClientProtocolException, IOException {
+                    int status = response.getStatusLine().getStatusCode();
+                    if (status >= 200 && status < 300) {
+                        HttpEntity entity = response.getEntity();
+                        return entity != null ? EntityUtils.toString(entity) : null;
+                    } else {
+                        throw new ClientProtocolException("Unexpected response status: " + status);
+                    }
+                }
+
+            };
+             responseBody = httpclient.execute(httpget, responseHandler);
+
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                httpclient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return responseBody;
+    }
+
+
 
     public JSONObject search(String queryString) {
 

@@ -65,7 +65,7 @@ public class SearchManager {
                 for(int i=0;i<totalHits;i++)
                 {
                     hit = resultsArray.getJSONObject(i);
-                    System.out.println(hit.getString("_type"));
+                    //System.out.println(hit.getString("_type"));
                     if(!hit.getString("_type").equals("folder") )//todo: enforce
                     {
                         hitSource = hit.getJSONObject("_source");

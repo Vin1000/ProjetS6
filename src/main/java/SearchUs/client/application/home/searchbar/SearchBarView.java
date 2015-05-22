@@ -41,17 +41,22 @@ public class SearchBarView extends ViewWithUiHandlers<SearchBarUiHandlers> imple
 
     @UiHandler("sendSearchButton")
     void onSendSearch(ClickEvent event) {
-        topImage.getElement().getStyle().setProperty("display", "none");
-        sideImage.getElement().getStyle().setProperty("display", "initial");
-        sideImage.getElement().getParentElement().setAttribute("align", "left");
-        sideImage.getElement().getParentElement().getStyle().setProperty("paddingLeft", "6px");
-        getUiHandlers().sendSearch(textBox.getText());
+        ClickEvent();
     }
 
     @UiHandler("textBox")
     void onKeyPress(KeyPressEvent event){
         if(KeyCodes.KEY_ENTER == event.getNativeEvent().getKeyCode()){
-            getUiHandlers().sendSearch(textBox.getText());
+            ClickEvent();
         }
+    }
+
+    void ClickEvent()
+    {
+        topImage.getElement().getStyle().setProperty("display", "none");
+        sideImage.getElement().getStyle().setProperty("display", "initial");
+        sideImage.getElement().getParentElement().setAttribute("align", "left");
+        sideImage.getElement().getParentElement().getStyle().setProperty("paddingLeft", "6px");
+        getUiHandlers().sendSearch(textBox.getText());
     }
 }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class SearchResult implements Result {
     private ArrayList<SearchResultData> searchResults;
 
-    private int took;
+    private int timeElapsed;
     private int totalHits;
 
     public ArrayList<SearchResultData> getSearchResults() {
@@ -22,14 +22,14 @@ public class SearchResult implements Result {
         this.searchResults = searchResults;
     }
 
-    public int getTook()
+    public int getTimeElapsed()
     {
-        return took;
+        return timeElapsed;
     }
 
-    public void setTook(int t)
+    public void setTimeElapsed(int t)
     {
-        took = t;
+        timeElapsed = t;
     }
 
     public int getTotalHits()

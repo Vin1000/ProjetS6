@@ -28,7 +28,7 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
     {
         void addResult(SearchResultData result);
         void addNoResultMessage();
-        void addTook_totalHits(int took, int totalHits);
+        void addTimeElapsed_totalHits(int timeElapsed, int totalHits);
         void clearResults();
     }
 
@@ -70,7 +70,7 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
                 getView().clearResults();
                 ArrayList<SearchResultData> searchResults = result.getSearchResults();
 
-                getView().addTook_totalHits(result.getTook(), result.getTotalHits());
+                getView().addTimeElapsed_totalHits(result.getTimeElapsed(), result.getTotalHits());
 
                 if(!searchResults.isEmpty())
                 {

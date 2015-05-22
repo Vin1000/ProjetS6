@@ -28,14 +28,14 @@ public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers>
         this.resultPanel.add(lbl);
     }
 
-    public void addTook_totalHits(int took, int totalHits) {
+    public void addTimeElapsed_totalHits(int timeElapsed, int totalHits) {
         if (totalHits <= 1)
         {
-            timeElapsed_totalHits_Label.setText(totalHits + " résultat en " + took + " ms.");
+            timeElapsed_totalHits_Label.setText(totalHits + " résultat en " + timeElapsed + " ms.");
         }
         else
         {
-            timeElapsed_totalHits_Label.setText(totalHits + " résultats en " + took + " ms.");
+            timeElapsed_totalHits_Label.setText(totalHits + " résultats en " + timeElapsed + " ms.");
         }
     }
 

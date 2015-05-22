@@ -84,7 +84,7 @@ public class SearchManager {
 
                 }
 
-                result.setTook(took);
+                result.setTimeElapsed(took);
                 result.setTotalHits(totalHits);
 
             } catch (JSONException e) {

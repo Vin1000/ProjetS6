@@ -8,14 +8,16 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class SearchDetails implements IsSerializable{
 
     String searchString;
+    int pageNumber;
 
     public SearchDetails(){
 
     }
 
-    public SearchDetails(String searchString)
+    public SearchDetails(String searchString, int pageNumber)
     {
         this.searchString = searchString;
+        this.pageNumber = pageNumber;
     }
 
     public SearchDetails(SearchDetails searchDetails)
@@ -32,4 +34,7 @@ public class SearchDetails implements IsSerializable{
     {
         return searchString;
     }
+
+    public void setPageNumber(int pageNumber){this.pageNumber = pageNumber;}
+    public int getPageNumber(){return pageNumber;}
 }

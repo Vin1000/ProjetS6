@@ -31,7 +31,6 @@ public class ElasticManager {
 
     private String serviceUrl;
 
-
     public ElasticManager(String url) {
 
         this.serviceUrl = url+":9200/files/"; //todo: verifier url
@@ -122,7 +121,7 @@ public class ElasticManager {
 
 
 
-    public JSONObject search(String queryString) {
+    public JSONObject search(String queryString, Integer nbResults, int firstResultIndex ) {
 
         String query;
         JSONObject jsonQuery = new JSONObject();

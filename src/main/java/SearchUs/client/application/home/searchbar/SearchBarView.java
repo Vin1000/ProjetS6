@@ -1,6 +1,8 @@
 package SearchUs.client.application.home.searchbar;
 
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -44,5 +46,12 @@ public class SearchBarView extends ViewWithUiHandlers<SearchBarUiHandlers> imple
         sideImage.getElement().getParentElement().setAttribute("align", "left");
         sideImage.getElement().getParentElement().getStyle().setProperty("paddingLeft", "6px");
         getUiHandlers().sendSearch(textBox.getText());
+    }
+
+    @UiHandler("textBox")
+    void onKeyPress(KeyPressEvent event){
+        if(KeyCodes.KEY_ENTER == event.getNativeEvent().getKeyCode()){
+            getUiHandlers().sendSearch(textBox.getText());
+        }
     }
 }

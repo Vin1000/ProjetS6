@@ -246,13 +246,15 @@
             <version>${gin.version}</version>
         </dependency>
 
-        <!-- Other -->
+        <!-- Other
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>${servlet-api.version}</version>
             <scope>runtime</scope>
         </dependency>
+
+        -->
 
         <!-- Test -->
         <dependency>

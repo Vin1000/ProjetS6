@@ -8,8 +8,9 @@
         }
     </ui:style>
     <g:HTMLPanel>
-        <div align="center" style="padding-top:100px;">
-            <img src="SearchUsLogo.png" width="500px"/><br/><br/>
+        <div align="center" style="margin-top:-50px;">
+            <g:Image url="SearchUsLogo.png" ui:field="topImage" width="500px"/><br/>
+            <g:Image url="SearchUsLogo.png" ui:field="sideImage" width="200px"/>
             <g:TextBox ui:field="textBox"></g:TextBox>
             <g:Button ui:field="sendSearchButton">Rechercher</g:Button>
         </div>

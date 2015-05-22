@@ -50,18 +50,20 @@ public class ResultWidgetView extends ViewImpl implements ResultWidgetPresenter.
         htmlFile.setHTML(a + img + filename + a2);
 
         boolean first = true;
-        String keys = "";
-        List<String> keywords = result.getKeywords();
-        for(String key : keywords)
+        String keys = "No keywords";
+        if(result.getKeywords() != null)
         {
-            if(first)
+            for (String key : result.getKeywords())
             {
-                first = false;
-                keys = AddLink(key);
-            }
-            else
-            {
-                keys += ", " + AddLink(key);
+                if (first)
+                {
+                    first = false;
+                    keys = AddLink(key);
+                }
+                else
+                {
+                    keys += ", " + AddLink(key);
+                }
             }
         }
         htmlOtherKeywords.setHTML(keys);

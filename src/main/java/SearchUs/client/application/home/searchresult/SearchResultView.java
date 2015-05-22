@@ -18,11 +18,6 @@ public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers>
     public void addResult(SearchResultData result)
     {
         ResultWidgetPresenter rw = resultWidgetProvider.get();
-        ArrayList<String> list = new ArrayList<String>();
-        list.add("un");
-        list.add("deux");
-        list.add("trois");
-        result.setKeywords(list);
         rw.SetContent(result);
         this.resultPanel.add(rw);
     }

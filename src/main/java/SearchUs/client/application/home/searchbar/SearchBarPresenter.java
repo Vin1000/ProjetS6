@@ -9,6 +9,8 @@ import SearchUs.client.application.home.HomePagePresenter;
 import SearchUs.client.place.NameTokens;
 import SearchUs.shared.data.SearchDetails;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Image;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -26,8 +28,6 @@ public class SearchBarPresenter extends Presenter<SearchBarPresenter.MyView, Sea
     interface MyView extends View, HasUiHandlers<SearchBarUiHandlers> {
     }
 
-    //private final PlaceManager placeManager;
-
     @ProxyStandard
     public interface MyProxy extends Proxy<SearchBarPresenter> {
     }
@@ -41,16 +41,10 @@ public class SearchBarPresenter extends Presenter<SearchBarPresenter.MyView, Sea
         super(eventBus, view, proxy);
 
         getView().setUiHandlers(this);
-        //this.placeManager = placeManager;
     }
 
     @Override
     public void sendSearch(String searchText) {
-        /*PlaceRequest responsePlaceRequest = new PlaceRequest.Builder()
-                .nameToken(NameTokens.getSearchResult())
-                .build();
-        placeManager.revealPlace(responsePlaceRequest);*/
-
         SearchEvent.fire(this, new SearchDetails(searchText));
     }
 }

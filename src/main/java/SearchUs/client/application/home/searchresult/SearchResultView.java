@@ -5,6 +5,7 @@ import SearchUs.shared.data.SearchResultData;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
+import com.google.gwt.util.tools.shared.StringUtils;
 import com.google.inject.Provider;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 
@@ -26,6 +27,11 @@ public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers>
         this.resultPanel.add(rw);
     }
 
+    public void addTook_totalHits(int took, int totalHits)
+    {
+        timeElapsed_totalHits_Label.setText(Integer.toString(totalHits) + " résultats en " + Integer.toString(took)+ " ms.");
+    }
+
     public void clearResults()
     {
         this.resultPanel.clear();
@@ -36,6 +42,9 @@ public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers>
 
     @UiField
     HTMLPanel resultPanel;
+
+    @UiField
+    Label timeElapsed_totalHits_Label;
 
     @Inject
     SearchResultView(Binder uiBinder) {

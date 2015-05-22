@@ -34,7 +34,6 @@ public class HomePagePresenter extends Presenter<HomePagePresenter.MyView, HomeP
     @Inject protected SearchBarPresenter searchBarPresenter;
     @Inject protected SearchResultPresenter searchResultPresenter;
 
-
     @Inject
     HomePagePresenter(EventBus eventBus,
                       MyView view,

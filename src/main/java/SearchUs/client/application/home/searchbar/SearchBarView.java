@@ -20,15 +20,29 @@ public class SearchBarView extends ViewWithUiHandlers<SearchBarUiHandlers> imple
     @UiField
     Button sendSearchButton;
 
+    @UiField
+    Image sideImage;
+
+    @UiField
+    Image topImage;
+
     @Inject
     SearchBarView(Binder uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
         textBox.ensureDebugId("searchTextBox");
         sendSearchButton.ensureDebugId("sendSearchButton");
+        topImage.getElement().getStyle().setProperty("paddingBottom", "10px");
+        topImage.getElement().getStyle().setProperty("paddingTop", "100px");
+        topImage.getElement().getStyle().setProperty("display", "initial");
+        sideImage.getElement().getStyle().setProperty("display", "none");
     }
 
     @UiHandler("sendSearchButton")
     void onSendSearch(ClickEvent event) {
+        topImage.getElement().getStyle().setProperty("display", "none");
+        sideImage.getElement().getStyle().setProperty("display", "initial");
+        sideImage.getElement().getParentElement().setAttribute("align", "left");
+        sideImage.getElement().getParentElement().getStyle().setProperty("paddingLeft", "6px");
         getUiHandlers().sendSearch(textBox.getText());
     }
 }

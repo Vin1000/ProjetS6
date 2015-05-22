@@ -22,6 +22,7 @@
         }
     </ui:style>
     <g:HTMLPanel ui:field="panel">
+        <hr/>
         <p>
             <table>
                 <tr>
@@ -47,6 +48,5 @@
                 </tr>
             </table>
         </p>
-        <hr/>
     </g:HTMLPanel>
 </ui:UiBinder>

@@ -27,6 +27,7 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
     interface MyView extends View, HasUiHandlers<SearchResultUiHandlers>
     {
         void addResult(SearchResultData result);
+        void addNoResultMessage();
         void addTook_totalHits(int took, int totalHits);
         void clearResults();
     }
@@ -70,8 +71,17 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
                 ArrayList<SearchResultData> searchResults = result.getSearchResults();
 
                 getView().addTook_totalHits(result.getTook(), result.getTotalHits());
-                for (SearchResultData res : searchResults) {
-                    getView().addResult(res);
+
+                if(!searchResults.isEmpty())
+                {
+                    for (SearchResultData res : searchResults)
+                    {
+                        getView().addResult(res);
+                    }
+                }
+                else
+                {
+                    getView().addNoResultMessage();
                 }
             }
 

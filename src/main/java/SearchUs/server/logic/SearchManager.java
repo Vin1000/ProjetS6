@@ -28,9 +28,8 @@ public class SearchManager {
         this.session = session;
     }
 
-    public SearchResult getSearchResults(String searchText){
-
-
+    public SearchResult getSearchResults(String searchText)
+    {
         SearchResult result = new SearchResult();
 
         ArrayList<SearchResultData> listResults = new ArrayList<SearchResultData>();

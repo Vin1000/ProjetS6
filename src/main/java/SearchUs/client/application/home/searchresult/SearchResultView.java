@@ -22,9 +22,21 @@ public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers>
         this.resultPanel.add(rw);
     }
 
-    public void addTook_totalHits(int took, int totalHits)
+    public void addNoResultMessage()
     {
-        timeElapsed_totalHits_Label.setText(Integer.toString(totalHits) + " résultats en " + Integer.toString(took)+ " ms.");
+        HTML lbl = new HTML("<hr><div style=\"padding-left:6px;\">Aucun résultat pour la recherche.</div>");
+        this.resultPanel.add(lbl);
+    }
+
+    public void addTook_totalHits(int took, int totalHits) {
+        if (totalHits <= 1)
+        {
+            timeElapsed_totalHits_Label.setText(totalHits + " résultat en " + took + " ms.");
+        }
+        else
+        {
+            timeElapsed_totalHits_Label.setText(totalHits + " résultats en " + took + " ms.");
+        }
     }
 
     public void clearResults()

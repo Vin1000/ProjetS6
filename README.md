@@ -1,7 +1,7 @@
 ﻿# ProjetS6 - SearchUs
 Recherche d’information dans un sous-ensemble du site avec Lucene
 
-<div>
+
 <h2>Utilisation de boostrap for gwt<h2>
 
 1. ajouter xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" du début du fichier
@@ -10,4 +10,8 @@ Recherche d’information dans un sous-ensemble du site avec Lucene
 ```html
 <b:heading size="2">Hello World GWT-Bootstrap</b:heading>
 ```
-<div>
+
+<h2>Selenium<h2>
+Set up windows local:
+- Aller dans le dossier tools\Selenium\server\win
+- Exécuter startServer.bat

@@ -2,7 +2,7 @@
 Recherche d’information dans un sous-ensemble du site avec Lucene
 
 
-<h2>Utilisation de boostrap for gwt<h2>
+##Utilisation de boostrap for gwt
 
 1. ajouter xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" du début du fichier
 
@@ -11,12 +11,12 @@ Recherche d’information dans un sous-ensemble du site avec Lucene
 <b:heading size="2">Hello World GWT-Bootstrap</b:heading>
 ```
 
-<h2>Selenium<h2>
+##Selenium
 Set up windows local:
 - Aller dans le dossier tools\Selenium\server\win
 - Exécuter startServer.bat
 
-<h2>Database<h2>
+##Database
 Set up windows local:
 - Créer une bd nommée Opus
 - Exécuter le fichier tools\Database\CreateDbStructure.sql

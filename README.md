@@ -12,9 +12,13 @@ Recherche d’information dans un sous-ensemble du site avec Lucene
 ```
 
 ##Selenium
-###Set up windows local:
+**Set up windows local:**
 - Aller dans le dossier tools\Selenium\server\win
 - Exécuter startServer.bat
+
+**Set up Linux:**
+- Aller dans le dossier tools\Selenium\server\linux
+- exécuter la commande java -jar selenium-server-standalone-2.45.0.jar
 
 ##Database
 **Set up windows local:**

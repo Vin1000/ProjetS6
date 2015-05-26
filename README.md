@@ -17,10 +17,11 @@ Recherche d’information dans un sous-ensemble du site avec Lucene
 - Exécuter startServer.bat
 
 ##Database
-###Set up windows local:
+**Set up windows local:**
 - Créer une bd nommée Opus
 - Exécuter le fichier tools\Database\CreateDbStructure.sql
-###Set up Linux:
+
+**Set up Linux:**
 - Aller dans tools\Database en command line (modifier le script FullSetUp.sh si Postgres est installé ou pas)
 - Exécuter les commandes:
     - chmod a+x FullSetUp.sh

@@ -14,8 +14,7 @@ public class SearchResult implements Result {
     private int timeElapsed;
     private int totalHits;
 
-    private int currentPage;
-    private int totalPages;
+
 
     public ArrayList<SearchResultData> getSearchResults() {
         return searchResults;
@@ -45,9 +44,6 @@ public class SearchResult implements Result {
         totalHits = h;
     }
 
-    public int getCurrentPage(){return currentPage;}
-    public int getTotalPages(){return totalPages;}
-    public void setCurrentPage(int currentPage){this.currentPage = currentPage;}
-    public void setTotalPages(int totalPages){this.totalPages = totalPages;}
+
 
 }

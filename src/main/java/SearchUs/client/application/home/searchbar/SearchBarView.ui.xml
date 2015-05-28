@@ -24,26 +24,8 @@
             <g:Image url="SearchUsLogo.png" ui:field="topImage" width="500px"/><br/>
             <g:Image url="SearchUsLogo.png" ui:field="sideImage" width="200px"/>
             <g:TextBox ui:field="textBox"></g:TextBox>
-            <g:Button ui:field="sendSearchButton">Rechercher</g:Button><br/>
-            <table>
-                <tr>
-                    <td align="center" width="50px">
-                        <g:CheckBox ui:field="cbTypeALL" text="Tous"/>
-                    </td>
-                    <td align="center" width="50px">
-                        <g:CheckBox ui:field="cbTypePDF" text="PDF"/>
-                    </td>
-                    <td align="center" width="50px">
-                        <g:CheckBox ui:field="cbTypeDOCX" text="DOCX"/>
-                    </td>
-                    <td align="center" width="50px">
-                        <g:CheckBox ui:field="cbTypeTXT" text="TXT"/>
-                    </td>
-                    <td align="center" width="50px">
-                        <g:CheckBox ui:field="cbTypeXLS" text="XLS"/>
-                    </td>
-                </tr>
-            </table>
+            <g:Button ui:field="sendSearchButton">Rechercher</g:Button>
+            <g:Button ui:field="AdvancedButton">Recherche avancée</g:Button>
         </div>
     </g:HTMLPanel>
 </ui:UiBinder>

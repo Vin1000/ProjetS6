@@ -2,6 +2,7 @@
 package SearchUs.client.application.home.resultwidget;
 
 import SearchUs.shared.data.SearchResultData;
+import SearchUs.shared.data.SearchResultFile;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -42,10 +43,13 @@ public class ResultWidgetView extends ViewImpl implements ResultWidgetPresenter.
         lblAuthor.setText(result.getAuthor());
         lblDate.setText(result.getDate());
         lblDescription.setText(result.getDescription());
+        
 
-        String a = "<a href=\"" + result.getDownloadUrl() + "\" target=\"_blank\">";
+        SearchResultFile fileResult = (SearchResultFile) result;
+
+        String a = "<a href=\"" +  fileResult.getDownloadUrl() + "\" target=\"_blank\">";
         String img = "<img class=\"gwt-Image\" src=\"" + imageUrl + "\">";
-        String filename = "<span class=\"gwt-InlineHTML\">" + result.getFilename() + "</span>";
+        String filename = "<span class=\"gwt-InlineHTML\">" + fileResult.getFilename() + "</span>";
         String a2 = "</a>";
         htmlFile.setHTML(a + img + filename + a2);
 

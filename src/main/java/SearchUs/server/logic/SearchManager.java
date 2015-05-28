@@ -3,6 +3,7 @@ package SearchUs.server.logic;
 import SearchUs.server.engine.ElasticManager;
 import SearchUs.server.session.UserSessionImpl;
 import SearchUs.shared.data.SearchResultData;
+import SearchUs.shared.data.SearchResultFile;
 import SearchUs.shared.dispatch.search.SearchResult;
 
 import com.google.gwt.thirdparty.json.JSONArray;
@@ -80,7 +81,7 @@ public class SearchManager {
                         title = meta.getString("title");
                         date = meta.getString("date");
 
-                        listResults.add(new SearchResultData(filename, url, description,author,title,date,keywords));
+                        listResults.add(new SearchResultFile(filename, url, description,author,title,date,keywords));
 
                     }
 

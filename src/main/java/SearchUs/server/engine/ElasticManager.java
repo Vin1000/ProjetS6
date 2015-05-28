@@ -121,7 +121,7 @@ public class ElasticManager {
 
 
 
-    public JSONObject search(String queryString, Integer nbResults, int firstResultIndex ) {
+    public JSONObject search(String queryString) {
 
         String query;
         JSONObject jsonQuery = new JSONObject();

@@ -30,7 +30,7 @@ public class SearchManager {
         this.session = session;
     }
 
-    public SearchResult getSearchResults(String searchText, int pageNumber)
+    public SearchResult getSearchResults(String searchText)
     {
         SearchResult result = new SearchResult();
 
@@ -39,7 +39,7 @@ public class SearchManager {
         //todo: injecter l'objet.
         ElasticManager searchEngine = new ElasticManager(SERVER_URL);
 
-        JSONObject queryResult =  searchEngine.search(searchText,resultsPerPage,resultsPerPage*(pageNumber-1));
+        JSONObject queryResult =  searchEngine.search(searchText);
 
         if(queryResult != null)
         {
@@ -88,8 +88,7 @@ public class SearchManager {
 
                 result.setTimeElapsed(took);
                 result.setTotalHits(totalHits);
-                result.setCurrentPage(pageNumber);
-                result.setTotalPages((int) Math.ceil(totalHits/resultsPerPage));
+
 
             } catch (JSONException e) {
                 e.printStackTrace();

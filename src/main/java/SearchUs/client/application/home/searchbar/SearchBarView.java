@@ -57,6 +57,6 @@ public class SearchBarView extends ViewWithUiHandlers<SearchBarUiHandlers> imple
         sideImage.getElement().getStyle().setProperty("display", "initial");
         sideImage.getElement().getParentElement().setAttribute("align", "left");
         sideImage.getElement().getParentElement().getStyle().setProperty("paddingLeft", "6px");
-        getUiHandlers().sendSearch(textBox.getText(),1);
+        getUiHandlers().sendSearch(textBox.getText());
     }
 }

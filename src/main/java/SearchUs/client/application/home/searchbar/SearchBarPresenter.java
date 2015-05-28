@@ -44,7 +44,7 @@ public class SearchBarPresenter extends Presenter<SearchBarPresenter.MyView, Sea
     }
 
     @Override
-    public void sendSearch(String searchText, int pageNumber) {
-        SearchEvent.fire(this, new SearchDetails(searchText,pageNumber));
+    public void sendSearch(String searchText) {
+        SearchEvent.fire(this, new SearchDetails(searchText));
     }
 }

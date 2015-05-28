@@ -7,6 +7,7 @@ package SearchUs.client.application.home.searchbar;
 import SearchUs.client.application.events.SearchEvent;
 import SearchUs.client.application.home.HomePagePresenter;
 import SearchUs.client.place.NameTokens;
+import SearchUs.shared.data.FileType;
 import SearchUs.shared.data.SearchDetails;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.uibinder.client.UiField;
@@ -23,6 +24,8 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
+import java.util.ArrayList;
+
 
 public class SearchBarPresenter extends Presenter<SearchBarPresenter.MyView, SearchBarPresenter.MyProxy> implements SearchBarUiHandlers {
     interface MyView extends View, HasUiHandlers<SearchBarUiHandlers> {
@@ -36,15 +39,17 @@ public class SearchBarPresenter extends Presenter<SearchBarPresenter.MyView, Sea
     public SearchBarPresenter(
             EventBus eventBus,
             MyView view,
-            MyProxy proxy/*,
-            PlaceManager placeManager*/) {
+            MyProxy proxy) {
         super(eventBus, view, proxy);
 
         getView().setUiHandlers(this);
     }
 
     @Override
-    public void sendSearch(String searchText) {
-        SearchEvent.fire(this, new SearchDetails(searchText));
+    public void sendSearch(String searchText, ArrayList<FileType> fileTypes) {
+        SearchDetails searchDetails = new SearchDetails();
+        searchDetails.setSearchString(searchText);
+        searchDetails.setSearchFor(fileTypes);
+        SearchEvent.fire(this, searchDetails);
     }
 }

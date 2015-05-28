@@ -28,19 +28,19 @@
             <table>
                 <tr>
                     <td align="center" width="50px">
-                        <g:RadioButton name="TypeFichier" ui:field="rbTypeTous" text="Tous"/>
+                        <g:CheckBox ui:field="cbTypeALL" text="Tous"/>
                     </td>
                     <td align="center" width="50px">
-                        <g:RadioButton  name="TypeFichier" ui:field="rbTypePDF" text="PDF"/>
+                        <g:CheckBox ui:field="cbTypePDF" text="PDF"/>
                     </td>
                     <td align="center" width="50px">
-                        <g:RadioButton  name="TypeFichier" ui:field="rbTypeDOCX" text="DOCX"/>
+                        <g:CheckBox ui:field="cbTypeDOCX" text="DOCX"/>
                     </td>
                     <td align="center" width="50px">
-                        <g:RadioButton  name="TypeFichier" ui:field="rbTypeTXT" text="TXT"/>
+                        <g:CheckBox ui:field="cbTypeTXT" text="TXT"/>
                     </td>
                     <td align="center" width="50px">
-                        <g:RadioButton  name="TypeFichier" ui:field="rbTypeXLS" text="XLS"/>
+                        <g:CheckBox ui:field="cbTypeXLS" text="XLS"/>
                     </td>
                 </tr>
             </table>

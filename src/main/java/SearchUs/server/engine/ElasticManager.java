@@ -1,6 +1,7 @@
 package SearchUs.server.engine;
 
 
+import SearchUs.shared.data.SearchDetails;
 import com.google.gwt.thirdparty.json.JSONException;
 import com.google.gwt.thirdparty.json.JSONObject;
 import org.apache.http.HttpEntity;
@@ -30,7 +31,6 @@ import java.util.List;
 public class ElasticManager {
 
     private String serviceUrl;
-
 
     public ElasticManager(String url) {
 
@@ -122,8 +122,9 @@ public class ElasticManager {
 
 
 
-    public JSONObject search(String queryString) {
+    public JSONObject search(SearchDetails searchInfo) {
 
+        String queryString = searchInfo.getSearchString();
         String query;
         JSONObject jsonQuery = new JSONObject();
         JSONObject match = new JSONObject();

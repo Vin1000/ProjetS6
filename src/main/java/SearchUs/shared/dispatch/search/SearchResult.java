@@ -14,6 +14,8 @@ public class SearchResult implements Result {
     private int timeElapsed;
     private int totalHits;
 
+
+
     public ArrayList<SearchResultData> getSearchResults() {
         return searchResults;
     }
@@ -41,4 +43,7 @@ public class SearchResult implements Result {
     {
         totalHits = h;
     }
+
+
+
 }

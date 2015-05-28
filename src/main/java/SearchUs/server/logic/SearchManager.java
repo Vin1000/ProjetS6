@@ -2,6 +2,7 @@ package SearchUs.server.logic;
 
 import SearchUs.server.engine.ElasticManager;
 import SearchUs.server.session.UserSessionImpl;
+import SearchUs.shared.data.SearchDetails;
 import SearchUs.shared.data.SearchResultData;
 import SearchUs.shared.dispatch.search.SearchResult;
 
@@ -10,7 +11,7 @@ import com.google.gwt.thirdparty.json.JSONException;
 import com.google.gwt.thirdparty.json.JSONObject;
 import com.google.inject.Inject;
 
-import java.sql.ResultSet;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,14 +23,17 @@ public class SearchManager {
     private UserSessionImpl session;
 
     public static final String SERVER_URL = "http://45.55.164.162";
+    private static final Integer resultsPerPage = 10;
+
 
     @Inject
     public SearchManager(UserSessionImpl session) {
         this.session = session;
     }
 
-    public SearchResult getSearchResults(String searchText)
+    public SearchResult getSearchResults(SearchDetails searchInfo)
     {
+
         SearchResult result = new SearchResult();
 
         ArrayList<SearchResultData> listResults = new ArrayList<SearchResultData>();
@@ -37,7 +41,7 @@ public class SearchManager {
         //todo: injecter l'objet.
         ElasticManager searchEngine = new ElasticManager(SERVER_URL);
 
-        JSONObject queryResult =  searchEngine.search(searchText);
+        JSONObject queryResult =  searchEngine.search(searchInfo);
 
         if(queryResult != null)
         {
@@ -86,6 +90,7 @@ public class SearchManager {
 
                 result.setTimeElapsed(took);
                 result.setTotalHits(totalHits);
+
 
             } catch (JSONException e) {
                 e.printStackTrace();

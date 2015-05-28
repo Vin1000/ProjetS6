@@ -1,8 +1,8 @@
 ﻿# ProjetS6 - SearchUs
 Recherche d’information dans un sous-ensemble du site avec Lucene
 
-<div>
-<h2>Utilisation de boostrap for gwt<h2>
+
+##Utilisation de boostrap for gwt
 
 1. ajouter xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" du début du fichier
 
@@ -10,4 +10,25 @@ Recherche d’information dans un sous-ensemble du site avec Lucene
 ```html
 <b:heading size="2">Hello World GWT-Bootstrap</b:heading>
 ```
-<div>
+
+##Selenium
+**Set up windows local:**
+- Aller dans le dossier tools\Selenium\server\
+- Exécuter startServer.bat
+
+**Set up Linux:**
+- Aller dans le dossier tools\Selenium\server\
+- exécuter la commande java -jar selenium-server-standalone-2.45.0.jar
+
+##Database
+**Set up windows local:**
+- Créer une bd nommée Opus
+- Exécuter le fichier tools\Database\CreateDbStructure.sql
+
+**Set up Linux:**
+- Aller dans tools\Database en command line (modifier le script FullSetUp.sh si Postgres est installé ou pas)
+- Exécuter les commandes:
+    - chmod a+x FullSetUp.sh
+    - ./FullSetUp.sh
+
+

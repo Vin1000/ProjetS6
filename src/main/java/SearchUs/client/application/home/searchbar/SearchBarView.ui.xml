@@ -20,7 +20,26 @@
             <g:Image url="SearchUsLogo.png" ui:field="topImage" width="500px"/><br/>
             <g:Image url="SearchUsLogo.png" ui:field="sideImage" width="200px"/>
             <g:TextBox ui:field="textBox"></g:TextBox>
-            <g:Button ui:field="sendSearchButton">Rechercher</g:Button>
+            <g:Button ui:field="sendSearchButton">Rechercher</g:Button><br/>
+            <table>
+                <tr>
+                    <td align="center" width="50px">
+                        <g:RadioButton name="TypeFichier" ui:field="rbTypeTous" text="Tous"/>
+                    </td>
+                    <td align="center" width="50px">
+                        <g:RadioButton  name="TypeFichier" ui:field="rbTypePDF" text="PDF"/>
+                    </td>
+                    <td align="center" width="50px">
+                        <g:RadioButton  name="TypeFichier" ui:field="rbTypeDOCX" text="DOCX"/>
+                    </td>
+                    <td align="center" width="50px">
+                        <g:RadioButton  name="TypeFichier" ui:field="rbTypeTXT" text="TXT"/>
+                    </td>
+                    <td align="center" width="50px">
+                        <g:RadioButton  name="TypeFichier" ui:field="rbTypeXLS" text="XLS"/>
+                    </td>
+                </tr>
+            </table>
         </div>
     </g:HTMLPanel>
 </ui:UiBinder>

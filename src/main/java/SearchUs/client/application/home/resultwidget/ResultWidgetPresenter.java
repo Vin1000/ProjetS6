@@ -1,7 +1,9 @@
 
 package SearchUs.client.application.home.resultwidget;
 
+import SearchUs.shared.data.SearchResultBoard;
 import SearchUs.shared.data.SearchResultData;
+import SearchUs.shared.data.SearchResultFile;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.PresenterWidget;
@@ -23,8 +25,16 @@ public class ResultWidgetPresenter extends PresenterWidget<ResultWidgetPresenter
 
     public void SetContent(SearchResultData result)
     {
-        String ext = result.getFilename().substring(result.getFilename().lastIndexOf('.') + 1);
-        getView().SetContent(result, FileExtension.getInstance().getIconUrl(ext));
+        if(result instanceof SearchResultFile) {
+            SearchResultFile searchResultFile = (SearchResultFile) result;
+            String ext = searchResultFile.getFilename().substring(searchResultFile.getFilename().lastIndexOf('.') + 1);
+            getView().SetContent(result, FileExtension.getInstance().getIconUrl(ext));
+        }
+
+        else if(result instanceof SearchResultBoard)
+        {
+
+        }
     }
 
 }

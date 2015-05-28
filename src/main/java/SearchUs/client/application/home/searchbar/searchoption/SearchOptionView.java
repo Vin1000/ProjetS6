@@ -71,80 +71,96 @@ public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHand
     @UiHandler("cbTypePDF")
     void onCheckBoxClickedPDF(ClickEvent event)
     {
-        if(IsAllTypeChecked())
+        if(cbTypePDF.getValue())
         {
-            cbTypeALL.setValue(true);
             fileTypes.add(FileType.PDF);
         }
-
         else
         {
-            cbTypeALL.setValue(false);
             fileTypes.remove(FileType.PDF);
         }
+
+        monitorTotalCheckbox();
+
     }
 
     @UiHandler("cbTypeDOCX")
     void onCheckBoxClickedDOCX(ClickEvent event)
     {
-        if(IsAllTypeChecked())
+        if(cbTypeDOCX.getValue())
         {
-            cbTypeALL.setValue(true);
             fileTypes.add(FileType.DOCX);
         }
-
         else
         {
-            cbTypeALL.setValue(false);
             fileTypes.remove(FileType.DOCX);
         }
+
+        monitorTotalCheckbox();
     }
 
     @UiHandler("cbTypeTXT")
     void onCheckBoxClickedTXT(ClickEvent event)
     {
-        if(IsAllTypeChecked())
+        if(cbTypeTXT.getValue())
         {
-            cbTypeALL.setValue(true);
             fileTypes.add(FileType.TXT);
         }
-
-        else
-        {
-            cbTypeALL.setValue(false);
+        else {
             fileTypes.remove(FileType.TXT);
         }
+        monitorTotalCheckbox();
     }
 
     @UiHandler("cbTypeXLS")
     void onCheckBoxClickedXLS(ClickEvent event)
     {
-        if(IsAllTypeChecked())
+        if(cbTypeXLS.getValue())
         {
-            cbTypeALL.setValue(true);
             fileTypes.add(FileType.XLS);
         }
-
         else
         {
-            cbTypeALL.setValue(false);
             fileTypes.remove(FileType.XLS);
         }
+        monitorTotalCheckbox();
     }
 
-    public Boolean IsAllTypeChecked()
+    void monitorTotalCheckbox()
     {
         if(cbTypePDF.getValue() && cbTypeDOCX.getValue() && cbTypeTXT.getValue() && cbTypeXLS.getValue())
         {
-            return true;
+            cbTypeALL.setValue(true);
+            fileTypes.clear();
+            fileTypes.add(FileType.ALL);
         }
         else
         {
-            return false;
+            cbTypeALL.setValue(false);
+            fileTypes.clear();
+
+            if(cbTypeXLS.getValue())
+            {
+                fileTypes.add(FileType.XLS);
+            }
+            if(cbTypeTXT.getValue())
+            {
+                fileTypes.add(FileType.TXT);
+            }
+            if(cbTypeDOCX.getValue())
+            {
+                fileTypes.add(FileType.DOCX);
+            }
+            if(cbTypePDF.getValue())
+            {
+                fileTypes.add(FileType.PDF);
+            }
+
         }
+
     }
 
-    public void CheckedAllType(Boolean check)
+    void CheckedAllType(Boolean check)
     {
         cbTypePDF.setValue(check);
         cbTypeDOCX.setValue(check);

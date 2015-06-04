@@ -14,5 +14,5 @@ public class TestBidonPourLaurent {
     @Test
     public void test1() {
         Assert.assertTrue(true);
-    }
+    }   
 }

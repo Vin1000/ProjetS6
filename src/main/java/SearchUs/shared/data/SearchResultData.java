@@ -16,7 +16,6 @@ public class SearchResultData implements Serializable {
     private String date;
     private List<String> keywords;
 
-
     public SearchResultData(){ }
 
     public SearchResultData(String filename, String downloadUrl) {

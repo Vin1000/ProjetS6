@@ -27,7 +27,7 @@ public class ResultWidgetView extends ViewImpl implements ResultWidgetPresenter.
     Label lblDate;
 
     @UiField
-    Label lblDescription;
+    HTML lblDescription;
 
     @UiField
     HTML htmlOtherKeywords;
@@ -41,7 +41,7 @@ public class ResultWidgetView extends ViewImpl implements ResultWidgetPresenter.
     {
         lblAuthor.setText(result.getAuthor());
         lblDate.setText(result.getDate());
-        lblDescription.setText(result.getDescription());
+        lblDescription.setHTML(result.getDescription());
 
         String a = "<a href=\"" + result.getDownloadUrl() + "\" target=\"_blank\">";
         String img = "<img class=\"gwt-Image\" src=\"" + imageUrl + "\">";

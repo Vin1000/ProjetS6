@@ -34,7 +34,7 @@ public class SearchBarView extends ViewWithUiHandlers<SearchBarUiHandlers> imple
         textBox.ensureDebugId("searchTextBox");
         sendSearchButton.ensureDebugId("sendSearchButton");
         topImage.getElement().getStyle().setProperty("paddingBottom", "10px");
-        topImage.getElement().getStyle().setProperty("paddingTop", "100px");
+        topImage.getElement().getStyle().setProperty("paddingTop", "200px");
         topImage.getElement().getStyle().setProperty("display", "initial");
         sideImage.getElement().getStyle().setProperty("display", "none");
     }

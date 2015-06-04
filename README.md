@@ -36,3 +36,16 @@ add_test_file(cip, IsForAdminOnly, label, path, description)
 ```SQL
 SELECT file.add_test_file('babm2002', 0, 'NewFile', 'C:\temp\NewFile.win','funny file');
 ```
+
+Pour sortir une liste de fichiers pour lesquels un user a des permissions à partir d'une liste de path retournés par Elastic Search
+utiliser la fonction file.get_AllowedFilesFromList(cip, pathList)
+voir l'exemple suivant pour le format de la liste de paths
+```SQL
+SELECT * FROM file.get_AllowedFilesFromList('babm2002', '''C:\temp\NewFile.win'', ''C:\temp\TestFilev2''');
+```
+
+Si on veut retourner la liste entière paths auxquels un user a accès
+utiliser la fonction file.get_currentVersionFiles(cip)
+```SQL
+SELECT * FROM file.get_currentVersionFiles('babm2002');
+```

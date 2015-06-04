@@ -46,6 +46,7 @@ public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHand
 
         initWidget(uiBinder.createAndBindUi(this));
         fileTypes = new ArrayList<FileType>();
+        CheckedAllType(true);
     }
 
     @UiHandler("btOK")
@@ -60,12 +61,13 @@ public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHand
     @UiHandler("cbTypeALL")
     void onCheckBoxClickedALL(ClickEvent event)
     {
-        if (cbTypeALL.getValue()) {
+        /*if (cbTypeALL.getValue()) {
             CheckedAllType(true);
         }
         else{
             CheckedAllType(false);
-        }
+        }*/
+        CheckedAllType(cbTypeALL.getValue());
     }
 
     @UiHandler("cbTypePDF")
@@ -166,6 +168,7 @@ public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHand
         cbTypeDOCX.setValue(check);
         cbTypeTXT.setValue(check);
         cbTypeXLS.setValue(check);
+        cbTypeALL.setValue(check);
 
         if(check)
         {

@@ -1,0 +1,31 @@
+<project name="regression build" default="compile">
+<!-- - - - - - - - - - - - - - - - - -
+target: compile                     
+ - - - - - - - - - - - - - - - - - -->
+<target name="compile">
+<delete dir="classes" failonerror="false">
+</delete>
+<mkdir dir="classes" />
+<path id="lib.path.ref">
+<fileset dir="lib" includes="*.jar" />
+</path>
+<javac srcdir="src" destdir="classes" classpathref="lib.path.ref">
+</javac>
+<copy todir="classes">
+<fileset dir="src" excludes="**/*.java" />
+</copy>
+</target>
+<path id="tests.classpath">
+<pathelement location="classes" />
+<fileset dir="lib">
+<include name="**/*.jar" />
+</fileset>
+</path>
+<target name="run_tests">
+<junit>
+<formatter type="xml" usefile="true" />
+<classpath refid="tests.classpath" />
+<test name="com.experitest.regression.IMDbTest" />
+</junit>
+</target>
+</project>

@@ -41,7 +41,7 @@
                 </tr>
                 <tr>
                     <td>Description:</td>
-                    <td><g:Label ui:field="lblDescription"></g:Label></td>
+                    <td><g:HTML ui:field="lblDescription"></g:HTML></td>
                 </tr>
                 <tr>
                     <td>Autres mots-clés:</td>

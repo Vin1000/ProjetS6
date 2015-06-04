@@ -130,12 +130,13 @@ public class ElasticManager {
         JSONObject match = new JSONObject();
         JSONObject completeQuery = new JSONObject();
 
+        ArrayList<String> searchInDocTypes = searchInfo.getSearchInFields();
+
         if(queryString.contains("*"))
         {
 
             try {
                 jsonQuery.put("wildcard",new JSONObject().put("_all",queryString));
-                completeQuery.put("query",jsonQuery);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -143,20 +144,45 @@ public class ElasticManager {
         }
         else
         {
-
             try {
                 match.put("_all",queryString);
                 jsonQuery.put("match",match);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        /*if(!searchInDocTypes.isEmpty())
+        {
+
+            JSONObject filtered = new JSONObject();
+            JSONObject or = new JSONObject();
+            JSONObject filter = new JSONObject();
+
+            try {
+
+                filtered.put("query",jsonQuery);
+
+
+
+                filter.put("or",or);
+                filtered.put("filter",filter);
+                completeQuery.put("filtered",filtered);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            try {
                 completeQuery.put("query",jsonQuery);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-        }
-
+        }*/
 
         query = completeQuery.toString();
-
 
         String searchResult = makePost("_search",query);
         System.out.println("Search result: "+searchResult);

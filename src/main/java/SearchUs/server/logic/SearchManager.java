@@ -25,7 +25,7 @@ public class SearchManager {
     public static final String SERVER_URL = "http://45.55.164.162";
     private static final Integer resultsPerPage = 10;
 
-    private boolean GETFAKEDATA = true;
+    private boolean GETFAKEDATA = false;
 
     @Inject
     public SearchManager(UserSessionImpl session) {
@@ -79,7 +79,7 @@ public class SearchManager {
                             file = hitSource.getJSONObject("file");
                             filename = file.getString("filename");
                             url = hitSource.getJSONObject("path").getString("real").replace("/var/www/html", SERVER_URL);
-                            description = hitSource.getString("content");
+                            description = getFormattedDescription(hitSource.getString("content"), searchInfo.getSearchString());
 
                             meta = hitSource.getJSONObject("meta");
                             author = meta.getString("author");

@@ -1,6 +1,7 @@
 package SearchUs.server.engine;
 
 
+import SearchUs.shared.data.FileType;
 import SearchUs.shared.data.SearchDetails;
 import com.google.gwt.thirdparty.json.JSONException;
 import com.google.gwt.thirdparty.json.JSONObject;
@@ -130,7 +131,7 @@ public class ElasticManager {
         JSONObject match = new JSONObject();
         JSONObject completeQuery = new JSONObject();
 
-        ArrayList<String> searchInDocTypes = searchInfo.getSearchInFields();
+        ArrayList<FileType> searchInDocTypes = searchInfo.getSearchFor();
 
         if(queryString.contains("*"))
         {
@@ -152,26 +153,35 @@ public class ElasticManager {
             }
         }
 
-        /*if(!searchInDocTypes.isEmpty())
+        if(searchInDocTypes != null)
         {
+            if(!searchInDocTypes.contains(FileType.ALL)) {
+                JSONObject filtered = new JSONObject();
+                JSONObject or = new JSONObject();
+                JSONObject filter = new JSONObject();
 
-            JSONObject filtered = new JSONObject();
-            JSONObject or = new JSONObject();
-            JSONObject filter = new JSONObject();
+                try {
 
-            try {
-
-                filtered.put("query",jsonQuery);
+                    filtered.put("query", jsonQuery);
 
 
+                    filter.put("or", or);
+                    filtered.put("filter", filter);
+                    completeQuery.put("filtered", filtered);
 
-                filter.put("or",or);
-                filtered.put("filter",filter);
-                completeQuery.put("filtered",filtered);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
+            else
+            {
+                try {
+                    completeQuery.put("query",jsonQuery);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
         else
         {
@@ -180,7 +190,7 @@ public class ElasticManager {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }*/
+        }
 
         query = completeQuery.toString();
 

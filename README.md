@@ -31,4 +31,7 @@ Recherche d’information dans un sous-ensemble du site avec Lucene
     - chmod a+x FullSetUp.sh
     - ./FullSetUp.sh
 
-
+Pour ajouter un fichier, exécuter la ligne suivante (changer le 0 pour 1 pour admin only)
+```SQL
+SELECT file.add_test_file('babm2002', 0, 'NewFile', 'C:\temp\NewFile.win','funny file');
+```

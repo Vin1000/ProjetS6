@@ -2,7 +2,9 @@ package SearchUs.server.logic;
 
 import SearchUs.server.engine.ElasticManager;
 import SearchUs.server.session.UserSessionImpl;
+import SearchUs.shared.data.SearchDetails;
 import SearchUs.shared.data.SearchResultData;
+import SearchUs.shared.data.SearchResultFile;
 import SearchUs.shared.dispatch.search.SearchResult;
 
 import com.google.gwt.thirdparty.json.JSONArray;
@@ -23,15 +25,16 @@ public class SearchManager {
     public static final String SERVER_URL = "http://45.55.164.162";
     private static final Integer resultsPerPage = 10;
 
-    private boolean GETFAKEDATA = false;
+    private boolean GETFAKEDATA = true;
 
     @Inject
     public SearchManager(UserSessionImpl session) {
         this.session = session;
     }
 
-    public SearchResult getSearchResults(String searchText)
+    public SearchResult getSearchResults(SearchDetails searchInfo)
     {
+
         SearchResult result = new SearchResult();
 
         ArrayList<SearchResultData> listResults = new ArrayList<SearchResultData>();
@@ -41,10 +44,12 @@ public class SearchManager {
             //todo: injecter l'objet.
             ElasticManager searchEngine = new ElasticManager(SERVER_URL);
 
-            JSONObject queryResult = searchEngine.search(searchText);
+            JSONObject queryResult = searchEngine.search(searchInfo);
 
-            if (queryResult != null) {
-                try {
+            if (queryResult != null)
+            {
+                try
+                {
                     JSONObject hits = queryResult.getJSONObject("hits");
 
                     int totalHits = hits.getInt("total");
@@ -64,7 +69,8 @@ public class SearchManager {
                     String date;
                     List<String> keywords = null;
 
-                    for (int i = 0; i < totalHits; i++) {
+                    for (int i = 0; i < totalHits; i++)
+                    {
                         hit = resultsArray.getJSONObject(i);
                         //System.out.println(hit.getString("_type"));
                         if (!hit.getString("_type").equals("folder"))//todo: enforce
@@ -73,7 +79,6 @@ public class SearchManager {
                             file = hitSource.getJSONObject("file");
                             filename = file.getString("filename");
                             url = hitSource.getJSONObject("path").getString("real").replace("/var/www/html", SERVER_URL);
-                            //description = getFormattedDescription(hitSource.getString("content"), searchText);
                             description = hitSource.getString("content");
 
                             meta = hitSource.getJSONObject("meta");
@@ -81,23 +86,22 @@ public class SearchManager {
                             title = meta.getString("title");
                             date = meta.getString("date");
 
-                            listResults.add(new SearchResultData(filename, url, description, author, title, date, keywords));
+                            listResults.add(new SearchResultFile(filename, url, description, author, title, date, keywords));
+
                         }
-
                     }
-
                     result.setTimeElapsed(took);
                     result.setTotalHits(totalHits);
-
-
-                } catch (JSONException e) {
+                }
+                catch(JSONException e)
+                {
                     e.printStackTrace();
                 }
             }
         }
         else //GetFakeData when server is down!
         {
-            listResults.addAll(GetFakeData(3, searchText));
+            listResults.addAll(GetFakeData(3, searchInfo.getSearchString()));
         }
 
         result.setSearchResults(listResults);
@@ -158,7 +162,7 @@ public class SearchManager {
 
     private ArrayList<SearchResultData> GetFakeData(int amount, String searchText) //for when server is down
     {
-        ArrayList<SearchResultData> list = new ArrayList<SearchResultData>();
+        ArrayList<SearchResultData> list = new ArrayList<>();
         for(int i = 0; i < amount; i++)
         {
             String filename = "File-" + i + ".txt";
@@ -168,7 +172,7 @@ public class SearchManager {
             String title = "Fake file " + i;
             String date = new Date().toString();
             ArrayList<String> keywords = new ArrayList<String>();
-            list.add(new SearchResultData(filename, url, getFormattedDescription(description, searchText), author, title, date, keywords));
+            list.add(new SearchResultFile(filename, url, getFormattedDescription(description, searchText), author, title, date, keywords));
         }
 
         return list;

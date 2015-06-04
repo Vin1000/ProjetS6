@@ -6,35 +6,29 @@ import java.util.List;
 /**
  * Created by Marc-Antoine on 2015-05-18.
  */
-public class SearchResultData implements Serializable {
-    private String downloadUrl;
-    private String filename;
-    private String description;
+public abstract class SearchResultData implements Serializable {
 
-    private String author;
-    private String title;
-    private String date;
-    private List<String> keywords;
+    protected String description;
+    protected String author;
+    protected String date;
+    protected String title;
+    protected List<String> keywords;
 
     public SearchResultData(){ }
 
     public SearchResultData(String filename, String downloadUrl) {
         this.title = "";
-        this.downloadUrl = downloadUrl;
         this.description = "";
         this.author = "";
-        this.filename = filename;
         this.date = "";
         this.keywords = null;
     }
 
     public SearchResultData(String filename, String downloadUrl, String description) {
 
-        this.downloadUrl = downloadUrl;
         this.title = "";
         this.description = description;
         this.author = "";
-        this.filename = filename;
         this.date = "";
         this.keywords = null;
     }
@@ -42,49 +36,32 @@ public class SearchResultData implements Serializable {
     public SearchResultData(String filename, String downloadUrl, String description, String author, String title,
                             String date, List<String> keywords) {
 
-        this.downloadUrl = downloadUrl;
         this.title = title;
         this.description = description;
         this.author = author;
-        this.filename = filename;
         this.date = date;
         this.keywords = keywords;
     }
 
-    public String getDescription() {
+    public enum ResultType { file, board }
 
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDownloadUrl() {
-        return downloadUrl;
-    }
-
-    public void setDownloadUrl(String downloadUrl) {
-        this.downloadUrl = downloadUrl;
-    }
+    private ResultType type;
 
     public String getAuthor(){ return author; }
-    public String getFilename(){ return filename;}
     public String getDate(){ return date;}
+    public String getDescription(){return description;}
     public List<String> getKeywords(){return keywords;}
+    public String getTitle() {return title;}
+    public ResultType getType() {return type;}
+
 
     public void setAuthor(String author) {   this.author = author; }
-    public void setFilename(String filename) {   this.filename = filename; }
+    public void setDescription(String description) {this.description = description;}
     public void setDate(String date) {   this.date = date; }
     public void setKeywords(List<String> keywords) {   this.keywords = keywords; }
+    public void setTitle(String title) {this.title = title;}
 
+    //Ceci est protege afin que seule la classe enfant puisse s'en servir pour etablir le type de resultat
+    protected void setType(ResultType type){this.type = type;}
 
 }

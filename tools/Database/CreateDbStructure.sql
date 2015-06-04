@@ -1,4 +1,4 @@
-CREATE SCHEMA audit;
+﻿CREATE SCHEMA audit;
 CREATE SCHEMA content;
 CREATE SCHEMA file;
 CREATE SCHEMA notification;
@@ -2405,3 +2405,93 @@ INSERT INTO application_privilege_group (application_id, privilege_id, group_id,
 -- EMPLOYEE
 
 INSERT INTO employee (employee_id, user_id, phone_number, office, occupation) VALUES ('04000001', 1, '819-821-8000 #1234', 'C1-3111', 'Coordonnateur');
+
+
+
+-- STUFF FOR SEARCHUS search team
+INSERT INTO users(administrative_user_id, last_name, first_name, email_address)
+VALUES
+('babm2002','Babin','Marc-Antoine','marc-antoine.babin2@Usherbrooke.ca'),
+('gonl2401','Gonin','Laurent','Laurent.Gonin@Usherbrooke.ca'),
+('abdj2702','Abdelnour','Jerome','jerome.Abdelnour@Usherbrooke.ca'),
+('unip1801','Unia','Paulo','paulo.unia@Usherbrooke.ca'),
+('latl2302','Latreille','Louis-Antoine','louis.latreille@Usherbrooke.ca'),
+('geee9001','Gee','e','e.gee@Usherbrooke.ca'),
+('pelv2805','Pelletier','Vincent','Vincent.Pelletier2@Usherbrooke.ca');
+
+INSERT INTO groups (label, description, unique_label, user_id) VALUES ('Etudiants', 'Groupe des étudiants développant système Opus', false, 1);
+
+-- Insertion du groupe d'étudiants dans le groupe étudiants
+INSERT INTO user_group (member_id, group_id, user_id)
+SELECT u.user_id as member_id, g.group_id, 1 
+FROM users u
+CROSS JOIN groups g
+WHERE g.label = 'Etudiants' 
+-- Notre équipe de projet sera dans le groupe Étudiants, les admins en font partis aussi
+AND u.administrative_user_id in('pelv2805','latl2302','unip1801', 'abdj2702', 'gonl2401', 'babm2002','supa1234','geee9001'); 
+
+-- Insertion des user de test dans le groupe admin
+INSERT INTO user_group (member_id, group_id, user_id)
+SELECT u.user_id as member_id, g.group_id, 1 
+FROM users u
+CROSS JOIN groups g
+WHERE g.label = 'Administrateurs Opus' 
+AND u.administrative_user_id in('geee9001');
+
+INSERT INTO file.File (label, user_id)
+VALUES
+('TestFile', 1),
+('TestFileAdmin', 1);
+
+-- Add edit and view permissions on all files for admins
+INSERT INTO file.File_Group (file_id, group_id, can_edit, user_id)
+SELECT f.file_id, g.group_id, 'true', 1 
+FROM file.file f
+CROSS JOIN groups g
+WHERE g.label = 'Administrateurs Opus';
+
+-- Add view permissions on TestFile for Students
+INSERT INTO file.File_Group (file_id, group_id, can_edit, user_id)
+SELECT f.file_id, g.group_id, 'false', 1 
+FROM file.file f
+CROSS JOIN groups g
+WHERE g.label = 'Etudiants' AND f.label = 'TestFile';
+
+INSERT INTO file.version(file_id, description, path, user_id)
+SELECT F.file_id , 'First version of the file', 'C:\temp\'||f.label, 1
+FROM file.file F;
+
+INSERT INTO file.version(file_id, description, path, user_id)
+SELECT F.file_id , 'Second version of the file', 'C:\temp\'||f.label||'v2', 1
+FROM file.file F;
+
+CREATE OR REPLACE FUNCTION file.get_CurrentVersionFiles(
+     cip text
+     )
+  RETURNS TABLE("file_id" integer, "libelle" text, path text, description text) AS
+$BODY$
+DECLARE
+user_id integer;
+BEGIN
+
+  EXECUTE 'SELECT max(user_id) FROM users WHERE administrative_user_id='''||cip ||'''' INTO user_id;
+
+  RETURN QUERY
+  SELECT c.file_id, c.label as libelle, v.path, v.description
+  From file.get_files(user_id, 'false', 0) c
+  JOIN file.version v on v.file_id = c.file_id
+  JOIN (SELECT max(version_id) as version_id, fvMax.file_id FROM file.version fvMax GROUP BY fvMax.file_id) as m on m.version_id = v.version_id;  
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100
+  ROWS 1000;
+ALTER FUNCTION file.get_CurrentVersionFiles(text)
+  OWNER TO postgres;
+
+
+  -- Assert that function works
+  SELECT * FROM file.get_CurrentVersionFiles('babm2002');
+
+
+  

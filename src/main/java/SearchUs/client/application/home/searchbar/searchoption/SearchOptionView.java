@@ -61,70 +61,30 @@ public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHand
     @UiHandler("cbTypeALL")
     void onCheckBoxClickedALL(ClickEvent event)
     {
-        /*if (cbTypeALL.getValue()) {
-            CheckedAllType(true);
-        }
-        else{
-            CheckedAllType(false);
-        }*/
         CheckedAllType(cbTypeALL.getValue());
     }
 
     @UiHandler("cbTypePDF")
     void onCheckBoxClickedPDF(ClickEvent event)
     {
-        if(cbTypePDF.getValue())
-        {
-            fileTypes.add(FileType.PDF);
-        }
-        else
-        {
-            fileTypes.remove(FileType.PDF);
-        }
-
         monitorTotalCheckbox();
-
     }
 
     @UiHandler("cbTypeDOCX")
     void onCheckBoxClickedDOCX(ClickEvent event)
     {
-        if(cbTypeDOCX.getValue())
-        {
-            fileTypes.add(FileType.DOCX);
-        }
-        else
-        {
-            fileTypes.remove(FileType.DOCX);
-        }
-
         monitorTotalCheckbox();
     }
 
     @UiHandler("cbTypeTXT")
     void onCheckBoxClickedTXT(ClickEvent event)
     {
-        if(cbTypeTXT.getValue())
-        {
-            fileTypes.add(FileType.TXT);
-        }
-        else {
-            fileTypes.remove(FileType.TXT);
-        }
         monitorTotalCheckbox();
     }
 
     @UiHandler("cbTypeXLS")
     void onCheckBoxClickedXLS(ClickEvent event)
     {
-        if(cbTypeXLS.getValue())
-        {
-            fileTypes.add(FileType.XLS);
-        }
-        else
-        {
-            fileTypes.remove(FileType.XLS);
-        }
         monitorTotalCheckbox();
     }
 

@@ -32,6 +32,7 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -56,6 +57,10 @@ public class SearchBarPresenter extends Presenter<SearchBarPresenter.MyView, Sea
         super(eventBus, view, proxy, ApplicationPresenter.SLOT_SetMainContent);
 
         getView().setUiHandlers(this);
+        ArrayList defaultFileType= new ArrayList<FileType>();
+        defaultFileType.add(FileType.ALL);
+        searchDetails = new SearchDetails();
+        searchDetails.setSearchFor(defaultFileType);
     }
 
     @Override

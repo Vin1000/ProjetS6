@@ -10,6 +10,7 @@ import SearchUs.client.application.events.SearchEvent;
 import SearchUs.client.application.home.HomePagePresenter;
 import SearchUs.client.application.home.searchbar.searchoption.SearchOptionPresenter;
 import SearchUs.client.place.NameTokens;
+import SearchUs.shared.data.FieldType;
 import SearchUs.shared.data.FileType;
 import SearchUs.shared.data.SearchDetails;
 import SearchUs.shared.data.SearchResultData;
@@ -59,8 +60,11 @@ public class SearchBarPresenter extends Presenter<SearchBarPresenter.MyView, Sea
         getView().setUiHandlers(this);
         ArrayList defaultFileType= new ArrayList<FileType>();
         defaultFileType.add(FileType.ALL);
+        ArrayList defaultFieldType = new ArrayList<FieldType>();
+        defaultFieldType.add(FieldType.Content);
         searchDetails = new SearchDetails();
         searchDetails.setSearchFor(defaultFileType);
+        searchDetails.setSearchInFields(defaultFieldType);
     }
 
     @Override

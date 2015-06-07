@@ -2,8 +2,6 @@ package SearchUs.client.application.home.searchresult;
 
 import SearchUs.client.application.ApplicationPresenter;
 import SearchUs.client.application.events.SearchEvent;
-import SearchUs.client.place.NameTokens;
-import SearchUs.shared.data.SearchDetails;
 import SearchUs.shared.data.SearchResultData;
 import SearchUs.shared.dispatch.search.SearchAction;
 import SearchUs.shared.dispatch.search.SearchResult;
@@ -14,10 +12,8 @@ import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.Proxy;
-import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -30,6 +26,7 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         void addNoResultMessage();
         void addTimeElapsed_totalHits(int timeElapsed, int totalHits);
         void clearResults();
+        void clearTimeElapsed();
     }
 
     @ProxyStandard
@@ -37,7 +34,6 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
     }
 
     private DispatchAsync dispatcher;
-    private SearchDetails searchDetails;
 
     @Inject
     public SearchResultPresenter(
@@ -91,5 +87,11 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
                 logger.log(java.util.logging.Level.SEVERE, "La recherche a échouée, veuillez réessayer plus tard");
             }
         });
+    }
+
+    public void clearResults()
+    {
+        getView().clearResults();
+        getView().clearTimeElapsed();
     }
 }

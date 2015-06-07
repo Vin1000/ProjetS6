@@ -1,21 +1,16 @@
 package SearchUs.client.application.home.searchbar;
 
-import com.google.gwt.event.shared.GwtEvent.Type;
-import SearchUs.client.application.home.searchbar.searchoption.SearchOptionPresenter;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.gwtplatform.mvp.client.annotations.ContentSlot;
-import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 
 
 public class SearchBarView extends ViewWithUiHandlers<SearchBarUiHandlers> implements SearchBarPresenter.MyView {
@@ -48,6 +43,18 @@ public class SearchBarView extends ViewWithUiHandlers<SearchBarUiHandlers> imple
         sideImage.getElement().getStyle().setProperty("display", "none");
     }
 
+    @UiHandler("sideImage")
+    void onLogoClick(ClickEvent event)
+    {
+        topImage.getElement().getStyle().setProperty("paddingBottom", "10px");
+        topImage.getElement().getStyle().setProperty("paddingTop", "200px");
+        sideImage.getElement().getParentElement().setAttribute("align", "center");
+        topImage.getElement().getStyle().setProperty("display", "initial");
+        sideImage.getElement().getStyle().setProperty("display", "none");
+        textBox.setText("");
+        getUiHandlers().LogoClick();
+    }
+
     @UiHandler("sendSearchButton")
     void onSendSearch(ClickEvent event) {
         ClickEvent();
@@ -66,7 +73,7 @@ public class SearchBarView extends ViewWithUiHandlers<SearchBarUiHandlers> imple
         getUiHandlers().ShowAdvancedOptions();
     }
 
-    void ClickEvent()
+    public void ClickEvent()
     {
         topImage.getElement().getStyle().setProperty("display", "none");
         sideImage.getElement().getStyle().setProperty("display", "initial");
@@ -74,5 +81,14 @@ public class SearchBarView extends ViewWithUiHandlers<SearchBarUiHandlers> imple
         sideImage.getElement().getParentElement().getStyle().setProperty("paddingLeft", "6px");
 
         getUiHandlers().sendSearch(textBox.getText());
+    }
+
+    public void ClickEvent(String cookie)
+    {
+        if(!cookie.replace(" ", "").isEmpty())
+        {
+            textBox.setText(cookie);
+            ClickEvent();
+        }
     }
 }

@@ -7,39 +7,28 @@ package SearchUs.client.application.home.searchbar;
 import SearchUs.client.application.ApplicationPresenter;
 import SearchUs.client.application.events.OptionEvent;
 import SearchUs.client.application.events.SearchEvent;
-import SearchUs.client.application.home.HomePagePresenter;
 import SearchUs.client.application.home.searchbar.searchoption.SearchOptionPresenter;
-import SearchUs.client.place.NameTokens;
+import SearchUs.client.application.home.searchresult.SearchResultPresenter;
 import SearchUs.shared.data.FieldType;
 import SearchUs.shared.data.FileType;
 import SearchUs.shared.data.SearchDetails;
-import SearchUs.shared.data.SearchResultData;
-import SearchUs.shared.dispatch.search.SearchAction;
-import SearchUs.shared.dispatch.search.SearchResult;
-import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
-import com.gwtplatform.mvp.client.PopupView;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
-import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
-import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
-import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.logging.Logger;
+import java.util.Date;
 
 
 public class SearchBarPresenter extends Presenter<SearchBarPresenter.MyView, SearchBarPresenter.MyProxy> implements SearchBarUiHandlers, OptionEvent.OptionEventHandler {
     interface MyView extends View, HasUiHandlers<SearchBarUiHandlers> {
+        void ClickEvent(String cookie);
     }
 
     SearchDetails searchDetails;
@@ -71,6 +60,28 @@ public class SearchBarPresenter extends Presenter<SearchBarPresenter.MyView, Sea
     protected void onBind() {
         super.onBind();
         addRegisteredHandler(OptionEvent.getType(), this);
+        Window.addWindowClosingHandler(new Window.ClosingHandler()
+        {
+            @Override
+            public void onWindowClosing(Window.ClosingEvent event)
+            {
+                if(!searchDetails.getSearchString().isEmpty())
+                {
+                    Cookies.setCookie("refreshcookie", searchDetails.getSearchString(), new Date(System.currentTimeMillis() + 5000), null, null, false);
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onReveal(){
+        super.onReveal();
+        String c = Cookies.getCookie("refreshcookie");
+        if(c != null)
+        {
+            Cookies.removeCookie("refreshcookie");
+            getView().ClickEvent(c);
+        }
     }
 
     @Override
@@ -88,5 +99,16 @@ public class SearchBarPresenter extends Presenter<SearchBarPresenter.MyView, Sea
     public void ShowAdvancedOptions()
     {
         addToPopupSlot(searchOptionPresenter);
+    }
+
+    @Inject
+    SearchResultPresenter searchResultPresenter;
+
+    @Override
+    public void LogoClick()
+    {
+        searchDetails.setSearchString("");
+        Cookies.removeCookie("refreshcookie");
+        searchResultPresenter.clearResults();
     }
 }

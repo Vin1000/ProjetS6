@@ -5,12 +5,10 @@ import SearchUs.shared.data.SearchResultData;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
-import com.google.gwt.util.tools.shared.StringUtils;
 import com.google.inject.Provider;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 
 
 public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers> implements SearchResultPresenter.MyView {
@@ -42,6 +40,11 @@ public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers>
     public void clearResults()
     {
         this.resultPanel.clear();
+    }
+
+    public void clearTimeElapsed()
+    {
+        timeElapsed_totalHits_Label.setText("");
     }
 
     interface Binder extends UiBinder<Widget, SearchResultView> {

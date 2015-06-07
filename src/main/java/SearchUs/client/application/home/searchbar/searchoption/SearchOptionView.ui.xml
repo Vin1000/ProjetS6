@@ -8,8 +8,8 @@
     <g:PopupPanel autoHideOnHistoryEventsEnabled="true" autoHideEnabled="true">
         <g:HTMLPanel>
             <table>
-                <tr>
-                    <td>
+                <tr align="center">
+                    <td align="left">
                         Type de Fichiers
                     </td>
                     <td align="center" width="50px">
@@ -28,8 +28,8 @@
                         <g:CheckBox ui:field="cbFileTypeXLS" text="XLS"/>
                     </td>
                 </tr>
-                <tr>
-                    <td>
+                <tr align="center">
+                    <td align="left">
                         Rechercher dans
                     </td>
                     <td align="center" width="50px">
@@ -39,8 +39,8 @@
                         <g:CheckBox ui:field="cbFieldTypeAuteur" text="Auteur"/>
                     </td>
                 </tr>
-                <tr>
-                    <td>
+                <tr align="center">
+                    <td align="left">
                         Plus récent que
                     </td>
                     <td colspan="5" align="center">

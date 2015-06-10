@@ -76,7 +76,5 @@ public class IntegrationSeleniumTests{
 
         input.sendKeys("Patate", Keys.ENTER);
         button.click();
-
-
     }
 }

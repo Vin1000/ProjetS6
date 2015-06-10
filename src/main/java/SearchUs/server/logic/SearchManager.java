@@ -1,5 +1,6 @@
 package SearchUs.server.logic;
 
+import SearchUs.server.DataAccess.LocalRepository;
 import SearchUs.server.engine.ElasticManager;
 import SearchUs.server.session.UserSessionImpl;
 import SearchUs.shared.data.SearchDetails;
@@ -20,6 +21,9 @@ import java.util.*;
  */
 public class SearchManager {
 
+    @Inject
+    private LocalRepository localRepository;
+
     private UserSessionImpl session;
 
     public static final String SERVER_URL = "http://45.55.206.156";
@@ -34,7 +38,6 @@ public class SearchManager {
 
     public SearchResult getSearchResults(SearchDetails searchInfo)
     {
-
         SearchResult result = new SearchResult();
 
         ArrayList<SearchResultData> listResults = new ArrayList<SearchResultData>();

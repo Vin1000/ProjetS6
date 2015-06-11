@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by Marc-Antoine on 2015-05-28.
  */
-public class TestDB {
+public class DbTest {
 
     @Test
     public void testQuerry(){

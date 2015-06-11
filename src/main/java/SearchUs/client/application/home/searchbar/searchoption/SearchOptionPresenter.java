@@ -11,8 +11,6 @@ import com.gwtplatform.mvp.client.PresenterWidget;
 
 public class SearchOptionPresenter extends PresenterWidget<SearchOptionPresenter.MyView> implements SearchOptionUiHandlers {
     public interface MyView extends PopupView, HasUiHandlers<SearchOptionUiHandlers> {
-        /*Boolean IsAllTypeChecked();
-        void CheckedAllType(Boolean check);*/
     }
 
     @Inject

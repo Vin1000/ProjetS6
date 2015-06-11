@@ -15,6 +15,7 @@ public class SearchDetails implements IsSerializable{
     ArrayList<FileType> searchFor; // types de fichier (Babillard est un type de fichier)
     ArrayList<FieldType> searchInFields; //Champs dans lesquels on doit chercher
     String searchDate;  //Date pour la recherche
+    Boolean searchWithGoogle = false;
 
 
     public SearchDetails(){
@@ -38,12 +39,12 @@ public class SearchDetails implements IsSerializable{
     public void setSearchFor(ArrayList<FileType> searchFor){this.searchFor = searchFor;}
     public void setSearchInFields(ArrayList<FieldType> searchInFields){this.searchInFields = searchInFields;}
     public void setSearchDate(String searchDate){this.searchDate = searchDate;}
+    public void setSearchWithGoogle(Boolean searchWithGoogle){this.searchWithGoogle = searchWithGoogle;}
 
 
     public String getSearchString() {return searchString;}
     public String getSearchDate(){return searchDate;}
     public ArrayList<FileType> getSearchFor(){return searchFor;}
     public ArrayList<FieldType> getSearchInFields(){return searchInFields;}
-
-
+    public Boolean getSearchWithGoogle(){return searchWithGoogle;}
 }

@@ -4,16 +4,16 @@ package SearchUs.client.application.home.searchbar.searchoption;
 import SearchUs.shared.data.FieldType;
 import SearchUs.shared.data.FileType;
 import SearchUs.shared.data.SearchDetails;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.LoadEvent;
+import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.PopupViewWithUiHandlers;
@@ -53,11 +53,15 @@ public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHand
     @UiField
     Button btOK;
 
+    @UiField
+    CheckBox cbSearchWithGoogle;
+
     @Inject
     SearchOptionView(Binder uiBinder, EventBus eventBus) {
         super(eventBus);
 
         initWidget(uiBinder.createAndBindUi(this));
+
         fileTypes = new ArrayList<FileType>();
         CheckedAllFileType(true);
 
@@ -77,6 +81,8 @@ public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHand
         {
             searchDetails.setSearchDate(DateTimeFormat.getFormat("yyyy-MM-dd").format(dateBox.getValue()).toString());
         }
+
+        searchDetails.setSearchWithGoogle(cbSearchWithGoogle.getValue());
 
         getUiHandlers().onOkClicked(searchDetails);
         hide();

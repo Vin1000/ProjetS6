@@ -48,6 +48,14 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>
+                        Rechercher avec Google
+                    </td>
+                    <td>
+                        <g:CheckBox ui:field="cbSearchWithGoogle"/>
+                    </td>
+                </tr>
+                <tr>
                     <td colspan="6" align="right">
                         <g:Button ui:field="btOK" text="OK"/>
                     </td>

@@ -88,7 +88,15 @@ public class SearchBarPresenter extends Presenter<SearchBarPresenter.MyView, Sea
     @Override
     public void sendSearch(String searchText) {
         searchDetails.setSearchString(searchText);
-        SearchEvent.fire(this, searchDetails);
+
+        if(searchDetails.getSearchWithGoogle())
+        {
+            SearchEvent.fire(this, searchDetails);
+            com.google.gwt.user.client.Window.open("https://www.google.ca/search?q=" + searchDetails.getSearchString(), "_blank", "");
+        }
+        else {
+            SearchEvent.fire(this, searchDetails);
+        }
     }
 
     @Override

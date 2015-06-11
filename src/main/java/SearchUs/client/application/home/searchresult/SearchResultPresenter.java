@@ -16,6 +16,7 @@ import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Logger;
 
 public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers, SearchEvent.GlobalHandler {
@@ -62,7 +63,12 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         SearchAction searchAction = new SearchAction(event.getSearchDetails());
         dispatcher.execute(searchAction, new AsyncCallback<SearchResult>() {
             @Override //TODO: Change actions done here
-            public void onSuccess(SearchResult result) {
+            public void onSuccess(SearchResult result)
+            {
+                if(clearTime != null && (new Date().getTime() - clearTime.getTime() < 100))
+                {
+                    return;
+                }
                 getView().clearResults();
                 ArrayList<SearchResultData> searchResults = result.getSearchResults();
 
@@ -89,8 +95,10 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         });
     }
 
+    private Date clearTime;
     public void clearResults()
     {
+        clearTime = new Date();
         getView().clearResults();
         getView().clearTimeElapsed();
     }

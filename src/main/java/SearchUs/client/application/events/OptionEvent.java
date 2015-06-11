@@ -16,6 +16,7 @@ public class OptionEvent extends GwtEvent<OptionEvent.OptionEventHandler> {
     public interface OptionEventHandler extends EventHandler {
         public void onOptionEvent(OptionEvent event);
     }
+
     public static void fire(HasHandlers source, SearchDetails searchDetails) {
         source.fireEvent(new OptionEvent(searchDetails));
     }

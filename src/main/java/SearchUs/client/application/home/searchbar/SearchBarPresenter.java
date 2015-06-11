@@ -5,6 +5,7 @@
 package SearchUs.client.application.home.searchbar;
 
 import SearchUs.client.application.ApplicationPresenter;
+import SearchUs.client.application.events.ClearSearchResultsEvent;
 import SearchUs.client.application.events.OptionEvent;
 import SearchUs.client.application.events.SearchEvent;
 import SearchUs.client.application.home.searchbar.searchoption.SearchOptionPresenter;
@@ -101,14 +102,11 @@ public class SearchBarPresenter extends Presenter<SearchBarPresenter.MyView, Sea
         addToPopupSlot(searchOptionPresenter);
     }
 
-    @Inject
-    SearchResultPresenter searchResultPresenter;
-
     @Override
     public void LogoClick()
     {
         searchDetails.setSearchString("");
         Cookies.removeCookie("refreshcookie");
-        searchResultPresenter.clearResults();
+        ClearSearchResultsEvent.fire(this);
     }
 }

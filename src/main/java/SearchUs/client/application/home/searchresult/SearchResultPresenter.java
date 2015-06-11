@@ -1,6 +1,8 @@
 package SearchUs.client.application.home.searchresult;
 
 import SearchUs.client.application.ApplicationPresenter;
+import SearchUs.client.application.events.ClearSearchResultsEvent;
+import SearchUs.client.application.events.OptionEvent;
 import SearchUs.client.application.events.SearchEvent;
 import SearchUs.shared.data.SearchResultData;
 import SearchUs.shared.dispatch.search.SearchAction;
@@ -19,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Logger;
 
-public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers, SearchEvent.GlobalHandler {
+public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers, SearchEvent.GlobalHandler, ClearSearchResultsEvent.ClearSearchResultsEventHandler {
 
     interface MyView extends View, HasUiHandlers<SearchResultUiHandlers>
     {
@@ -35,6 +37,7 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
     }
 
     private DispatchAsync dispatcher;
+    private Date clearTime;
 
     @Inject
     public SearchResultPresenter(
@@ -51,6 +54,7 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
     protected void onBind() {
         super.onBind();
         addRegisteredHandler(SearchEvent.getType(), this);
+        addRegisteredHandler(ClearSearchResultsEvent.getType(), this);
     }
 
     @Override
@@ -95,7 +99,12 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         });
     }
 
-    private Date clearTime;
+    @Override
+    public void onClearSearchResultsEvent(ClearSearchResultsEvent event)
+    {
+        clearResults();
+    }
+
     public void clearResults()
     {
         clearTime = new Date();

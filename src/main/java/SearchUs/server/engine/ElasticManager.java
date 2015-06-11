@@ -3,6 +3,8 @@ package SearchUs.server.engine;
 
 import SearchUs.shared.data.FileType;
 import SearchUs.shared.data.SearchDetails;
+import com.google.gwt.json.client.JSONString;
+import com.google.gwt.thirdparty.json.JSONArray;
 import com.google.gwt.thirdparty.json.JSONException;
 import com.google.gwt.thirdparty.json.JSONObject;
 import org.apache.http.HttpEntity;
@@ -16,6 +18,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -119,13 +122,106 @@ public class ElasticManager {
 
     public JSONObject search(SearchDetails searchInfo) {
 
+        /*
+{
+  	"query":
+    {
+          "filtered" :
+          {
+              "query" :
+              {
+                  "wildcard":
+                  {
+                      "_all":"*"
+                  }
+              },
+              "filter" :
+              {
+                "script" :
+                {
+                  "file" : "tamtamfi",
+                  "lang" : "javascript",
+                  "params" :
+                  {
+                      "fileType" : ["all"],
+                      "numberTypes" : 1
+                  }
+                }
+              }
+          }
+  	}
+}
+        * */
+
         String queryString = searchInfo.getSearchString();
         String query;
+
+        ArrayList<FileType> searchInDocTypes = searchInfo.getSearchFor();
+
+        String fileTypes = "[";
+        Integer numberTypes = 0;
+
+        for(FileType type : searchInDocTypes)
+        {
+            if(numberTypes != 0)
+                fileTypes += ",";
+            fileTypes += "\""+type.toString().toLowerCase() +"\"";
+            numberTypes++;
+        }
+
+        fileTypes += "]";
+
+        String queryContent;
+
+        if(queryString.contains("*"))
+        {
+            queryContent = "                  \"wildcard\":\n" +
+                    "                  {\n" +
+                    "                      \"_all\":\"*\"\n" +
+                    "                  }\n";
+        }
+        else {
+            queryContent = "\"match\":{\"_all\": \""+ queryString+"\"}";
+        }
+
+        query = "{\n" +
+                "  \t\"query\":\n" +
+                "    {\n" +
+                "          \"filtered\" :\n" +
+                "          {\n" +
+                "              \"query\" :\n" +
+                "              {\n" + queryContent +
+                "              },\n" +
+                "              \"filter\" :\n" +
+                "              {\n" +
+                "                \"script\" :\n" +
+                "                {\n" +
+                "                  \"file\" : \"tamtamfi\",\n" +
+                "                  \"lang\" : \"javascript\",\n" +
+                "                  \"params\" :\n" +
+                "                  {\n" +
+                "                      \"fileType\" : " + fileTypes +",\n" +
+                "                      \"numberTypes\" : "+ numberTypes.toString().toLowerCase() +"\n" +
+                "                  }\n" +
+                "                }\n" +
+                "              }\n" +
+                "          }\n" +
+                "  \t}\n" +
+                "}";
+
+        /*
         JSONObject jsonQuery = new JSONObject();
         JSONObject match = new JSONObject();
         JSONObject completeQuery = new JSONObject();
 
-        ArrayList<FileType> searchInDocTypes = searchInfo.getSearchFor();
+        JSONArray _source = new JSONArray();
+        _source.put("_source");
+
+        JSONObject script_fileds = new JSONObject();
+        JSONObject fileType  = new JSONObject();
+        JSONString file = new JSONString("filetype");
+        JSONString lang = new JSONString("javascript");
+
 
         if(queryString.contains("*"))
         {
@@ -186,7 +282,9 @@ public class ElasticManager {
             }
         }
 
-        query = completeQuery.toString();
+        query = completeQuery.toString();*/
+
+
 
         String searchResult = makePost("_search",query);
         System.out.println("Search result: "+searchResult);

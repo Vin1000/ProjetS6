@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 /**
  * Created by Marc-Antoine on 2015-05-28.
  */
-public class TestBidonPourLaurent {
+public class LaurentTest {
 
     @Test
     public void test1() {

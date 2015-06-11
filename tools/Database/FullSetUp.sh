@@ -8,6 +8,9 @@ sudo service postgresql start
 
 sudo echo "Creating Database";
 
+#Change the default password of Postgres user
+sudo -u postgres psql -U postgres -d postgres -c "\password postgres"
+
 #Create the Database
 sudo -u postgres createdb Opus
 

@@ -19,9 +19,9 @@ public class DatabaseConnection {
     @Inject
     public DatabaseConnection()
     {
-        this.url = "jdbc:postgresql://localhost:5432/Opus";
+        this.url = "jdbc:postgresql://45.55.206.156:5432/Opus";
         this.username = "postgres";
-        this.password = "postgres";
+        this.password = "S6 postgres";
 
         try {
             String driver = "org.postgresql.Driver";

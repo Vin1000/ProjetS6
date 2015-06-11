@@ -92,7 +92,7 @@ public class SearchBarPresenter extends Presenter<SearchBarPresenter.MyView, Sea
         if(searchDetails.getSearchWithGoogle())
         {
             SearchEvent.fire(this, searchDetails);
-            com.google.gwt.user.client.Window.open("https://www.google.ca/search?q=" + searchDetails.getSearchString(), "_blank", "");
+            com.google.gwt.user.client.Window.open("https://www.google.ca/search?q=" + searchDetails.getSearchString(), "google", "");
         }
         else {
             SearchEvent.fire(this, searchDetails);

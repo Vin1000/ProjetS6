@@ -18,6 +18,7 @@ import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.PopupViewWithUiHandlers;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHandlers> implements SearchOptionPresenter.MyView {
     public interface Binder extends UiBinder<PopupPanel, SearchOptionView> {
@@ -68,6 +69,8 @@ public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHand
         fieldTypes = new ArrayList<FieldType>();
         fieldTypes.add(FieldType.Content);
         cbFieldTypeContent.setValue(true);
+
+        dateBox.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat("yyyy-MM-dd")));
     }
 
     @UiHandler("btOK")
@@ -79,7 +82,7 @@ public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHand
 
         if(dateBox.getValue() != null)
         {
-            searchDetails.setSearchDate(DateTimeFormat.getFormat("yyyy-MM-dd").format(dateBox.getValue()).toString());
+            searchDetails.setSearchDate(dateBox.getValue().toString());
         }
 
         searchDetails.setSearchWithGoogle(cbSearchWithGoogle.getValue());

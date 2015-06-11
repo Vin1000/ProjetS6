@@ -14,7 +14,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.Keys;
 
 /**
@@ -27,8 +26,13 @@ public class IntegrationSeleniumTests{
 
     @BeforeClass
     public static void initWebDriver() throws IOException {
+        String driverPath = "src\\test\\resources\\selenium\\drivers\\chromedriver";
 
-        System.setProperty("webdriver.chrome.driver", "E:\\Programs\\ChromeDriver\\chromedriver.exe");
+        if(System.getProperty("os.name").toLowerCase().contains("win")){
+            driverPath += ".exe";
+        }
+
+        System.setProperty("webdriver.chrome.driver", driverPath);
 
         // init driver with GWT Dev Plugin
         driver = new ChromeDriver();
@@ -54,7 +58,7 @@ public class IntegrationSeleniumTests{
 
         WebElement input = driver.findElement(By.id("lst-ib"));
 
-        Assert.assertNotNull("There shoulde be an input in Google",
+        Assert.assertNotNull("There should be an input in Google",
                 input);
 
         input.sendKeys("Patate",Keys.ENTER);

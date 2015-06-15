@@ -41,6 +41,7 @@ public class SearchBarView extends ViewWithUiHandlers<SearchBarUiHandlers> imple
         topImage.getElement().getStyle().setProperty("paddingTop", "200px");
         topImage.getElement().getStyle().setProperty("display", "initial");
         sideImage.getElement().getStyle().setProperty("display", "none");
+        sideImage.getElement().getStyle().setProperty("cursor", "pointer");
     }
 
     @UiHandler("sideImage")

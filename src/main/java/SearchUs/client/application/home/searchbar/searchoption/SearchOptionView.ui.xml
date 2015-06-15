@@ -3,28 +3,39 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:h="urn:import:com.google.gwt.user.datepicker.client">
     <ui:style>
+        #fixedheight tr
+        {
+            height: 38px;
+            border-bottom: 1px solid darkgrey;
+        }
 
+        #fixedheight td
+        {
+            padding-top:2px;
+            padding-right:3px;
+            padding-left:3px;
+        }
     </ui:style>
-    <g:PopupPanel autoHideOnHistoryEventsEnabled="true" autoHideEnabled="true">
+    <g:PopupPanel ui:field="popupPanel">
         <g:HTMLPanel>
-            <table>
+            <table id="fixedheight">
                 <tr align="center">
                     <td align="left">
                         Type de Fichiers
                     </td>
-                    <td align="center" width="50px">
+                    <td align="center" width="42px">
                         <g:CheckBox ui:field="cbFileTypeALL" text="Tous"/>
                     </td>
-                    <td align="center" width="50px">
+                    <td align="center" width="42px">
                         <g:CheckBox ui:field="cbFileTypePDF" text="PDF"/>
                     </td>
-                    <td align="center" width="50px">
+                    <td align="center" width="42px">
                         <g:CheckBox ui:field="cbFileTypeDOCX" text="DOCX"/>
                     </td>
-                    <td align="center" width="50px">
+                    <td align="center" width="42px">
                         <g:CheckBox ui:field="cbFileTypeTXT" text="TXT"/>
                     </td>
-                    <td align="center" width="50px">
+                    <td align="center" width="42px">
                         <g:CheckBox ui:field="cbFileTypeXLS" text="XLS"/>
                     </td>
                 </tr>
@@ -32,10 +43,10 @@
                     <td align="left">
                         Rechercher dans
                     </td>
-                    <td align="center" width="50px">
+                    <td align="center" width="42px">
                         <g:CheckBox ui:field="cbFieldTypeContent" text="Contenu"/>
                     </td>
-                    <td align="center" width="50px">
+                    <td align="center" width="42px">
                         <g:CheckBox ui:field="cbFieldTypeAuteur" text="Auteur"/>
                     </td>
                 </tr>
@@ -43,19 +54,21 @@
                     <td align="left">
                         Plus récent que
                     </td>
-                    <td colspan="5" align="center">
+                    <td colspan="5" align="left">
                         <h:DateBox ui:field="dateBox"/>
+                        <g:Button ui:field="btClearDate" text="Effacer"/>
                     </td>
                 </tr>
-                <tr>
+                <tr align="center">
                     <td>
-                        Rechercher avec Google
+                        Rechercher aussi avec
+                        <g:Image ui:field="imgGoogle" url="GoogleLogo.png" width="50px"/>
                     </td>
-                    <td>
+                    <td colspan="5" align="left">
                         <g:CheckBox ui:field="cbSearchWithGoogle"/>
                     </td>
                 </tr>
-                <tr>
+                <tr align="center" style="border-bottom:0px">
                     <td colspan="6" align="right">
                         <g:Button ui:field="btOK" text="OK"/>
                     </td>

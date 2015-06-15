@@ -82,7 +82,7 @@ public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHand
 
         if(dateBox.getValue() != null)
         {
-            searchDetails.setSearchDate(dateBox.getValue().toString());
+            searchDetails.setSearchDate(dateBox.getTextBox().getValue());
         }
 
         searchDetails.setSearchWithGoogle(cbSearchWithGoogle.getValue());

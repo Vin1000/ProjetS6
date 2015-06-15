@@ -120,42 +120,40 @@ public class ElasticManager {
 
     public JSONObject search(SearchDetails searchInfo) {
 
-        /*
-{
-  	"query":
+        String query = buildFileSearchQuery(searchInfo);
+
+        String searchResult = makePost("_search",query);
+        System.out.println("Search result: "+searchResult);
+        JSONObject jsonObj = null;
+        System.out.println("query: "+query);
+
+        if(searchResult != null)
+        {
+            try
+            {
+                jsonObj = new JSONObject(searchResult);
+            }
+            catch(com.google.gwt.thirdparty.json.JSONException ex)
+            {
+                System.out.println("Json decoding exception: "+ex.toString());
+            }
+        }
+
+
+        return jsonObj;
+
+    }
+
+    private String buildFileSearchQuery(SearchDetails searchInfo)
     {
-          "filtered" :
-          {
-              "query" :
-              {
-                  "wildcard":
-                  {
-                      "_all":"*"
-                  }
-              },
-              "filter" :
-              {
-                "script" :
-                {
-                  "file" : "tamtamfi",
-                  "lang" : "javascript",
-                  "params" :
-                  {
-                      "fileType" : ["all"],
-                      "numberTypes" : 1
-                  }
-                }
-              }
-          }
-  	}
-}
-        * */
-
+        // Champs de texte entré par l'utilisateur pour la recherche
         String queryString = searchInfo.getSearchString();
-        String query;
+        String queryContent; // la partie query de la requête
+        String query;   // requête complete, ce qu'on retourne
 
+
+        /* Section types de fichier */
         ArrayList<FileType> searchInDocTypes = searchInfo.getSearchFor();
-
         String fileTypes = "[";
         Integer numberTypes = 0;
 
@@ -169,8 +167,8 @@ public class ElasticManager {
 
         fileTypes += "]";
 
-        String queryContent;
 
+        /* Section queryString */
         if(queryString.contains("*"))
         {
             queryContent = "                  \"wildcard\":\n" +
@@ -182,6 +180,56 @@ public class ElasticManager {
             queryContent = "\"match\":{\"_all\": \""+ queryString+"\"}";
         }
 
+        /* Section filters */
+        String searchFilters;
+
+        //S'il n'y a pas de date specifiée
+        if(searchInfo.getSearchDate() == null)
+        {
+            searchFilters = "                \"script\" :\n" +
+                    "                {\n" +
+                    "                  \"file\" : \"tamtamfi\",\n" +
+                    "                  \"lang\" : \"javascript\",\n" +
+                    "                  \"params\" :\n" +
+                    "                  {\n" +
+                    "                      \"fileType\" : " + fileTypes +",\n" +
+                    "                      \"numberTypes\" : "+ numberTypes.toString().toLowerCase() +"\n" +
+                    "                  }\n" +
+                    "                }\n";
+        }
+        else
+        {
+            searchFilters = "              \t\"bool\" :\n" +
+                    "                {\n" +
+                    "                \t\"must\" : \n" +
+                    "                      [\n" +
+                    "                      \t{\n" +
+                    "                          \"script\" :\n" +
+                    "                          {\n" +
+                    "                            \"file\" : \"tamtamfi\",\n" +
+                    "                            \"lang\" : \"javascript\",\n" +
+                    "                            \"params\" :\n" +
+                    "                            {\n" +
+                    "                                \"fileType\" : " + fileTypes +",\n" +
+                    "                                \"numberTypes\" : "+ numberTypes.toString().toLowerCase() +"\n" +
+                    "                            }\n" +
+                    "                          }\n" +
+                    "                        },\n" +
+                    "                        {\n" +
+                    "                          \"range\":\n" +
+                    "                          {\n" +
+                    "                              \"date\" : \n" +
+                    "                              {\n" +
+                    "                                  \"gte\" : \""+searchInfo.getSearchDate() +"\"\n" +  //
+                    "                              }\n" +
+                    "                          }\n" +
+                    "                         }\n" +
+                    "                       ]\n" +
+                    "                }";
+        }
+
+
+        /* Finalement on bati la query */
         query = "{\n" +
                 "  \t\"query\":\n" +
                 "    {\n" +
@@ -192,21 +240,12 @@ public class ElasticManager {
                 "              },\n" +
                 "              \"filter\" :\n" +
                 "              {\n" +
-                "                \"script\" :\n" +
-                "                {\n" +
-                "                  \"file\" : \"tamtamfi\",\n" +
-                "                  \"lang\" : \"javascript\",\n" +
-                "                  \"params\" :\n" +
-                "                  {\n" +
-                "                      \"fileType\" : " + fileTypes +",\n" +
-                "                      \"numberTypes\" : "+ numberTypes.toString().toLowerCase() +"\n" +
-                "                  }\n" +
-                "                }\n" +
+                searchFilters +
                 "              }\n" +
                 "          }\n" +
                 "  \t}\n" +
                 "}";
-
+        return query;
         /*
         JSONObject jsonQuery = new JSONObject();
         JSONObject match = new JSONObject();
@@ -281,28 +320,6 @@ public class ElasticManager {
         }
 
         query = completeQuery.toString();*/
-
-
-
-        String searchResult = makePost("_search",query);
-        System.out.println("Search result: "+searchResult);
-        JSONObject jsonObj = null;
-        System.out.println("query: "+query);
-
-        if(searchResult != null)
-        {
-            try
-            {
-                jsonObj = new JSONObject(searchResult);
-            }
-            catch(com.google.gwt.thirdparty.json.JSONException ex)
-            {
-                System.out.println("Json decoding exception: "+ex.toString());
-            }
-        }
-
-
-        return jsonObj;
 
     }
 }

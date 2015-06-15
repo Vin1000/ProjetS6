@@ -121,28 +121,32 @@ public class SearchManager {
             listResults.addAll(GetFakeData(3, searchInfo.getSearchString()));
         }
 
-        permittedPaths = permisionsManager.getValidPaths(session.getUserId() , pathList);
-
-        for(SearchResultData res:listResults)
+        if(listResults.size() > 0)
         {
-            if(res instanceof SearchResultFile)
+            permittedPaths = permisionsManager.getValidPaths(session.getUserId() , pathList);
+
+            for(SearchResultData res:listResults)
             {
-                SearchResultFile fileResult = (SearchResultFile) res;
-                if(permittedPaths.contains(fileResult.getRealPath()))
+                if(res instanceof SearchResultFile)
                 {
-                    permittedResults.add(res);
-                    permittedPaths.remove(fileResult.getRealPath());
+                    SearchResultFile fileResult = (SearchResultFile) res;
+                    if(permittedPaths.contains(fileResult.getRealPath()))
+                    {
+                        permittedResults.add(res);
+                        permittedPaths.remove(fileResult.getRealPath());
+                    }
+                    else
+                    {
+                        totalHits--;
+                    }
                 }
                 else
                 {
-                    totalHits--;
+                    permittedResults.add(res);
                 }
             }
-            else
-            {
-                permittedResults.add(res);
-            }
         }
+
 
         result.setTotalHits(totalHits);
         result.setSearchResults(permittedResults);

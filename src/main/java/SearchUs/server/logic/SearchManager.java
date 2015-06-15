@@ -51,6 +51,8 @@ public class SearchManager {
         ArrayList<String> pathList = new ArrayList<>();
         ArrayList<String> permittedPaths;
 
+        int totalHits = 0;
+
         if(!GETFAKEDATA)
         {
             //todo: injecter l'objet.
@@ -64,7 +66,7 @@ public class SearchManager {
                 {
                     JSONObject hits = queryResult.getJSONObject("hits");
 
-                    int totalHits = hits.getInt("total");
+                    totalHits = hits.getInt("total");
                     int took = queryResult.getInt("took");
 
                     JSONArray resultsArray = hits.getJSONArray("hits");
@@ -107,7 +109,7 @@ public class SearchManager {
                         }
                     }
                     result.setTimeElapsed(took);
-                    result.setTotalHits(totalHits);
+
                 }
                 catch(JSONException e)
                 {
@@ -132,6 +134,10 @@ public class SearchManager {
                     permittedResults.add(res);
                     permittedPaths.remove(fileResult.getRealPath());
                 }
+                else
+                {
+                    totalHits--;
+                }
             }
             else
             {
@@ -139,6 +145,7 @@ public class SearchManager {
             }
         }
 
+        result.setTotalHits(totalHits);
         result.setSearchResults(permittedResults);
         return result;
     }

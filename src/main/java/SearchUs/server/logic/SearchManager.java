@@ -155,15 +155,16 @@ public class SearchManager {
 
     private String getFormattedDescription(String description, String searchText)
     {
-        String b = "<strong><font color=\"red\">";
-        String b2 = "</font></strong>";
+        String beginFormat = "<strong><font color=\"red\">";
+        String endFormat = "</font></strong>";
+        String punctuation = "[\\p{Punct}\\s]+";
 
-        String[] searchKeywords = searchText.split("[\\p{Punct}\\s]+"); //split searchtext in keywords
+        String[] searchKeywords = searchText.split(punctuation); //split searchtext in keywords
 
-        String[] content = description.split("[\\p{Punct}\\s]+");
+        String[] content = description.split(punctuation); //split description in words
         for(int i = 0; i < content.length; i++)
         {
-            content[i] = content[i].toLowerCase();
+            content[i] = content[i].toLowerCase(); //lowercase every word
         }
         String formattedDescription = description;
         ArrayList<Integer> indexList = new ArrayList<>();
@@ -185,12 +186,13 @@ public class SearchManager {
 
         Collections.sort(indexList, Collections.reverseOrder()); //start by the end
 
+        //by starting with the last one, the indexes will stay correct.
         for(Integer index : indexList)
         {
-            String one = formattedDescription.substring(0, index);
-            String two = formattedDescription.substring(index, index + dictionary.get(index));
-            String three = formattedDescription.substring(index + dictionary.get(index));
-            formattedDescription = one + b + two + b2 + three;
+            String textBeforeWord = formattedDescription.substring(0, index); //0 to index
+            String word = formattedDescription.substring(index, index + dictionary.get(index)); //index to index+length
+            String textAfterWord = formattedDescription.substring(index + dictionary.get(index)); //index+length to end
+            formattedDescription = textBeforeWord + beginFormat + word + endFormat + textAfterWord;
         }
         return formattedDescription;
     }

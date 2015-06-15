@@ -25,7 +25,6 @@ public class SearchManager {
     private UserSessionImpl session;
 
     public static final String SERVER_URL = "http://45.55.206.156";
-    private static final Integer resultsPerPage = 10;
 
     private boolean GETFAKEDATA = false;
 

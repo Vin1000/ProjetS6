@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Marc-Antoine on 2015-06-09.
@@ -29,7 +28,7 @@ public class LocalRepository {
         }
         query += "');";
 
-        ArrayList<String> validPaths = new ArrayList<String>();
+        ArrayList<String> validPaths = new ArrayList<>();
         ResultSet result = db.execute(query);
 
         try {

@@ -43,7 +43,7 @@ public class ElasticManager {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
 
-            HttpPost httpPost = new HttpPost(this.serviceUrl+"_search");
+            HttpPost httpPost = new HttpPost(this.serviceUrl+endpoint);
             httpPost.setEntity(new StringEntity(data));
 
             System.out.println("Executing request " + httpPost.getRequestLine());
@@ -67,7 +67,7 @@ public class ElasticManager {
         }
         catch (IOException ex)
         {
-
+            ex.printStackTrace();
         }
         finally {
             try { httpclient.close(); } catch (Exception ignore) {}
@@ -103,8 +103,6 @@ public class ElasticManager {
             };
              responseBody = httpclient.execute(httpget, responseHandler);
 
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

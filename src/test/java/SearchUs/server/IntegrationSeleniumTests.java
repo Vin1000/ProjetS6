@@ -15,6 +15,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Created by Marc-Antoine on 2015-05-20.
@@ -24,18 +27,21 @@ public class IntegrationSeleniumTests{
 
     private static WebDriver driver;
 
+    private static boolean isOsWindows = false;
+
     @BeforeClass
     public static void initWebDriver() throws IOException {
-        String driverPath = "src\\test\\resources\\selenium\\drivers\\chromedriver";
-
-        if(System.getProperty("os.name").toLowerCase().contains("win")){
-            driverPath += ".exe";
+        isOsWindows= System.getProperty("os.name").toLowerCase().contains("win");
+        if(isOsWindows){
+            System.setProperty("webdriver.chrome.driver", "src\\test\\resources\\selenium\\drivers\\chromedriver.exe");
+            driver = new ChromeDriver();
+        }
+        else
+        {
+            driver = new HtmlUnitDriver();
         }
 
-        System.setProperty("webdriver.chrome.driver", driverPath);
-
-        // init driver with GWT Dev Plugin
-        driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @AfterClass
@@ -51,10 +57,19 @@ public class IntegrationSeleniumTests{
     public void after() {
     }
 
+    private void NavigateDriverToPage(String url){
+        if(isOsWindows){
+            driver.navigate().to(url);
+        }
+        else{
+            driver.get(url);
+        }
+    }
+
     @Test
     public void testGoogle() {
 
-        driver.navigate().to("http://google.com");
+        NavigateDriverToPage("http://google.com");
 
         WebElement input = driver.findElement(By.id("lst-ib"));
 
@@ -65,13 +80,26 @@ public class IntegrationSeleniumTests{
         input.submit();
     }
 
+    private void OpenSearchUs(){
+        NavigateDriverToPage("http://localhost:8888/Project.html");
+
+        // Cas Login steps
+        WebElement casUserName = driver.findElement(By.id("username"));
+        WebElement casPwdName = driver.findElement(By.id("password"));
+
+        casUserName.sendKeys("babm2002");
+        casPwdName.sendKeys("password");
+
+        casUserName.submit();
+    }
+
     @Test
     public void testSearchUs() {
 
-        driver.navigate().to("localhost:8888/project.html");
+        OpenSearchUs();
 
         WebElement input = driver.findElement(By.id("gwt-debug-searchTextBox"));
-        WebElement button = driver.findElement(By.id("gwt-debug-sendTextButton"));
+        WebElement button = driver.findElement(By.id("gwt-debug-sendSearchButton"));
 
         Assert.assertNotNull("There should be an input in home page",
                 input);

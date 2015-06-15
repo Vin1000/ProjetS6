@@ -2,7 +2,6 @@ package SearchUs.client.application.home.searchresult;
 
 import SearchUs.client.application.ApplicationPresenter;
 import SearchUs.client.application.events.ClearSearchResultsEvent;
-import SearchUs.client.application.events.OptionEvent;
 import SearchUs.client.application.events.SearchEvent;
 import SearchUs.shared.data.SearchResultData;
 import SearchUs.shared.dispatch.search.SearchAction;
@@ -19,7 +18,6 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Logger;
 
 public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers, SearchEvent.GlobalHandler, ClearSearchResultsEvent.ClearSearchResultsEventHandler {
 
@@ -93,8 +91,7 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
 
             @Override
             public void onFailure(Throwable caught) {
-                Logger logger = java.util.logging.Logger.getLogger("Error Log variable");
-                logger.log(java.util.logging.Level.SEVERE, "La recherche a échouée, veuillez réessayer plus tard");
+                //fail
             }
         });
     }

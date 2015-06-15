@@ -28,6 +28,9 @@ public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHand
     ArrayList<FieldType> fieldTypes;
 
     @UiField
+    PopupPanel popupPanel;
+
+    @UiField
     CheckBox cbFileTypeALL;
 
     @UiField
@@ -52,10 +55,16 @@ public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHand
     DateBox dateBox;
 
     @UiField
+    Button btClearDate;
+
+    @UiField
     Button btOK;
 
     @UiField
     CheckBox cbSearchWithGoogle;
+
+    @UiField
+    Image imgGoogle;
 
     @Inject
     SearchOptionView(Binder uiBinder, EventBus eventBus) {
@@ -70,6 +79,19 @@ public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHand
         fieldTypes.add(FieldType.Content);
         cbFieldTypeContent.setValue(true);
 
+        imgGoogle.getElement().getStyle().setProperty("marginTop", "0px");
+        imgGoogle.getElement().getStyle().setProperty("paddingRight", "4px");
+        imgGoogle.getElement().getStyle().setProperty("paddingLeft", "2px");
+
+        popupPanel.getElement().getStyle().setProperty("border", "2px solid black");
+        popupPanel.getElement().getStyle().setProperty("padding", "0px");
+        popupPanel.setAnimationEnabled(true);
+        popupPanel.setAnimationType(PopupPanel.AnimationType.CENTER);
+        popupPanel.setGlassEnabled(true);
+        popupPanel.setAutoHideOnHistoryEventsEnabled(true);
+        popupPanel.setAutoHideEnabled(true);
+
+        dateBox.getElement().getStyle().setProperty("width", "76px");
         dateBox.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat("yyyy-MM-dd")));
     }
 
@@ -82,13 +104,19 @@ public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHand
 
         if(dateBox.getValue() != null)
         {
-            searchDetails.setSearchDate(dateBox.getValue().toString());
+            searchDetails.setSearchDate(dateBox.getTextBox().getValue());
         }
 
         searchDetails.setSearchWithGoogle(cbSearchWithGoogle.getValue());
 
         getUiHandlers().onOkClicked(searchDetails);
         hide();
+    }
+
+    @UiHandler("btClearDate")
+    void onClearDateClicked(ClickEvent event)
+    {
+        dateBox.setValue(null);
     }
 
     @UiHandler("cbFileTypeALL")
@@ -162,9 +190,7 @@ public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHand
             {
                 fileTypes.add(FileType.PDF);
             }
-
         }
-
     }
 
     void monitorFieldTypeCheckbox()

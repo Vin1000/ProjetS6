@@ -16,7 +16,6 @@ public class SearchOptionPresenter extends PresenterWidget<SearchOptionPresenter
     @Inject
     public SearchOptionPresenter(EventBus eventBus, MyView view) {
         super(eventBus, view);
-
         getView().setUiHandlers(this);
     }
 

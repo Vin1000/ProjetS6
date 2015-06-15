@@ -12,13 +12,15 @@ public class SearchResultFile extends SearchResultData {
     private String downloadUrl;
     private String filename;
 
+    private String realPath;
+
     public SearchResultFile(){
         this.setType(ResultType.file);
     }
 
 
     public SearchResultFile(String filename, String downloadUrl, String description, String author, String title,
-                            String date, List<String> keywords) {
+                            String date, List<String> keywords, String realPath) {
         this.setType(ResultType.file);
 
         this.downloadUrl = downloadUrl;
@@ -28,12 +30,13 @@ public class SearchResultFile extends SearchResultData {
         this.filename = filename;
         this.date = date;
         this.keywords = keywords;
-
+        this.realPath = realPath;
     }
 
 
     public String getDownloadUrl() {return downloadUrl;}
     public String getFilename(){ return filename;}
+    public String getRealPath(){return realPath;}
 
 
     public void setDownloadUrl(String downloadUrl) {this.downloadUrl = downloadUrl;}

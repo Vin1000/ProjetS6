@@ -21,8 +21,6 @@ import java.util.*;
  */
 public class SearchManager {
 
-    @Inject
-    private LocalRepository localRepository;
 
     private UserSessionImpl session;
 
@@ -32,15 +30,26 @@ public class SearchManager {
     private boolean GETFAKEDATA = false;
 
     @Inject
+    private LocalRepository permisionsManager;
+
+    @Inject
     public SearchManager(UserSessionImpl session) {
         this.session = session;
     }
 
     public SearchResult getSearchResults(SearchDetails searchInfo)
     {
+
+
         SearchResult result = new SearchResult();
 
-        ArrayList<SearchResultData> listResults = new ArrayList<SearchResultData>();
+        ArrayList<SearchResultData> listResults = new ArrayList<>();
+
+
+        ArrayList<SearchResultData> permittedResults = new ArrayList<>();
+
+        ArrayList<String> pathList = new ArrayList<>();
+        ArrayList<String> permittedPaths;
 
         if(!GETFAKEDATA)
         {
@@ -71,6 +80,7 @@ public class SearchManager {
                     String title;
                     String date;
                     List<String> keywords = null;
+                    String realPath;
 
                     for (int i = 0; i < totalHits; i++)
                     {
@@ -81,7 +91,8 @@ public class SearchManager {
                             hitSource = hit.getJSONObject("_source");
                             file = hitSource.getJSONObject("file");
                             filename = file.getString("filename");
-                            url = hitSource.getJSONObject("path").getString("real").replace("/var/www/html", SERVER_URL);
+                            realPath = hitSource.getJSONObject("path").getString("real");
+                            url = realPath.replace("/var/www/html", SERVER_URL);
                             description = getFormattedDescription(hitSource.getString("content"), searchInfo.getSearchString());
 
                             meta = hitSource.getJSONObject("meta");
@@ -89,8 +100,10 @@ public class SearchManager {
                             title = meta.getString("title");
                             date = meta.getString("date");
 
-                            listResults.add(new SearchResultFile(filename, url, description, author, title, date, keywords));
+                            listResults.add(new SearchResultFile(filename, url, description, author, title, date, keywords,realPath));
 
+                            //add path to list
+                            pathList.add(realPath);
                         }
                     }
                     result.setTimeElapsed(took);
@@ -107,7 +120,26 @@ public class SearchManager {
             listResults.addAll(GetFakeData(3, searchInfo.getSearchString()));
         }
 
-        result.setSearchResults(listResults);
+        permittedPaths = permisionsManager.getValidPaths(session.getUserId() , pathList);
+
+        for(SearchResultData res:listResults)
+        {
+            if(res instanceof SearchResultFile)
+            {
+                SearchResultFile fileResult = (SearchResultFile) res;
+                if(permittedPaths.contains(fileResult.getRealPath()))
+                {
+                    permittedResults.add(res);
+                    permittedPaths.remove(fileResult.getRealPath());
+                }
+            }
+            else
+            {
+                permittedResults.add(res);
+            }
+        }
+
+        result.setSearchResults(permittedResults);
         return result;
     }
 
@@ -124,8 +156,8 @@ public class SearchManager {
             content[i] = content[i].toLowerCase();
         }
         String formattedDescription = description;
-        ArrayList<Integer> indexList = new ArrayList<Integer>();
-        Map<Integer, Integer> dictionary = new HashMap<Integer, Integer>();
+        ArrayList<Integer> indexList = new ArrayList<>();
+        Map<Integer, Integer> dictionary = new HashMap<>();
 
         for(int i = 0; i < searchKeywords.length; i++) //foreach keyword
         {
@@ -155,7 +187,7 @@ public class SearchManager {
 
     private ArrayList<Integer> getAllIndex(String text, String word)
     {
-        ArrayList<Integer> indexes = new ArrayList<Integer>();
+        ArrayList<Integer> indexes = new ArrayList<>();
         for (int i = -1; (i = text.indexOf(word, i + 1)) != -1; )
         {
             indexes.add(i);
@@ -174,8 +206,9 @@ public class SearchManager {
             String author = "fakeAuthor";
             String title = "Fake file " + i;
             String date = new Date().toString();
-            ArrayList<String> keywords = new ArrayList<String>();
-            list.add(new SearchResultFile(filename, url, getFormattedDescription(description, searchText), author, title, date, keywords));
+            ArrayList<String> keywords = new ArrayList<>();
+            String realPath = "";
+            list.add(new SearchResultFile(filename, url, getFormattedDescription(description, searchText), author, title, date, keywords,realPath));
         }
 
         return list;

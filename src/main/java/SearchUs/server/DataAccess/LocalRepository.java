@@ -13,7 +13,7 @@ public class LocalRepository {
     @Inject
     private DatabaseConnection db;
 
-    public List<String> getValidPaths(String cip, List<String> paths){
+    public ArrayList<String> getValidPaths(String cip, ArrayList<String> paths){
 
         String query = "SELECT path FROM file.get_AllowedFilesFromList('" + cip + "','";
 
@@ -42,4 +42,6 @@ public class LocalRepository {
         }
         return validPaths;
     }
+
+
 }

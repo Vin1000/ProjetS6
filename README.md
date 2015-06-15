@@ -11,6 +11,15 @@ Recherche d’information dans un sous-ensemble du site avec Lucene
 <b:heading size="2">Hello World GWT-Bootstrap</b:heading>
 ```
 
+## Elasticsearch Bootstraping
+1. Installer NodeJs
+
+2. Dossier tools->ElasticSearch->serverBootstrap
+
+3. Executer la commande "npm install" pour aller chercher toute les dependences (NOTE : Ne pas commiter le dossier node_modules)
+
+4. Executer la commande "node createIndex.js IP=XXX.XXX.XXX.XXX" (L'ip est optionnel, si aucune ip, utilise l'ip du serveur par defaut)
+
 ##Selenium
 **Set up windows local:**
 - Aller dans le dossier tools\Selenium\server\

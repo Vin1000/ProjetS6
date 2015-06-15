@@ -14,6 +14,11 @@ public class LocalRepository {
 
     public ArrayList<String> getValidPaths(String cip, ArrayList<String> paths){
 
+        // Temporary patch : If no cip provided (CAS Disabled), Use TEST Cip
+        if(cip == null){
+            cip = "abdj2702";
+        }
+
         String query = "SELECT path FROM file.get_AllowedFilesFromList('" + cip + "','";
 
         boolean firstPath = true;

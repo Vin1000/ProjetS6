@@ -1,0 +1,20 @@
+(function fileTypeEval(){
+        if(numberTypes == 1 && fileType[0] == "all")
+        {
+                return true;
+        }
+
+        var filename = doc["filename"].value;
+        if(filename != null)
+        {
+                var extension = filename.slice(filename.lastIndexOf(".")+1);
+
+                for(i=0;i<numberTypes;i++)
+                {
+                        if(fileType[i] == extension)
+                                return true;
+                }
+                return false;
+        }
+        return false;
+})()

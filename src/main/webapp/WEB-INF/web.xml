@@ -33,7 +33,7 @@
         </init-param>
         <init-param>
             <param-name>serverName</param-name>
-            <param-value>104.236.25.139:8888</param-value>
+            <param-value>localhost:8888</param-value>
         </init-param>
     </filter>
     <filter>
@@ -45,7 +45,7 @@
         </init-param>
         <init-param>
             <param-name>serverName</param-name>
-            <param-value>104.236.25.139:8888</param-value>
+            <param-value>localhost:8888</param-value>
         </init-param>
         <init-param>
             <param-name>artifactParameterName</param-name>

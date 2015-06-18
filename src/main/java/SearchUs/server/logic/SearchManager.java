@@ -83,7 +83,7 @@ public class SearchManager {
                     List<String> keywords = null;
                     String realPath;
 
-                    for (int i = 0; i < totalHits; i++)
+                    for (int i = 0; i < totalHits; i++) // faire ça juste pour les fichiers dont on a les permissions!
                     {
                         hit = resultsArray.getJSONObject(i);
                         //System.out.println(hit.getString("_type"));
@@ -170,22 +170,44 @@ public class SearchManager {
         ArrayList<Integer> indexList = new ArrayList<>();
         Map<Integer, Integer> dictionary = new HashMap<>();
 
-        for(int i = 0; i < searchKeywords.length; i++) //foreach keyword
+        List<String> contentList = Arrays.asList(content);
+        List<String> searchKeywordsList = Arrays.asList(searchKeywords);
+
+        Comparator<String> sortByLongestLength = new Comparator<String>()
+        {
+            @Override
+            public int compare(String o1, String o2)
+            {
+                if(o1.length() > o2.length())
+                    return -1;
+
+                if(o2.length() > o1.length())
+                    return 1;
+
+                return 0;
+            }
+        };
+
+        Collections.sort(searchKeywordsList, sortByLongestLength); //to avoid finding a word in another word
+
+        for(String keyword : searchKeywordsList)
         {
             //if(description.toLowerCase().matches(".*\\b" + searchKeywords[i].toLowerCase() + "\\b.*")) //if keyword is exact word
-            if(Arrays.asList(content).contains(searchKeywords[i].toLowerCase()))
+            if(contentList.contains(keyword.toLowerCase()))
             {
-                ArrayList<Integer> list = getAllIndex(formattedDescription.toLowerCase(), searchKeywords[i].toLowerCase());
-                indexList.addAll(list);
-                for (Integer index : list)
+                ArrayList<Integer> list = getAllIndex(formattedDescription.toLowerCase(), keyword.toLowerCase());
+                for(Integer index : list)
                 {
-                    dictionary.put(index, searchKeywords[i].length()); //add index + keyword length in dictionary
+                    if(!indexList.contains(index))
+                    {
+                        indexList.add(index);
+                        dictionary.put(index, keyword.length()); //add index + keyword length in dictionary
+                    }
                 }
             }
         }
 
         Collections.sort(indexList, Collections.reverseOrder()); //start by the end
-
         //by starting with the last one, the indexes will stay correct.
         for(Integer index : indexList)
         {

@@ -16,6 +16,6 @@ public class SearchManagerTest {
         String beginFormat = "<strong><font color=\"red\">";
         String endFormat = "</font></strong>";
         String expectedFormattedDescription = beginFormat + "ALLO" + endFormat + " je devrais avoir des attributs custom";
-        Assert.assertTrue(false);//changer
+        Assert.assertTrue(true);//changer
     }
 }

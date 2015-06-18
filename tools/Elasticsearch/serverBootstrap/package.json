@@ -2,5 +2,8 @@
   "private": true,
   "devDependencies": {
     "request":"*"
+  },
+  "scripts":{
+    "start" : "node createIndex.js"
   }
 }

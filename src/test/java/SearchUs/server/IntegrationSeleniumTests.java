@@ -81,6 +81,7 @@ public class IntegrationSeleniumTests{
     }
 
     private void OpenSearchUs(){
+        // TODO : FIX ME : Do not hard code localhost (Find a way to get ip of server)
         NavigateDriverToPage("http://localhost:8888/Project.html");
 
         // Cas Login steps

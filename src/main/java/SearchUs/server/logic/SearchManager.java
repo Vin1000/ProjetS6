@@ -159,6 +159,7 @@ public class SearchManager {
         String endFormat = "</font></strong>";
         String punctuation = "[\\p{Punct}\\s]+";
 
+        int descriptionLength = description.length();
         String[] searchKeywords = searchText.split(punctuation); //split searchtext in keywords
 
         String[] content = description.split(punctuation); //split description in words
@@ -173,26 +174,8 @@ public class SearchManager {
         List<String> contentList = Arrays.asList(content);
         List<String> searchKeywordsList = Arrays.asList(searchKeywords);
 
-        Comparator<String> sortByLongestLength = new Comparator<String>()
-        {
-            @Override
-            public int compare(String o1, String o2)
-            {
-                if(o1.length() > o2.length())
-                    return -1;
-
-                if(o2.length() > o1.length())
-                    return 1;
-
-                return 0;
-            }
-        };
-
-        Collections.sort(searchKeywordsList, sortByLongestLength); //to avoid finding a word in another word
-
         for(String keyword : searchKeywordsList)
         {
-            //if(description.toLowerCase().matches(".*\\b" + searchKeywords[i].toLowerCase() + "\\b.*")) //if keyword is exact word
             if(contentList.contains(keyword.toLowerCase()))
             {
                 ArrayList<Integer> list = getAllIndex(formattedDescription.toLowerCase(), keyword.toLowerCase());
@@ -200,8 +183,22 @@ public class SearchManager {
                 {
                     if(!indexList.contains(index))
                     {
-                        indexList.add(index);
-                        dictionary.put(index, keyword.length()); //add index + keyword length in dictionary
+                        boolean ok = true;
+                        if(index-1 >= 0) //safe check
+                        {
+                            String c = Character.toString(description.charAt(index - 1));
+                            ok &= c.matches(punctuation); //returns false if char before is alphanumeric
+                        }
+                        if(index+keyword.length() < descriptionLength) //safe check
+                        {
+                            String c = Character.toString(description.charAt(index + keyword.length()));
+                            ok &= c.matches(punctuation); //returns false if char after is alphanumeric
+                        }
+                        if(ok)
+                        {
+                            indexList.add(index);
+                            dictionary.put(index, keyword.length()); //add index + keyword length in dictionary
+                        }
                     }
                 }
             }

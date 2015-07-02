@@ -1,7 +1,6 @@
 
 package SearchUs.client.application.home.pagerwidget;
 
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -27,7 +26,7 @@ public class PagerWidgetView extends ViewWithUiHandlers<PagerWidgetUiHandlers> i
     ArrayList<Button> buttons = new ArrayList<Button>();
     int currentButton = 1;
 
-    public void setPageNumber(final int numberOfPages)
+    public void setPageNumber(int numberOfPages)
     {
         panel.clear();
         Button btPrevious = new Button();

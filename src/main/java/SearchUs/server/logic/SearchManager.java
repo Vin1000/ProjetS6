@@ -13,7 +13,6 @@ import com.google.gwt.thirdparty.json.JSONException;
 import com.google.gwt.thirdparty.json.JSONObject;
 import com.google.inject.Inject;
 
-import java.sql.ResultSet;
 import java.util.*;
 
 /**
@@ -26,8 +25,6 @@ public class SearchManager {
 
     public static final String SERVER_URL = "http://45.55.72.89";
 
-    private boolean GETFAKEDATA = false;
-
     @Inject
     private LocalRepository permisionsManager;
 
@@ -39,75 +36,58 @@ public class SearchManager {
     public SearchResult getSearchResults(SearchDetails searchInfo)
     {
 
-
         SearchResult result = new SearchResult();
 
         ArrayList<SearchResultData> listResults = new ArrayList<>();
-
-
-        ArrayList<SearchResultData> permittedResults = new ArrayList<>();
-
         ArrayList<String> pathList = new ArrayList<>();
-        ArrayList<String> permittedPaths;
 
-        int totalHits = 0;
+        ArrayList<SearchResultData> permittedResults;
 
-        if(!GETFAKEDATA)
+
+        int timeTookToCompleteSearch = 0;
+
+        int totalHits;
+
+        boolean GETFAKEDATA = false;
+
+        long start_time;
+
+        if(!GETFAKEDATA) //Si on peut utiliser le serveur on ne veut pas créer des faux données
         {
             //todo: injecter l'objet.
             ElasticManager searchEngine = new ElasticManager(SERVER_URL);
 
+            //Fais la recherche avec elasticsearch
             JSONObject queryResult = searchEngine.search(searchInfo);
+
+            //On sauvegarde le temps courant pour calculer le temps de processing avant d'afficher
+            start_time = System.currentTimeMillis();
 
             if (queryResult != null)
             {
                 try
                 {
                     JSONObject hits = queryResult.getJSONObject("hits");
-
-                    totalHits = hits.getInt("total");
-                    int took = queryResult.getInt("took");
-
                     JSONArray resultsArray = hits.getJSONArray("hits");
 
                     JSONObject hit;
-                    JSONObject hitSource;
-                    JSONObject file;
-                    JSONObject meta;
-                    String filename;
-                    String url;
-                    String description;
-                    String author;
-                    String title;
-                    String date;
-                    List<String> keywords = null;
                     String realPath;
 
-                    for (int i = 0; i < totalHits; i++) // faire ça juste pour les fichiers dont on a les permissions!
+                    //Nombre de resultats retournés par elasticsearch
+                    totalHits = hits.getInt("total");
+
+                    //On traite le JSON et on le transforme dans plusieurs objets de type SearchResultFile
+                    for (int i = 0; i < totalHits; i++)
                     {
+
                         hit = resultsArray.getJSONObject(i);
-                        //System.out.println(hit.getString("_type"));
-                        if (!hit.getString("_type").equals("folder"))//todo: enforce
-                        {
-                            hitSource = hit.getJSONObject("_source");
-                            file = hitSource.getJSONObject("file");
-                            filename = file.getString("filename");
-                            realPath = hitSource.getJSONObject("path").getString("real");
-                            url = realPath.replace("/var/www/html", SERVER_URL);
-                            description = getFormattedDescription(hitSource.getString("content"), searchInfo.getSearchString());
+                        realPath =  hit.getJSONObject("_source").getJSONObject("path").getString("real");
+                        pathList.add(realPath);
 
-                            meta = hitSource.getJSONObject("meta");
-                            author = meta.getString("author");
-                            title = meta.getString("title");
-                            date = meta.getString("date");
-
-                            listResults.add(new SearchResultFile(filename, url, description, author, title, date, keywords,realPath));
-
-                            //add path to list
-                            pathList.add(realPath);
-                        }
+                        listResults.add(getSearchResultFileFromJSONObject(hit));
                     }
-                    result.setTimeElapsed(took);
+                    //Temps que elasticsearch a pris pour faire la recherche
+                    timeTookToCompleteSearch = queryResult.getInt("took");
 
                 }
                 catch(JSONException e)
@@ -118,8 +98,35 @@ public class SearchManager {
         }
         else //GetFakeData when server is down!
         {
+            start_time = System.currentTimeMillis();
             listResults.addAll(GetFakeData(3, searchInfo.getSearchString()));
         }
+
+
+        //On filtre les resultats selon les permissions de l'utilisateur connecté
+        permittedResults = filterResultsByPermission(listResults,pathList);
+        //On formate la description des resultats à afficher
+        permittedResults = formatResultsDescription(permittedResults,searchInfo.getSearchString());
+
+        //Nombre de resultats retournés
+        result.setTotalHits(permittedResults.size());
+        //On mets la liste de resultats dans l'objet searchResult
+        result.setSearchResults(permittedResults);
+
+        //On sauvegarde le temps pris par elasticsearch et par le traitement du backend.
+        result.setTimeElapsed(timeTookToCompleteSearch);
+        result.setProcessingTime((int)(System.currentTimeMillis() - start_time));
+
+        return result;
+    }
+    /*
+    *   Cette fonction se charge de retourner une liste de resultats en fonction des resultats de la recherche et
+    *   le CIP de l'utilisateur (ainsi que ses permisions)
+    * */
+    private ArrayList<SearchResultData> filterResultsByPermission(ArrayList<SearchResultData> listResults,ArrayList<String> pathList)
+    {
+        ArrayList<SearchResultData> permittedResults = new ArrayList<>();
+        ArrayList<String> permittedPaths;
 
         if(listResults.size() > 0)
         {
@@ -135,10 +142,6 @@ public class SearchManager {
                         permittedResults.add(res);
                         permittedPaths.remove(fileResult.getRealPath());
                     }
-                    else
-                    {
-                        totalHits--;
-                    }
                 }
                 else
                 {
@@ -147,10 +150,77 @@ public class SearchManager {
             }
         }
 
+        return permittedResults;
+    }
 
-        result.setTotalHits(totalHits);
-        result.setSearchResults(permittedResults);
-        return result;
+    /*
+    *   Cette fonction se charge de formater la description des resultats qui seront affichés
+    * */
+    private ArrayList<SearchResultData> formatResultsDescription(ArrayList<SearchResultData> listResults,String searchString)
+    {
+        ArrayList<SearchResultData> results = new ArrayList<>();
+
+        for(SearchResultData res:listResults)
+        {
+            if(res instanceof SearchResultFile)
+            {
+                SearchResultFile fileResult = (SearchResultFile) res;
+                fileResult.setDescription(getFormattedDescription(fileResult.getDescription(), searchString));
+                results.add(fileResult);
+            }
+            else
+            {
+                results.add(res);
+            }
+        }
+
+        return results;
+    }
+
+/*
+*   Cette fonction transforme un objet JSON dans un objet de type SearchResultFile
+* */
+    private SearchResultFile getSearchResultFileFromJSONObject(JSONObject hit)
+    {
+        JSONObject hitSource;
+        JSONObject file;
+        JSONObject meta;
+        String filename;
+        String url;
+        String description;
+        String author;
+        String title;
+        String date;
+        List<String> keywords = null;
+        String realPath;
+
+        SearchResultFile result = null;
+
+        try {
+            if (!hit.getString("_type").equals("folder"))//todo: enforce
+            {
+                hitSource = hit.getJSONObject("_source");
+                file = hitSource.getJSONObject("file");
+                filename = file.getString("filename");
+                realPath = hitSource.getJSONObject("path").getString("real");
+                url = realPath.replace("/var/www/html", SERVER_URL);
+                description = hitSource.getString("content");
+
+                meta = hitSource.getJSONObject("meta");
+                author = meta.getString("author");
+                title = meta.getString("title");
+                date = meta.getString("date");
+
+                result =  new SearchResultFile(filename, url, description, author, title, date, keywords, realPath);
+
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return  result;
+
     }
 
     private String getFormattedDescription(String description, String searchText)

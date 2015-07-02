@@ -21,7 +21,11 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import java.util.ArrayList;
 import java.util.Date;
 
+<<<<<<< HEAD
+public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers, ClearSearchResultsEvent.ClearSearchResultsEventHandler {
+=======
 public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers, SearchEvent.GlobalHandler, ClearSearchResultsEvent.ClearSearchResultsEventHandler, ChangePageEvent.ChangePageEventHandler {
+>>>>>>> 8ebcb40924f58c64698babadd4d2f6546ef8a7ff
 
     interface MyView extends View, HasUiHandlers<SearchResultUiHandlers>
     {
@@ -118,6 +122,13 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
     }
 
     public void UpdateFromUrl(SearchDetails searchDetails)
+    {
+<<<<<<< HEAD
+        SendSearch(searchDetails);
+=======
+        clearResults();
+    }
+
     public void displayResults()
     {
         getView().clearResults();
@@ -137,9 +148,12 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         }
     }
 
+    public void clearResults()
     {
-        SendSearch(searchDetails);
+        clearTime = new Date();
         searchResults.clear();
+        getView().clearResults();
+        getView().clearTimeElapsed();
         getView().clearPager();
     }
 
@@ -171,5 +185,6 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         {
             displayResults();
         }
+>>>>>>> 8ebcb40924f58c64698babadd4d2f6546ef8a7ff
     }
 }

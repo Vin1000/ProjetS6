@@ -44,10 +44,13 @@ public class SearchManager {
 
         ArrayList<String> pathList = new ArrayList<>();
 
+        int timeTookToCompleteSearch = 0;
 
         int totalHits = 0;
 
         boolean GETFAKEDATA = false;
+
+        long start_time = 0;
 
         if(!GETFAKEDATA)
         {
@@ -55,6 +58,8 @@ public class SearchManager {
             ElasticManager searchEngine = new ElasticManager(SERVER_URL);
 
             JSONObject queryResult = searchEngine.search(searchInfo);
+
+            start_time = System.currentTimeMillis();
 
             if (queryResult != null)
             {
@@ -77,8 +82,8 @@ public class SearchManager {
 
                         listResults.add(getSearchResultFileFromJSONObject(hit,searchInfo.getSearchString()));
                     }
+                    timeTookToCompleteSearch = queryResult.getInt("took");
 
-                    result.setTimeElapsed(queryResult.getInt("took"));
                 }
                 catch(JSONException e)
                 {
@@ -88,6 +93,7 @@ public class SearchManager {
         }
         else //GetFakeData when server is down!
         {
+            start_time = System.currentTimeMillis();
             listResults.addAll(GetFakeData(3, searchInfo.getSearchString()));
         }
 
@@ -96,6 +102,10 @@ public class SearchManager {
 
         result.setTotalHits(permittedResults.size());
         result.setSearchResults(permittedResults);
+
+        result.setTimeElapsed(timeTookToCompleteSearch);
+        result.setProcessingTime((int)(System.currentTimeMillis() - start_time));
+
         return result;
     }
 

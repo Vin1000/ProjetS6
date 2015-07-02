@@ -1,5 +1,6 @@
 package SearchUs.client.application.home.searchresult;
 
+import SearchUs.client.application.home.pagerwidget.PagerWidgetPresenter;
 import SearchUs.client.application.home.resultwidget.ResultWidgetPresenter;
 import SearchUs.shared.data.SearchResultData;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -26,6 +27,12 @@ public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers>
         this.resultPanel.add(lbl);
     }
 
+    public void addPager()
+    {
+        PagerWidgetPresenter pw = pagerWidgetPresenter;
+        pager.add(pw);
+    }
+
     public void addTimeElapsed_totalHits(int timeElapsed, int totalHits) {
         if (totalHits <= 1)
         {
@@ -47,6 +54,8 @@ public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers>
         timeElapsed_totalHits_Label.setText("");
     }
 
+    public void clearPager() { pager.clear(); }
+
     interface Binder extends UiBinder<Widget, SearchResultView> {
     }
 
@@ -56,14 +65,21 @@ public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers>
     @UiField
     Label timeElapsed_totalHits_Label;
 
+    @UiField
+    HTMLPanel pager;
+
     @Inject
     SearchResultView(Binder uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
         timeElapsed_totalHits_Label.getElement().getStyle().setProperty("paddingLeft", "7px");
+        pager.getElement().getStyle().setProperty("paddingLeft", "7px");
     }
 
     @Inject
     Provider<ResultWidgetPresenter> resultWidgetProvider;
+
+    @Inject
+    PagerWidgetPresenter pagerWidgetPresenter;
 
     @Override
     public void setInSlot(Object slot, IsWidget content) {

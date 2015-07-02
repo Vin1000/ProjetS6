@@ -28,6 +28,8 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         void addTimeElapsed_totalHits(int timeElapsed, int totalHits);
         void clearResults();
         void clearTimeElapsed();
+        void clearPager();
+        void addPager();
     }
 
     @ProxyStandard
@@ -87,6 +89,8 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
                 {
                     getView().addNoResultMessage();
                 }
+
+                getView().addPager();
             }
 
             @Override
@@ -107,5 +111,6 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         clearTime = new Date();
         getView().clearResults();
         getView().clearTimeElapsed();
+        getView().clearPager();
     }
 }

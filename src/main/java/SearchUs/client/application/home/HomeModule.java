@@ -1,5 +1,6 @@
 package SearchUs.client.application.home;
 
+import SearchUs.client.application.home.pagerwidget.PagerWidgetModule;
 import SearchUs.client.application.home.resultwidget.ResultWidgetModule;
 import SearchUs.client.application.home.searchbar.SearchBarModule;
 import SearchUs.client.application.home.searchresult.SearchResultModule;
@@ -13,5 +14,6 @@ public class HomeModule extends AbstractPresenterModule {
         install(new ResultWidgetModule());
         bindPresenter(HomePagePresenter.class, HomePagePresenter.MyView.class, HomePageView.class,
                 HomePagePresenter.MyProxy.class);
+        install(new PagerWidgetModule());
     }
 }

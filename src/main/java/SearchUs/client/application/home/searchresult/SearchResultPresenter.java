@@ -29,8 +29,10 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         void clearResults();
         void clearTimeElapsed();
         void clearPager();
-        void addPager();
+        void addPager(int numberOfPages);
     }
+
+    ArrayList<SearchResultData> searchResults;
 
     @ProxyStandard
     public interface MyProxy extends Proxy<SearchResultPresenter> {
@@ -74,12 +76,17 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
                     return;
                 }
                 getView().clearResults();
-                ArrayList<SearchResultData> searchResults = result.getSearchResults();
+
+                searchResults.clear();
+                searchResults = result.getSearchResults();
 
                 getView().addTimeElapsed_totalHits(result.getTimeElapsed(), result.getTotalHits());
 
                 if(!searchResults.isEmpty())
                 {
+                    int pages = searchResults.size();
+                    getView().addPager(pages);
+
                     for (SearchResultData res : searchResults)
                     {
                         getView().addResult(res);
@@ -89,8 +96,6 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
                 {
                     getView().addNoResultMessage();
                 }
-
-                getView().addPager();
             }
 
             @Override

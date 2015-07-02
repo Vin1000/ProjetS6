@@ -9,6 +9,7 @@ import com.gwtplatform.mvp.client.View;
 
 public class PagerWidgetPresenter extends PresenterWidget<PagerWidgetPresenter.MyView> implements PagerWidgetUiHandlers {
     public interface MyView extends View, HasUiHandlers<PagerWidgetUiHandlers> {
+        void setPageNumber(int pageNumber);
     }
 
     @Inject
@@ -18,5 +19,8 @@ public class PagerWidgetPresenter extends PresenterWidget<PagerWidgetPresenter.M
         getView().setUiHandlers(this);
     }
 
-
+    public void setPageNumber(int pageNumber)
+    {
+        getView().setPageNumber(pageNumber);
+    }
 }

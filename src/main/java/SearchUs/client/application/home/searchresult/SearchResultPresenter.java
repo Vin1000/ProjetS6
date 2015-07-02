@@ -7,7 +7,6 @@ import SearchUs.client.application.events.SearchEvent;
 import SearchUs.shared.data.SearchResultData;
 import SearchUs.shared.dispatch.search.SearchAction;
 import SearchUs.shared.dispatch.search.SearchResult;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -140,6 +139,7 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
     public void onChangePageEvent(ChangePageEvent event)
     {
         int pageNumber = event.getPageNumber();
+        int previousPage = currentPage;
         if(pageNumber == 0) //precedant
         {
             if(currentPage > 1)
@@ -158,6 +158,10 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         {
             currentPage = pageNumber;
         }
-        displayResults();
+
+        if(previousPage != currentPage)
+        {
+            displayResults();
+        }
     }
 }

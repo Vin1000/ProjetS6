@@ -2,7 +2,6 @@
 package SearchUs.client.application.home.pagerwidget; 
 
 import SearchUs.client.application.events.ChangePageEvent;
-import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;

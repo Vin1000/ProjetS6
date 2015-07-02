@@ -1,12 +1,10 @@
 
 package SearchUs.client.application.home.pagerwidget;
 
-import SearchUs.client.application.events.ChangePageEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -21,7 +19,6 @@ public class PagerWidgetView extends ViewWithUiHandlers<PagerWidgetUiHandlers> i
     @Inject
     PagerWidgetView(Binder binder) {
         initWidget(binder.createAndBindUi(this));
-        panel.getElement().getStyle().setProperty("display", "inline-block");
     }
 
     public void setPageNumber(int pageNumber)

@@ -39,26 +39,28 @@ public class SearchManager {
         SearchResult result = new SearchResult();
 
         ArrayList<SearchResultData> listResults = new ArrayList<>();
-
-        ArrayList<SearchResultData> permittedResults = new ArrayList<>();
-
         ArrayList<String> pathList = new ArrayList<>();
+
+        ArrayList<SearchResultData> permittedResults;
+
 
         int timeTookToCompleteSearch = 0;
 
-        int totalHits = 0;
+        int totalHits;
 
         boolean GETFAKEDATA = false;
 
-        long start_time = 0;
+        long start_time;
 
-        if(!GETFAKEDATA)
+        if(!GETFAKEDATA) //Si on peut utiliser le serveur on ne veut pas créer des faux données
         {
             //todo: injecter l'objet.
             ElasticManager searchEngine = new ElasticManager(SERVER_URL);
 
+            //Fais la recherche avec elasticsearch
             JSONObject queryResult = searchEngine.search(searchInfo);
 
+            //On sauvegarde le temps courant pour calculer le temps de processing avant d'afficher
             start_time = System.currentTimeMillis();
 
             if (queryResult != null)
@@ -71,8 +73,10 @@ public class SearchManager {
                     JSONObject hit;
                     String realPath;
 
+                    //Nombre de resultats retournés par elasticsearch
                     totalHits = hits.getInt("total");
 
+                    //On traite le JSON et on le transforme dans plusieurs objets de type SearchResultFile
                     for (int i = 0; i < totalHits; i++)
                     {
 
@@ -82,6 +86,7 @@ public class SearchManager {
 
                         listResults.add(getSearchResultFileFromJSONObject(hit));
                     }
+                    //Temps que elasticsearch a pris pour faire la recherche
                     timeTookToCompleteSearch = queryResult.getInt("took");
 
                 }
@@ -98,17 +103,26 @@ public class SearchManager {
         }
 
 
+        //On filtre les resultats selon les permissions de l'utilisateur connecté
         permittedResults = filterResultsByPermission(listResults,pathList);
+        //On formate la description des resultats à afficher
         permittedResults = formatResultsDescription(permittedResults,searchInfo.getSearchString());
 
+        //Nombre de resultats retournés
         result.setTotalHits(permittedResults.size());
+        //On mets la liste de resultats dans l'objet searchResult
         result.setSearchResults(permittedResults);
 
+        //On sauvegarde le temps pris par elasticsearch et par le traitement du backend.
         result.setTimeElapsed(timeTookToCompleteSearch);
         result.setProcessingTime((int)(System.currentTimeMillis() - start_time));
 
         return result;
     }
+    /*
+    *   Cette fonction se charge de retourner une liste de resultats en fonction des resultats de la recherche et
+    *   le CIP de l'utilisateur (ainsi que ses permisions)
+    * */
     private ArrayList<SearchResultData> filterResultsByPermission(ArrayList<SearchResultData> listResults,ArrayList<String> pathList)
     {
         ArrayList<SearchResultData> permittedResults = new ArrayList<>();
@@ -139,7 +153,9 @@ public class SearchManager {
         return permittedResults;
     }
 
-
+    /*
+    *   Cette fonction se charge de formater la description des resultats qui seront affichés
+    * */
     private ArrayList<SearchResultData> formatResultsDescription(ArrayList<SearchResultData> listResults,String searchString)
     {
         ArrayList<SearchResultData> results = new ArrayList<>();
@@ -161,7 +177,9 @@ public class SearchManager {
         return results;
     }
 
-
+/*
+*   Cette fonction transforme un objet JSON dans un objet de type SearchResultFile
+* */
     private SearchResultFile getSearchResultFileFromJSONObject(JSONObject hit)
     {
         JSONObject hitSource;

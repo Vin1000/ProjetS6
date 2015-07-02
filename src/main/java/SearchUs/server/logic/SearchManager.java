@@ -83,7 +83,7 @@ public class SearchManager {
                     List<String> keywords = null;
                     String realPath;
 
-                    for (int i = 0; i < totalHits; i++)
+                    for (int i = 0; i < totalHits; i++) // faire ça juste pour les fichiers dont on a les permissions!
                     {
                         hit = resultsArray.getJSONObject(i);
                         //System.out.println(hit.getString("_type"));
@@ -159,6 +159,7 @@ public class SearchManager {
         String endFormat = "</font></strong>";
         String punctuation = "[\\p{Punct}\\s]+";
 
+        int descriptionLength = description.length();
         String[] searchKeywords = searchText.split(punctuation); //split searchtext in keywords
 
         String[] content = description.split(punctuation); //split description in words
@@ -170,22 +171,40 @@ public class SearchManager {
         ArrayList<Integer> indexList = new ArrayList<>();
         Map<Integer, Integer> dictionary = new HashMap<>();
 
-        for(int i = 0; i < searchKeywords.length; i++) //foreach keyword
+        List<String> contentList = Arrays.asList(content);
+        List<String> searchKeywordsList = Arrays.asList(searchKeywords);
+
+        for(String keyword : searchKeywordsList)
         {
-            //if(description.toLowerCase().matches(".*\\b" + searchKeywords[i].toLowerCase() + "\\b.*")) //if keyword is exact word
-            if(Arrays.asList(content).contains(searchKeywords[i].toLowerCase()))
+            if(contentList.contains(keyword.toLowerCase()))
             {
-                ArrayList<Integer> list = getAllIndex(formattedDescription.toLowerCase(), searchKeywords[i].toLowerCase());
-                indexList.addAll(list);
-                for (Integer index : list)
+                ArrayList<Integer> list = getAllIndex(formattedDescription.toLowerCase(), keyword.toLowerCase());
+                for(Integer index : list)
                 {
-                    dictionary.put(index, searchKeywords[i].length()); //add index + keyword length in dictionary
+                    if(!indexList.contains(index))
+                    {
+                        boolean ok = true;
+                        if(index-1 >= 0) //safe check
+                        {
+                            String c = Character.toString(description.charAt(index - 1));
+                            ok &= c.matches(punctuation); //returns false if char before is alphanumeric
+                        }
+                        if(index+keyword.length() < descriptionLength) //safe check
+                        {
+                            String c = Character.toString(description.charAt(index + keyword.length()));
+                            ok &= c.matches(punctuation); //returns false if char after is alphanumeric
+                        }
+                        if(ok)
+                        {
+                            indexList.add(index);
+                            dictionary.put(index, keyword.length()); //add index + keyword length in dictionary
+                        }
+                    }
                 }
             }
         }
 
         Collections.sort(indexList, Collections.reverseOrder()); //start by the end
-
         //by starting with the last one, the indexes will stay correct.
         for(Integer index : indexList)
         {

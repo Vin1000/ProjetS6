@@ -2,7 +2,7 @@ package SearchUs.client.application.home.searchresult;
 
 import SearchUs.client.application.ApplicationPresenter;
 import SearchUs.client.application.events.ClearSearchResultsEvent;
-import SearchUs.client.application.events.SearchEvent;
+import SearchUs.shared.data.SearchDetails;
 import SearchUs.shared.data.SearchResultData;
 import SearchUs.shared.dispatch.search.SearchAction;
 import SearchUs.shared.dispatch.search.SearchResult;
@@ -14,12 +14,13 @@ import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers, SearchEvent.GlobalHandler, ClearSearchResultsEvent.ClearSearchResultsEventHandler {
+public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers, ClearSearchResultsEvent.ClearSearchResultsEventHandler {
 
     interface MyView extends View, HasUiHandlers<SearchResultUiHandlers>
     {
@@ -36,22 +37,24 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
 
     private DispatchAsync dispatcher;
     private Date clearTime;
+    PlaceManager placeManager;
 
     @Inject
     public SearchResultPresenter(
             EventBus eventBus,
             MyView view,
             MyProxy proxy,
-            DispatchAsync dispatcher) {
+            DispatchAsync dispatcher,
+            PlaceManager placeManager) {
         super(eventBus, view, proxy, ApplicationPresenter.SLOT_SetMainContent);
         this.dispatcher = dispatcher;
+        this.placeManager = placeManager;
         getView().setUiHandlers(this);
     }
 
     @Override
     protected void onBind() {
         super.onBind();
-        addRegisteredHandler(SearchEvent.getType(), this);
         addRegisteredHandler(ClearSearchResultsEvent.getType(), this);
     }
 
@@ -61,8 +64,21 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
     }
 
     @Override
-    public void onGlobalEvent(SearchEvent event) {
-        SearchAction searchAction = new SearchAction(event.getSearchDetails());
+    public void onClearSearchResultsEvent(ClearSearchResultsEvent event)
+    {
+        clearResults();
+    }
+
+    public void clearResults()
+    {
+        clearTime = new Date();
+        getView().clearResults();
+        getView().clearTimeElapsed();
+    }
+
+    public void SendSearch(SearchDetails searchDetails)
+    {
+        SearchAction searchAction = new SearchAction(searchDetails);
         dispatcher.execute(searchAction, new AsyncCallback<SearchResult>() {
             @Override //TODO: Change actions done here
             public void onSuccess(SearchResult result)
@@ -96,16 +112,8 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         });
     }
 
-    @Override
-    public void onClearSearchResultsEvent(ClearSearchResultsEvent event)
+    public void UpdateFromUrl(SearchDetails searchDetails)
     {
-        clearResults();
-    }
-
-    public void clearResults()
-    {
-        clearTime = new Date();
-        getView().clearResults();
-        getView().clearTimeElapsed();
+        SendSearch(searchDetails);
     }
 }

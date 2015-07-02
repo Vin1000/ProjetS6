@@ -9,6 +9,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import org.apache.commons.lang.StringUtils;
 
 import javax.inject.Inject;
 
@@ -84,12 +85,26 @@ public class SearchBarView extends ViewWithUiHandlers<SearchBarUiHandlers> imple
         getUiHandlers().sendSearch(textBox.getText());
     }
 
-    public void ClickEvent(String cookie)
+    public void ClickEvent(String searchString)
     {
-        if(!cookie.replace(" ", "").isEmpty())
-        {
-            textBox.setText(cookie);
-            ClickEvent();
+        topImage.getElement().getStyle().setProperty("display", "none");
+        sideImage.getElement().getStyle().setProperty("display", "initial");
+        sideImage.getElement().getParentElement().setAttribute("align", "left");
+        sideImage.getElement().getParentElement().getStyle().setProperty("paddingLeft", "6px");
+
+        textBox.setText(searchString);
+        getUiHandlers().sendSearch(textBox.getText());
+    }
+
+    public void SetSearchText(String searchText)
+    {
+        if(searchText != null) {
+            topImage.getElement().getStyle().setProperty("display", "none");
+            sideImage.getElement().getStyle().setProperty("display", "initial");
+            sideImage.getElement().getParentElement().setAttribute("align", "left");
+            sideImage.getElement().getParentElement().getStyle().setProperty("paddingLeft", "6px");
         }
+
+        textBox.setText(searchText);
     }
 }

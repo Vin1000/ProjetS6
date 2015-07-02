@@ -157,6 +157,8 @@ public class ElasticManager {
         String fileTypes = "[";
         Integer numberTypes = 0;
 
+        System.out.print("DOCTYPES: " + (searchInDocTypes.get(0)).toString());
+
         for(FileType type : searchInDocTypes)
         {
             if(numberTypes != 0)

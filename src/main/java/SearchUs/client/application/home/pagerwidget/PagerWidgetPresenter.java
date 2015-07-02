@@ -11,6 +11,7 @@ import com.gwtplatform.mvp.client.View;
 public class PagerWidgetPresenter extends PresenterWidget<PagerWidgetPresenter.MyView> implements PagerWidgetUiHandlers {
     public interface MyView extends View, HasUiHandlers<PagerWidgetUiHandlers> {
         void setPageNumber(int pageNumber);
+        void setBold();
     }
 
     @Inject

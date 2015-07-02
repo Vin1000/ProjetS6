@@ -1,5 +1,5 @@
 request = require("request");
-var serverIp = "45.55.206.156";	
+var serverIp = "45.55.72.89";	
 // Process command line argument
 if(process.argv[2]){
 	var ip = process.argv[2].toLowerCase();

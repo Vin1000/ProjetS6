@@ -80,7 +80,7 @@ public class SearchManager {
                         realPath =  hit.getJSONObject("_source").getJSONObject("path").getString("real");
                         pathList.add(realPath);
 
-                        listResults.add(getSearchResultFileFromJSONObject(hit,searchInfo.getSearchString()));
+                        listResults.add(getSearchResultFileFromJSONObject(hit));
                     }
                     timeTookToCompleteSearch = queryResult.getInt("took");
 
@@ -99,6 +99,7 @@ public class SearchManager {
 
 
         permittedResults = filterResultsByPermission(listResults,pathList);
+        permittedResults = formatResultsDescription(permittedResults,searchInfo.getSearchString());
 
         result.setTotalHits(permittedResults.size());
         result.setSearchResults(permittedResults);
@@ -108,7 +109,6 @@ public class SearchManager {
 
         return result;
     }
-
     private ArrayList<SearchResultData> filterResultsByPermission(ArrayList<SearchResultData> listResults,ArrayList<String> pathList)
     {
         ArrayList<SearchResultData> permittedResults = new ArrayList<>();
@@ -140,7 +140,29 @@ public class SearchManager {
     }
 
 
-    private SearchResultFile getSearchResultFileFromJSONObject(JSONObject hit,String searchString)
+    private ArrayList<SearchResultData> formatResultsDescription(ArrayList<SearchResultData> listResults,String searchString)
+    {
+        ArrayList<SearchResultData> results = new ArrayList<>();
+
+        for(SearchResultData res:listResults)
+        {
+            if(res instanceof SearchResultFile)
+            {
+                SearchResultFile fileResult = (SearchResultFile) res;
+                fileResult.setDescription(getFormattedDescription(fileResult.getDescription(), searchString));
+                results.add(fileResult);
+            }
+            else
+            {
+                results.add(res);
+            }
+        }
+
+        return results;
+    }
+
+
+    private SearchResultFile getSearchResultFileFromJSONObject(JSONObject hit)
     {
         JSONObject hitSource;
         JSONObject file;
@@ -164,7 +186,7 @@ public class SearchManager {
                 filename = file.getString("filename");
                 realPath = hitSource.getJSONObject("path").getString("real");
                 url = realPath.replace("/var/www/html", SERVER_URL);
-                description = getFormattedDescription(hitSource.getString("content"), searchString);
+                description = hitSource.getString("content");
 
                 meta = hitSource.getJSONObject("meta");
                 author = meta.getString("author");

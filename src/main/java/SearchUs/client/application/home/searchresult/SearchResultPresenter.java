@@ -21,7 +21,7 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers, SearchEvent.GlobalHandler, ClearSearchResultsEvent.ClearSearchResultsEventHandler, ChangePageEvent.ChangePageEventHandler {
+public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers, ClearSearchResultsEvent.ClearSearchResultsEventHandler, ChangePageEvent.ChangePageEventHandler {
 
     interface MyView extends View, HasUiHandlers<SearchResultUiHandlers>
     {
@@ -81,8 +81,10 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
     public void clearResults()
     {
         clearTime = new Date();
+        searchResults.clear();
         getView().clearResults();
         getView().clearTimeElapsed();
+        getView().clearPager();
     }
 
     public void SendSearch(SearchDetails searchDetails)
@@ -118,6 +120,10 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
     }
 
     public void UpdateFromUrl(SearchDetails searchDetails)
+    {
+        SendSearch(searchDetails);
+    }
+
     public void displayResults()
     {
         getView().clearResults();
@@ -135,12 +141,6 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         {
             getView().addNoResultMessage();
         }
-    }
-
-    {
-        SendSearch(searchDetails);
-        searchResults.clear();
-        getView().clearPager();
     }
 
     @Override

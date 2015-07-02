@@ -24,7 +24,7 @@ public class SearchManager {
     private UserSessionImpl session;
 
     public static final String SERVER_URL = "http://45.55.72.89";
-    
+
     @Inject
     private LocalRepository permisionsManager;
 
@@ -36,16 +36,14 @@ public class SearchManager {
     public SearchResult getSearchResults(SearchDetails searchInfo)
     {
 
-
         SearchResult result = new SearchResult();
 
         ArrayList<SearchResultData> listResults = new ArrayList<>();
 
-
         ArrayList<SearchResultData> permittedResults = new ArrayList<>();
 
         ArrayList<String> pathList = new ArrayList<>();
-        ArrayList<String> permittedPaths;
+
 
         int totalHits = 0;
 
@@ -63,28 +61,24 @@ public class SearchManager {
                 try
                 {
                     JSONObject hits = queryResult.getJSONObject("hits");
-
-                    totalHits = hits.getInt("total");
-                    int took = queryResult.getInt("took");
-
                     JSONArray resultsArray = hits.getJSONArray("hits");
 
                     JSONObject hit;
-                    JSONObject hitSource;
                     String realPath;
 
-                    for (int i = 0; i < totalHits; i++) // faire ça juste pour les fichiers dont on a les permissions!
+                    totalHits = hits.getInt("total");
+
+                    for (int i = 0; i < totalHits; i++)
                     {
 
                         hit = resultsArray.getJSONObject(i);
-                        hitSource = hit.getJSONObject("_source");
-                        realPath = hitSource.getJSONObject("path").getString("real");
+                        realPath =  hit.getJSONObject("_source").getJSONObject("path").getString("real");
                         pathList.add(realPath);
 
                         listResults.add(getSearchResultFileFromJSONObject(hit,searchInfo.getSearchString()));
                     }
 
-                    result.setTimeElapsed(took);
+                    result.setTimeElapsed(queryResult.getInt("took"));
                 }
                 catch(JSONException e)
                 {
@@ -96,6 +90,19 @@ public class SearchManager {
         {
             listResults.addAll(GetFakeData(3, searchInfo.getSearchString()));
         }
+
+
+        permittedResults = filterResultsByPermission(listResults,pathList);
+
+        result.setTotalHits(permittedResults.size());
+        result.setSearchResults(permittedResults);
+        return result;
+    }
+
+    private ArrayList<SearchResultData> filterResultsByPermission(ArrayList<SearchResultData> listResults,ArrayList<String> pathList)
+    {
+        ArrayList<SearchResultData> permittedResults = new ArrayList<>();
+        ArrayList<String> permittedPaths;
 
         if(listResults.size() > 0)
         {
@@ -111,10 +118,6 @@ public class SearchManager {
                         permittedResults.add(res);
                         permittedPaths.remove(fileResult.getRealPath());
                     }
-                    else
-                    {
-                        totalHits--;
-                    }
                 }
                 else
                 {
@@ -123,11 +126,9 @@ public class SearchManager {
             }
         }
 
-
-        result.setTotalHits(totalHits);
-        result.setSearchResults(permittedResults);
-        return result;
+        return permittedResults;
     }
+
 
     private SearchResultFile getSearchResultFileFromJSONObject(JSONObject hit,String searchString)
     {

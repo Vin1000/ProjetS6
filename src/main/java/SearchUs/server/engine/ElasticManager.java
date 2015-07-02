@@ -75,7 +75,8 @@ public class ElasticManager {
         return responseBody;
     }
 
-    private String makeGet(String endpoint)
+    //Not used
+    /*private String makeGet(String endpoint)
     {
         String responseBody =  null;
 
@@ -114,7 +115,7 @@ public class ElasticManager {
         }
 
         return responseBody;
-    }
+    }*/
 
 
 
@@ -246,80 +247,6 @@ public class ElasticManager {
                 "  \t}\n" +
                 "}";
         return query;
-        /*
-        JSONObject jsonQuery = new JSONObject();
-        JSONObject match = new JSONObject();
-        JSONObject completeQuery = new JSONObject();
-
-        JSONArray _source = new JSONArray();
-        _source.put("_source");
-
-        JSONObject script_fileds = new JSONObject();
-        JSONObject fileType  = new JSONObject();
-        JSONString file = new JSONString("filetype");
-        JSONString lang = new JSONString("javascript");
-
-
-        if(queryString.contains("*"))
-        {
-
-            try {
-                jsonQuery.put("wildcard",new JSONObject().put("_all",queryString));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-        else
-        {
-            try {
-                match.put("_all",queryString);
-                jsonQuery.put("match",match);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if(searchInDocTypes != null)
-        {
-            if(!searchInDocTypes.contains(FileType.ALL)) {
-                JSONObject filtered = new JSONObject();
-                JSONObject or = new JSONObject();
-                JSONObject filter = new JSONObject();
-
-                try {
-
-                    filtered.put("query", jsonQuery);
-
-
-                    filter.put("or", or);
-                    filtered.put("filter", filter);
-                    completeQuery.put("filtered", filtered);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            else
-            {
-                try {
-                    completeQuery.put("query",jsonQuery);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }
-        else
-        {
-            try {
-                completeQuery.put("query",jsonQuery);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        query = completeQuery.toString();*/
 
     }
 }

@@ -13,6 +13,7 @@ public class SearchResult implements Result {
 
     private int timeElapsed;
     private int totalHits;
+    private int processingTime;
 
 
 
@@ -44,6 +45,8 @@ public class SearchResult implements Result {
         totalHits = h;
     }
 
+    public int getProcessingTime(){return processingTime;}
 
+    public void setProcessingTime(int t){processingTime = t;}
 
 }

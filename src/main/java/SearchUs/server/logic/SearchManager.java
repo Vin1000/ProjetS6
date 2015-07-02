@@ -13,7 +13,6 @@ import com.google.gwt.thirdparty.json.JSONException;
 import com.google.gwt.thirdparty.json.JSONObject;
 import com.google.inject.Inject;
 
-import java.sql.ResultSet;
 import java.util.*;
 
 /**
@@ -25,9 +24,7 @@ public class SearchManager {
     private UserSessionImpl session;
 
     public static final String SERVER_URL = "http://45.55.72.89";
-
-    private boolean GETFAKEDATA = false;
-
+    
     @Inject
     private LocalRepository permisionsManager;
 
@@ -52,6 +49,8 @@ public class SearchManager {
 
         int totalHits = 0;
 
+        boolean GETFAKEDATA = false;
+
         if(!GETFAKEDATA)
         {
             //todo: injecter l'objet.
@@ -72,43 +71,20 @@ public class SearchManager {
 
                     JSONObject hit;
                     JSONObject hitSource;
-                    JSONObject file;
-                    JSONObject meta;
-                    String filename;
-                    String url;
-                    String description;
-                    String author;
-                    String title;
-                    String date;
-                    List<String> keywords = null;
                     String realPath;
 
                     for (int i = 0; i < totalHits; i++) // faire ça juste pour les fichiers dont on a les permissions!
                     {
+
                         hit = resultsArray.getJSONObject(i);
-                        //System.out.println(hit.getString("_type"));
-                        if (!hit.getString("_type").equals("folder"))//todo: enforce
-                        {
-                            hitSource = hit.getJSONObject("_source");
-                            file = hitSource.getJSONObject("file");
-                            filename = file.getString("filename");
-                            realPath = hitSource.getJSONObject("path").getString("real");
-                            url = realPath.replace("/var/www/html", SERVER_URL);
-                            description = getFormattedDescription(hitSource.getString("content"), searchInfo.getSearchString());
+                        hitSource = hit.getJSONObject("_source");
+                        realPath = hitSource.getJSONObject("path").getString("real");
+                        pathList.add(realPath);
 
-                            meta = hitSource.getJSONObject("meta");
-                            author = meta.getString("author");
-                            title = meta.getString("title");
-                            date = meta.getString("date");
-
-                            listResults.add(new SearchResultFile(filename, url, description, author, title, date, keywords,realPath));
-
-                            //add path to list
-                            pathList.add(realPath);
-                        }
+                        listResults.add(getSearchResultFileFromJSONObject(hit,searchInfo.getSearchString()));
                     }
-                    result.setTimeElapsed(took);
 
+                    result.setTimeElapsed(took);
                 }
                 catch(JSONException e)
                 {
@@ -151,6 +127,49 @@ public class SearchManager {
         result.setTotalHits(totalHits);
         result.setSearchResults(permittedResults);
         return result;
+    }
+
+    private SearchResultFile getSearchResultFileFromJSONObject(JSONObject hit,String searchString)
+    {
+        JSONObject hitSource;
+        JSONObject file;
+        JSONObject meta;
+        String filename;
+        String url;
+        String description;
+        String author;
+        String title;
+        String date;
+        List<String> keywords = null;
+        String realPath;
+
+        SearchResultFile result = null;
+
+        try {
+            if (!hit.getString("_type").equals("folder"))//todo: enforce
+            {
+                hitSource = hit.getJSONObject("_source");
+                file = hitSource.getJSONObject("file");
+                filename = file.getString("filename");
+                realPath = hitSource.getJSONObject("path").getString("real");
+                url = realPath.replace("/var/www/html", SERVER_URL);
+                description = getFormattedDescription(hitSource.getString("content"), searchString);
+
+                meta = hitSource.getJSONObject("meta");
+                author = meta.getString("author");
+                title = meta.getString("title");
+                date = meta.getString("date");
+
+                result =  new SearchResultFile(filename, url, description, author, title, date, keywords, realPath);
+
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return  result;
+
     }
 
     private String getFormattedDescription(String description, String searchText)

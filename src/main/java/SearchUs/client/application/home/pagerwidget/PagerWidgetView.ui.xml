@@ -3,6 +3,5 @@
     <ui:style>
     </ui:style>
     <g:HTMLPanel ui:field="panel">
-        allo
     </g:HTMLPanel>
 </ui:UiBinder>

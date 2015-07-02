@@ -1,11 +1,13 @@
 package SearchUs.client.application.home.searchresult;
 
 import SearchUs.client.application.ApplicationPresenter;
+import SearchUs.client.application.events.ChangePageEvent;
 import SearchUs.client.application.events.ClearSearchResultsEvent;
 import SearchUs.client.application.events.SearchEvent;
 import SearchUs.shared.data.SearchResultData;
 import SearchUs.shared.dispatch.search.SearchAction;
 import SearchUs.shared.dispatch.search.SearchResult;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -19,7 +21,7 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers, SearchEvent.GlobalHandler, ClearSearchResultsEvent.ClearSearchResultsEventHandler {
+public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyView, SearchResultPresenter.MyProxy> implements SearchResultUiHandlers, SearchEvent.GlobalHandler, ClearSearchResultsEvent.ClearSearchResultsEventHandler, ChangePageEvent.ChangePageEventHandler {
 
     interface MyView extends View, HasUiHandlers<SearchResultUiHandlers>
     {
@@ -32,7 +34,10 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         void addPager(int numberOfPages);
     }
 
-    ArrayList<SearchResultData> searchResults;
+    ArrayList<SearchResultData> searchResults = new ArrayList<>();
+    int currentPage = 1;
+    int numberOfPages;
+    int resultsPerPage = 1;
 
     @ProxyStandard
     public interface MyProxy extends Proxy<SearchResultPresenter> {
@@ -57,6 +62,7 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         super.onBind();
         addRegisteredHandler(SearchEvent.getType(), this);
         addRegisteredHandler(ClearSearchResultsEvent.getType(), this);
+        addRegisteredHandler(ChangePageEvent.getType(), this);
     }
 
     @Override
@@ -77,25 +83,16 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
                 }
                 getView().clearResults();
 
-                searchResults.clear();
                 searchResults = result.getSearchResults();
-
-                getView().addTimeElapsed_totalHits(result.getTimeElapsed(), result.getTotalHits());
-
+                currentPage = 1;
+                numberOfPages = (int)Math.ceil((double)searchResults.size()/(double)resultsPerPage);
                 if(!searchResults.isEmpty())
                 {
-                    int pages = searchResults.size();
-                    getView().addPager(pages);
+                    getView().addPager(numberOfPages);
+                }
+                getView().addTimeElapsed_totalHits(result.getTimeElapsed(), result.getTotalHits());
 
-                    for (SearchResultData res : searchResults)
-                    {
-                        getView().addResult(res);
-                    }
-                }
-                else
-                {
-                    getView().addNoResultMessage();
-                }
+                displayResults();
             }
 
             @Override
@@ -111,11 +108,56 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         clearResults();
     }
 
+    public void displayResults()
+    {
+        getView().clearResults();
+        if(!searchResults.isEmpty())
+        {
+            for(int i = (currentPage-1)*resultsPerPage; i < currentPage*resultsPerPage; i++) //for paging
+            {
+                if(i < searchResults.size()) //safe check
+                {
+                    getView().addResult(searchResults.get(i));
+                }
+            }
+        }
+        else
+        {
+            getView().addNoResultMessage();
+        }
+    }
+
     public void clearResults()
     {
         clearTime = new Date();
+        searchResults.clear();
         getView().clearResults();
         getView().clearTimeElapsed();
         getView().clearPager();
+    }
+
+    @Override
+    public void onChangePageEvent(ChangePageEvent event)
+    {
+        int pageNumber = event.getPageNumber();
+        if(pageNumber == 0) //precedant
+        {
+            if(currentPage > 1)
+            {
+                currentPage--;
+            }
+        }
+        else if(pageNumber == -1) //suivant
+        {
+            if(currentPage < numberOfPages)
+            {
+                currentPage++;
+            }
+        }
+        else //chiffre
+        {
+            currentPage = pageNumber;
+        }
+        displayResults();
     }
 }

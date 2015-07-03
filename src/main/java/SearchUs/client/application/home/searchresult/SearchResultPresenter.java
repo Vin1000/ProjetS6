@@ -7,6 +7,7 @@ import SearchUs.shared.data.SearchDetails;
 import SearchUs.shared.data.SearchResultData;
 import SearchUs.shared.dispatch.search.SearchAction;
 import SearchUs.shared.dispatch.search.SearchResult;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -89,6 +90,11 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
 
     public void SendSearch(SearchDetails searchDetails)
     {
+        if(searchDetails.getSearchWithGoogle())
+        {
+            Window.open("https://www.google.ca/search?q=" + searchDetails.getSearchString(), "google", "");
+        }
+
         SearchAction searchAction = new SearchAction(searchDetails);
         dispatcher.execute(searchAction, new AsyncCallback<SearchResult>() {
             @Override //TODO: Change actions done here

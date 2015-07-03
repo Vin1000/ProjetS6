@@ -29,6 +29,7 @@ public class PagerWidgetView extends ViewWithUiHandlers<PagerWidgetUiHandlers> i
     public void setPageNumber(final int numberOfPages, int currentPage)
     {
         panel.clear();
+        buttons.clear();
         currentButton = currentPage;
         Button btPrevious = new Button();
         btPrevious.setText("<");

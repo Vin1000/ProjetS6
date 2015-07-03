@@ -42,7 +42,7 @@ public class SearchDetails implements IsSerializable{
         String hashmapString = new String();
         for(int i = 0; i < searchFor.size(); i++)
         {
-            hashmapString = searchFor.get(i).toString() + ",";
+            hashmapString += searchFor.get(i).toString() + ",";
         }
 
         map.put("searchFor", hashmapString);
@@ -51,7 +51,7 @@ public class SearchDetails implements IsSerializable{
         String hashmapString = new String();
         for(int i = 0; i < searchInFields.size(); i++)
         {
-            hashmapString = searchInFields.get(i).toString() + ",";
+            hashmapString += searchInFields.get(i).toString() + ",";
         }
 
         map.put("searchInFields", hashmapString);

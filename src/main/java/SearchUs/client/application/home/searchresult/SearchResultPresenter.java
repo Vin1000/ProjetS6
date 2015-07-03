@@ -31,7 +31,7 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         void clearResults();
         void clearTimeElapsed();
         void clearPager();
-        void addPager(int numberOfPages);
+        void addPager(int numberOfPages, int currentPage);
     }
 
     ArrayList<SearchResultData> searchResults = new ArrayList<>();
@@ -101,11 +101,16 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
                 getView().clearResults();
 
                 searchResults = result.getSearchResults();
-                currentPage = 1;
+                currentPage = 1; //todo: get from url if refresh
                 numberOfPages = (int)Math.ceil((double)searchResults.size()/(double)resultsPerPage);
+
+                if(currentPage < 1 || currentPage > numberOfPages) //to prevent bad input from url
+                {
+                    currentPage = 1;
+                }
                 if(!searchResults.isEmpty())
                 {
-                    getView().addPager(numberOfPages);
+                    getView().addPager(numberOfPages, currentPage);
                 }
                 getView().addTimeElapsed_totalHits(result.getTimeElapsed(), result.getTotalHits());
 

@@ -27,10 +27,10 @@ public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers>
         this.resultPanel.add(lbl);
     }
 
-    public void addPager(int numberOfPages)
+    public void addPager(int numberOfPages, int currentPage)
     {
         PagerWidgetPresenter pw = pagerWidgetPresenter;
-        pw.setPageNumber(numberOfPages);
+        pw.setPageNumber(numberOfPages, currentPage);
         pager.add(pw);
     }
 

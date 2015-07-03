@@ -26,9 +26,10 @@ public class PagerWidgetView extends ViewWithUiHandlers<PagerWidgetUiHandlers> i
     ArrayList<Button> buttons = new ArrayList<Button>();
     int currentButton = 1;
 
-    public void setPageNumber(final int numberOfPages)
+    public void setPageNumber(final int numberOfPages, int currentPage)
     {
         panel.clear();
+        currentButton = currentPage;
         Button btPrevious = new Button();
         btPrevious.setText("<");
         btPrevious.addClickHandler(new ClickHandler() {
@@ -85,7 +86,7 @@ public class PagerWidgetView extends ViewWithUiHandlers<PagerWidgetUiHandlers> i
             bt.getElement().getStyle().setProperty("fontWeight", "normal");
             bt.getElement().getStyle().setProperty("textDecoration", "none");
         }
-        buttons.get(currentButton-1).getElement().getStyle().setProperty("fontWeight", "bold");
-        buttons.get(currentButton-1).getElement().getStyle().setProperty("textDecoration", "underline");
+        buttons.get(currentButton - 1).getElement().getStyle().setProperty("fontWeight", "bold");
+        buttons.get(currentButton - 1).getElement().getStyle().setProperty("textDecoration", "underline");
     }
 }

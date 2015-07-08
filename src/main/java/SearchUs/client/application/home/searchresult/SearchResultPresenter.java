@@ -28,7 +28,7 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
     {
         void addResult(SearchResultData result);
         void addNoResultMessage();
-        void addTimeElapsed_totalHits(int timeElapsed, int totalHits);
+        void addTimeElapsed_totalHits(int processingTime, int timeElapsed, int totalHits);
         void clearResults();
         void clearTimeElapsed();
         void clearPager();
@@ -118,7 +118,7 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
                 {
                     getView().addPager(numberOfPages, currentPage);
                 }
-                getView().addTimeElapsed_totalHits(result.getTimeElapsed(), result.getTotalHits());
+                getView().addTimeElapsed_totalHits(result.getProcessingTime(), result.getTimeElapsed(), result.getTotalHits());
 
                 displayResults();
             }

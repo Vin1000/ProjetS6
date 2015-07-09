@@ -118,6 +118,10 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
                 {
                     getView().addPager(numberOfPages, currentPage);
                 }
+                else
+                {
+                    getView().clearPager();
+                }
                 getView().addTimeElapsed_totalHits(result.getProcessingTime(), result.getTimeElapsed(), result.getTotalHits());
 
                 displayResults();

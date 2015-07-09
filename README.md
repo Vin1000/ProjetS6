@@ -18,7 +18,7 @@ Recherche d’information dans un sous-ensemble du site avec Lucene
 
 3. Executer la commande "npm install" pour aller chercher toute les dependences (NOTE : Ne pas commiter le dossier node_modules)
 
-4. Executer la commande "npm start IP=XXX.XXX.XXX.XXX" (L'ip est optionnel, si aucune ip, utilise l'ip du serveur par defaut)
+4. Executer la commande "node createIndex.js IP=XXX.XXX.XXX.XXX" (L'ip est optionnel, si aucune ip, utilise l'ip du serveur par defaut)
 
 ##Selenium
 **Set up windows local:**
@@ -58,3 +58,7 @@ utiliser la fonction file.get_currentVersionFiles(cip)
 ```SQL
 SELECT * FROM file.get_currentVersionFiles('babm2002');
 ```
+
+# Pour se connecter à la BD : une fois sur la VM
+sudo -u postgres psql postgres;
+\c Opus;

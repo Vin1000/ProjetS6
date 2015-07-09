@@ -62,3 +62,29 @@ SELECT * FROM file.get_currentVersionFiles('babm2002');
 # Pour se connecter à la BD : une fois sur la VM
 sudo -u postgres psql postgres;
 \c Opus;
+
+Pour ajouter un utilisateur par ici les amis
+```SQL
+INSERT INTO users(administrative_user_id, last_name, first_name, email_address) 
+VALUES ('abcd1234', 'TEST', 'TEST', 'TEST@Test.com');
+
+INSERT INTO user_group(member_id, group_id, user_id)
+SELECT user_id ,2 ,1
+FROM users WHERE administrative_user_id = ('abcd1234');
+```
+
+Pour ajouter les privillèges d'administrateur à un utilisateur, exécuter la commande suivante
+```SQL
+INSERT INTO user_group(member_id, group_id, user_id)
+SELECT user_id ,1 ,1
+FROM users WHERE administrative_user_id = ('abcd1234');
+```
+
+Pour enlever les privillèges d'administrateur à un utilisateur exécuter la commande suivante
+```SQL
+DELETE from user_group ug 
+WHERE ug.group_id = 1 
+	AND ug.member_id in(SELECT user_id from users where administrative_user_id = 'babm2002');
+```
+
+

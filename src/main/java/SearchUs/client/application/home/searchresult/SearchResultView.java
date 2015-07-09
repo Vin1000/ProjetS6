@@ -41,7 +41,7 @@ public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers>
         }
         else
         {
-            timeElapsed_totalHits_Label.setText(totalHits + " résultats en " + timeElapsed + " ms.");
+            timeElapsed_totalHits_Label.setText(totalHits + " résultats en " + (timeElapsed + processingTime) + " ms.");
         }
 
         searchingTime.setText("Temps de recherche: " + timeElapsed + " ms.");
@@ -56,6 +56,8 @@ public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers>
     public void clearTimeElapsed()
     {
         timeElapsed_totalHits_Label.setText("");
+        searchingTime.setText("");
+        processingTime.setText("");
     }
 
     public void clearPager() { pager.clear(); }

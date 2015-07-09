@@ -84,7 +84,7 @@ Pour enlever les privillèges d'administrateur à un utilisateur exécuter la co
 ```SQL
 DELETE from user_group ug 
 WHERE ug.group_id = 1 
-	AND ug.member_id in(SELECT user_id from users where administrative_user_id = 'babm2002');
+	AND ug.member_id in(SELECT user_id from users where administrative_user_id = 'abcd1234');
 ```
 
 

@@ -203,7 +203,7 @@ public class SearchManager {
                 file = hitSource.getJSONObject("file");
                 filename = file.getString("filename");
                 realPath = hitSource.getJSONObject("path").getString("real");
-                url = realPath.replace("/var/www/html", SERVER_URL);
+                url = realPath.replace("/var/www/files", SERVER_URL);
                 description = hitSource.getString("content");
 
                 meta = hitSource.getJSONObject("meta");

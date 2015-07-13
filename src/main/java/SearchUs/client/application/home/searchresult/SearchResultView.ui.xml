@@ -3,8 +3,6 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
     <g:HTMLPanel>
         <g:Label ui:field="timeElapsed_totalHits_Label"/>
-        <g:Label ui:field="searchingTime"/>
-        <g:Label ui:field="processingTime"/>
         <g:HTMLPanel ui:field="pager"></g:HTMLPanel>
         <g:HTMLPanel ui:field="resultPanel">
         </g:HTMLPanel>

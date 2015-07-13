@@ -38,7 +38,7 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
     ArrayList<SearchResultData> searchResults = new ArrayList<>();
     int currentPage = 1;
     int numberOfPages;
-    int resultsPerPage = 1;
+    int resultsPerPage = 5;
 
     @ProxyStandard
     public interface MyProxy extends Proxy<SearchResultPresenter> {
@@ -96,6 +96,11 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         }
 
         SearchAction searchAction = new SearchAction(searchDetails);
+        if(searchDetails.getResultsPerPage() > 0 && resultsPerPage < 1000)
+        {
+            resultsPerPage = searchDetails.getResultsPerPage();
+        }
+
         dispatcher.execute(searchAction, new AsyncCallback<SearchResult>() {
             @Override //TODO: Change actions done here
             public void onSuccess(SearchResult result)
@@ -105,7 +110,6 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
                     return;
                 }
                 getView().clearResults();
-
                 searchResults = result.getSearchResults();
                 currentPage = 1; //todo: get from url if refresh
                 numberOfPages = (int)Math.ceil((double)searchResults.size()/(double)resultsPerPage);
@@ -116,7 +120,10 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
                 }
                 if(!searchResults.isEmpty())
                 {
-                    getView().addPager(numberOfPages, currentPage);
+                    if(numberOfPages > 1)
+                    {
+                        getView().addPager(numberOfPages, currentPage);
+                    }
                 }
                 else
                 {

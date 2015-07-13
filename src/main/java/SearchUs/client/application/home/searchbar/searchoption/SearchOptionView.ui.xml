@@ -60,6 +60,14 @@
                     </td>
                 </tr>
                 <tr align="center">
+                    <td align="left">
+                        Résultats par page
+                    </td>
+                    <td colspan="5" align="left">
+                        <g:TextBox ui:field="resultPerPageInput"/>
+                    </td>
+                </tr>
+                <tr align="center">
                     <td>
                         Rechercher aussi avec
                         <g:Image ui:field="imgGoogle" url="GoogleLogo.png" width="50px"/>

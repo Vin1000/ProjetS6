@@ -34,18 +34,17 @@ public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers>
         pager.add(pw);
     }
 
-    public void addTimeElapsed_totalHits(int processingTime, int timeElapsed, int totalHits) {
+    public void addTimeElapsed_totalHits(int processingTime, int timeElapsed, int totalHits)
+    {
+        String temps = totalHits + " résultats en " + (timeElapsed + processingTime) + " ms"
+                + " (" + timeElapsed + " ms de recherche et " + processingTime + " ms d'analyse).";
+
         if (totalHits <= 1)
         {
-            timeElapsed_totalHits_Label.setText(totalHits + " résultat en " + (timeElapsed + processingTime) + " ms.");
-        }
-        else
-        {
-            timeElapsed_totalHits_Label.setText(totalHits + " résultats en " + (timeElapsed + processingTime) + " ms.");
+            temps = temps.replace("résultats", "résultat");
         }
 
-        searchingTime.setText("Temps de recherche: " + timeElapsed + " ms.");
-        this.processingTime.setText("Temps d'analyse : " + processingTime + " ms.");
+        timeElapsed_totalHits_Label.setText(temps);
     }
 
     public void clearResults()
@@ -56,8 +55,6 @@ public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers>
     public void clearTimeElapsed()
     {
         timeElapsed_totalHits_Label.setText("");
-        searchingTime.setText("");
-        processingTime.setText("");
     }
 
     public void clearPager() { pager.clear(); }
@@ -72,20 +69,12 @@ public class SearchResultView extends ViewWithUiHandlers<SearchResultUiHandlers>
     Label timeElapsed_totalHits_Label;
 
     @UiField
-    Label searchingTime;
-
-    @UiField
-    Label processingTime;
-
-    @UiField
     HTMLPanel pager;
 
     @Inject
     SearchResultView(Binder uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
         timeElapsed_totalHits_Label.getElement().getStyle().setProperty("paddingLeft", "7px");
-        searchingTime.getElement().getStyle().setProperty("paddingLeft", "7px");
-        processingTime.getElement().getStyle().setProperty("paddingLeft", "7px");
         pager.getElement().getStyle().setProperty("paddingLeft", "7px");
     }
 

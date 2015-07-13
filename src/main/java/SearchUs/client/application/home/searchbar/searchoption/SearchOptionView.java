@@ -5,12 +5,12 @@ import SearchUs.shared.data.FieldType;
 import SearchUs.shared.data.FileType;
 import SearchUs.shared.data.SearchDetails;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.dom.client.LoadEvent;
-import com.google.gwt.event.dom.client.LoadHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -66,6 +66,9 @@ public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHand
     @UiField
     Image imgGoogle;
 
+    @UiField
+    TextBox resultPerPageInput;
+
     @Inject
     SearchOptionView(Binder uiBinder, EventBus eventBus) {
         super(eventBus);
@@ -93,6 +96,27 @@ public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHand
 
         dateBox.getElement().getStyle().setProperty("width", "76px");
         dateBox.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat("yyyy-MM-dd")));
+
+        resultPerPageInput.setText("10");
+        resultPerPageInput.getElement().setAttribute("type", "number");
+        resultPerPageInput.getElement().setAttribute("min","1");
+        resultPerPageInput.getElement().setAttribute("max","999");
+    }
+
+    @UiHandler("resultPerPageInput")
+    void onKeyPress(KeyPressEvent event)
+    {
+        if(event.getNativeEvent().getKeyCode()!=KeyCodes.KEY_DELETE &&
+                event.getNativeEvent().getKeyCode()!=KeyCodes.KEY_BACKSPACE &&
+                event.getNativeEvent().getKeyCode()!=KeyCodes.KEY_LEFT &&
+                event.getNativeEvent().getKeyCode()!=KeyCodes.KEY_RIGHT)
+        {
+            String c = event.getCharCode()+"";
+            if(RegExp.compile("[^0-9]").test(c) || resultPerPageInput.getText().length() >= 3)
+            {
+                resultPerPageInput.cancelKey();
+            }
+        }
     }
 
     @UiHandler("btOK")
@@ -108,6 +132,14 @@ public class SearchOptionView extends PopupViewWithUiHandlers<SearchOptionUiHand
         }
 
         searchDetails.setSearchWithGoogle(cbSearchWithGoogle.getValue());
+        if(resultPerPageInput.getValue() != null && Integer.parseInt(resultPerPageInput.getValue()) > 0)
+        {
+            searchDetails.setResultsPerPage(Integer.parseInt(resultPerPageInput.getValue()));
+        }
+        else
+        {
+            searchDetails.setResultsPerPage(5);
+        }
 
         getUiHandlers().onOkClicked(searchDetails);
         hide();

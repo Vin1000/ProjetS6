@@ -46,7 +46,7 @@ public class SearchDetails implements IsSerializable{
         }
 
         map.put("searchFor", hashmapString);
-        }
+    }
     public void setSearchInFields(ArrayList<FieldType> searchInFields){
         String hashmapString = new String();
         for(int i = 0; i < searchInFields.size(); i++)
@@ -55,14 +55,16 @@ public class SearchDetails implements IsSerializable{
         }
 
         map.put("searchInFields", hashmapString);
-        }
+    }
     public void setSearchDate(String searchDate){
         map.put("searchDate", searchDate);
-        }
+    }
     public void setSearchWithGoogle(Boolean searchWithGoogle){
         map.put("searchWithGoogle", String.valueOf(searchWithGoogle));
-        }
-
+    }
+    public void setResultsPerPage(int resultsPerPage){
+        map.put("resultsPerPage", resultsPerPage + "");
+    }
 
     public String getSearchString() {return ((String)map.get("searchString"));}
     public String getSearchDate(){return ((String)map.get("searchDate"));}
@@ -89,14 +91,18 @@ public class SearchDetails implements IsSerializable{
 
         return fieldTypes;
     }
-    public Boolean getSearchWithGoogle(){
+    public Boolean getSearchWithGoogle()
+    {
+        return ((String)map.get("searchWithGoogle")).equals("true");
+    }
+    public int getResultsPerPage() {
 
-        if(((String)map.get("searchWithGoogle")).equals("true"))
-        {
-            return true;
+        if(map.containsKey("resultsPerPage")) {
+            return Integer.parseInt(map.get("resultsPerPage"));
         }
-        else {
-            return false;
+        else
+        {
+            return 5;
         }
     }
 

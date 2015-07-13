@@ -38,7 +38,7 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
     ArrayList<SearchResultData> searchResults = new ArrayList<>();
     int currentPage = 1;
     int numberOfPages;
-    int resultsPerPage = 1;
+    int resultsPerPage = 5;
 
     @ProxyStandard
     public interface MyProxy extends Proxy<SearchResultPresenter> {

@@ -76,6 +76,9 @@ public class SearchManager {
                     //Nombre de resultats retournés par elasticsearch
                     totalHits = hits.getInt("total");
 
+                    if(totalHits > resultsArray.length())
+                        totalHits = resultsArray.length();
+
                     //On traite le JSON et on le transforme dans plusieurs objets de type SearchResultFile
                     for (int i = 0; i < totalHits; i++)
                     {

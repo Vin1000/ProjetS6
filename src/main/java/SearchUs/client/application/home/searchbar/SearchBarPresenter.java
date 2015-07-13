@@ -58,7 +58,6 @@ public class SearchBarPresenter extends Presenter<SearchBarPresenter.MyView, Sea
         searchDetails = new SearchDetails();
         searchDetails.setSearchFor(defaultFileType);
         searchDetails.setSearchInFields(defaultFieldType);
-        searchDetails.setResultsPerPage(10);
     }
 
     @Override

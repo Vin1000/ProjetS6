@@ -234,6 +234,7 @@ public class ElasticManager {
 
         /* Finalement on bati la query */
         query = "{\n" +
+                "\"size\" : 100,"+
                 "  \t\"query\":\n" +
                 "    {\n" +
                 "          \"filtered\" :\n" +

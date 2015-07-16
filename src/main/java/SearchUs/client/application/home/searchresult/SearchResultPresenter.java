@@ -124,6 +124,10 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
                     {
                         getView().addPager(numberOfPages, currentPage);
                     }
+                    else
+                    {
+                        getView().clearPager();
+                    }
                 }
                 else
                 {

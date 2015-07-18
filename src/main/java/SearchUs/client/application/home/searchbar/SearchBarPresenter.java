@@ -12,6 +12,7 @@ import SearchUs.client.place.NameTokens;
 import SearchUs.shared.data.FieldType;
 import SearchUs.shared.data.FileType;
 import SearchUs.shared.data.SearchDetails;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -51,13 +52,7 @@ public class SearchBarPresenter extends Presenter<SearchBarPresenter.MyView, Sea
         this.placeManager = placeManager;
 
         getView().setUiHandlers(this);
-        ArrayList defaultFileType= new ArrayList<FileType>();
-        defaultFileType.add(FileType.ALL);
-        ArrayList defaultFieldType = new ArrayList<FieldType>();
-        defaultFieldType.add(FieldType.Content);
         searchDetails = new SearchDetails();
-        searchDetails.setSearchFor(defaultFileType);
-        searchDetails.setSearchInFields(defaultFieldType);
     }
 
     @Override
@@ -98,7 +93,7 @@ public class SearchBarPresenter extends Presenter<SearchBarPresenter.MyView, Sea
     @Override
     public void LogoClick()
     {
-        searchDetails.setSearchString("");
+        searchDetails = new SearchDetails();
         ClearSearchResultsEvent.fire(this);
     }
 

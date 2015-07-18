@@ -90,6 +90,11 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
 
     public void SendSearch(SearchDetails searchDetails)
     {
+        if(searchDetails.getSearchString().equals(""))
+        {
+            return;
+        }
+
         if(searchDetails.getSearchWithGoogle())
         {
             Window.open("https://www.google.ca/search?q=" + searchDetails.getSearchString(), "google", "");
@@ -140,7 +145,6 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
 
             @Override
             public void onFailure(Throwable caught) {
-                //fail
             }
         });
     }

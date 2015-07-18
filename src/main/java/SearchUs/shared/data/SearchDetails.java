@@ -27,16 +27,11 @@ public class SearchDetails implements IsSerializable{
         map.put("searchString", searchString);
     }
 
-    public SearchDetails(SearchDetails searchDetails)
-    {
-        map = new HashMap<String, String>();
-        map.put("searchString", searchDetails.getSearchString());
-    }
-
     public void setSearchString(String searchString)
     {
         map.put("searchString", searchString);
     }
+
     public void setSearchFor(ArrayList<FileType> searchFor){
 
         String hashmapString = new String();
@@ -47,6 +42,7 @@ public class SearchDetails implements IsSerializable{
 
         map.put("searchFor", hashmapString);
     }
+
     public void setSearchInFields(ArrayList<FieldType> searchInFields){
         String hashmapString = new String();
         for(int i = 0; i < searchInFields.size(); i++)
@@ -56,54 +52,86 @@ public class SearchDetails implements IsSerializable{
 
         map.put("searchInFields", hashmapString);
     }
+
     public void setSearchDate(String searchDate){
         map.put("searchDate", searchDate);
     }
+
     public void setSearchWithGoogle(Boolean searchWithGoogle){
         map.put("searchWithGoogle", String.valueOf(searchWithGoogle));
     }
+
     public void setResultsPerPage(int resultsPerPage){
         map.put("resultsPerPage", resultsPerPage + "");
     }
 
-    public String getSearchString() {return ((String)map.get("searchString"));}
-    public String getSearchDate(){return ((String)map.get("searchDate"));}
+    public String getSearchString() {
+        if(map.containsKey("searchString")) {
+            return ((String) map.get("searchString"));
+        }
+
+        return "";
+    }
+
+    public String getSearchDate() {
+        if (map.containsKey("searchDate")) {
+            return ((String) map.get("searchDate"));
+        }
+
+        return "1900-01-01";
+    }
+
     public ArrayList<FileType> getSearchFor(){
         ArrayList<FileType> fileTypes = new ArrayList<FileType>();
 
-        String hashmapString = ((String)map.get("searchFor"));
-        String hashmapArray[]  = hashmapString.split(",");
-        for(int i = 0; i < hashmapArray.length; i++)
-        {
-            fileTypes.add(i, FileType.valueOf(hashmapArray[i]));
+        if(map.containsKey("searchFor")) {
+            String hashmapString = ((String) map.get("searchFor"));
+            String hashmapArray[] = hashmapString.split(",");
+            for (int i = 0; i < hashmapArray.length; i++) {
+                fileTypes.add(FileType.valueOf(hashmapArray[i]));
+            }
         }
+        else {
+            fileTypes.add(FileType.ALL);
+        }
+
         return fileTypes;
     }
+
     public ArrayList<FieldType> getSearchInFields(){
         ArrayList<FieldType> fieldTypes = new ArrayList<FieldType>();
 
-        String hashmapString = ((String)map.get("searchInFields"));
-        String hashmapArray[]  = hashmapString.split(",");
-        for(int i = 0; i < hashmapArray.length; i++)
-        {
-            fieldTypes.add(i, FieldType.valueOf(hashmapArray[i]));
+        if(map.containsKey("searchInFields")) {
+            String hashmapString = ((String) map.get("searchInFields"));
+            String hashmapArray[] = hashmapString.split(",");
+            for (int i = 0; i < hashmapArray.length; i++) {
+                fieldTypes.add(FieldType.valueOf(hashmapArray[i]));
+            }
         }
 
+        else
+        {
+            fieldTypes.add(FieldType.Content);
+        }
         return fieldTypes;
     }
+
     public Boolean getSearchWithGoogle()
     {
-        return ((String)map.get("searchWithGoogle")).equals("true");
+        if(map.containsKey("searchWithGoogle")) {
+            return ((String) map.get("searchWithGoogle")).equals("true");
+        }
+
+        return false;
     }
+
     public int getResultsPerPage() {
 
         if(map.containsKey("resultsPerPage")) {
             return Integer.parseInt(map.get("resultsPerPage"));
         }
-        else
-        {
-            return 5;
-        }
+
+        return 5;
     }
 
     public PlaceRequest ToUrlString()

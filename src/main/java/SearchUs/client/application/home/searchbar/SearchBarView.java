@@ -98,7 +98,7 @@ public class SearchBarView extends ViewWithUiHandlers<SearchBarUiHandlers> imple
 
     public void SetSearchText(String searchText)
     {
-        if(searchText != null) {
+        if(searchText != null && !searchText.equals("")) {
             topImage.getElement().getStyle().setProperty("display", "none");
             sideImage.getElement().getStyle().setProperty("display", "initial");
             sideImage.getElement().getParentElement().setAttribute("align", "left");

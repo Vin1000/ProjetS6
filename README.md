@@ -49,7 +49,7 @@ utiliser la fonction file.get_currentVersionFiles(cip)
 SELECT * FROM file.get_currentVersionFiles('babm2002');
 ```
 
-# Pour se connecter à la BD : une fois sur la VM
+## Connection à la base de donnée à partir de la VM
 sudo -u postgres psql postgres;
 \c Opus;
 

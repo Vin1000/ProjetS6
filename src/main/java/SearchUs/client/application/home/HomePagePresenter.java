@@ -6,16 +6,13 @@ import SearchUs.client.application.ApplicationPresenter;
 import SearchUs.client.application.home.searchbar.SearchBarPresenter;
 import SearchUs.client.application.home.searchresult.SearchResultPresenter;
 import SearchUs.shared.data.SearchDetails;
-import SearchUs.client.application.events.SearchEvent;
 import SearchUs.client.place.NameTokens;
-import SearchUs.shared.dispatch.search.SearchResult;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
-import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 
@@ -49,5 +46,14 @@ public class HomePagePresenter extends Presenter<HomePagePresenter.MyView, HomeP
 
         addToSlot(SLOT_SEARCHBAR, searchBarPresenter);
         addToSlot(SLOT_SEARCHRESULTS, searchResultPresenter);
+    }
+
+    @Override
+    public void prepareFromRequest(PlaceRequest placeRequest) {
+        super.prepareFromRequest(placeRequest);
+        SearchDetails searchDetails = new SearchDetails();
+        searchDetails.GetUrlParameters(placeRequest.getParameterNames().toArray(), placeRequest);
+        searchBarPresenter.UpdateFromUrl(searchDetails.getSearchString());
+        searchResultPresenter.UpdateFromUrl(searchDetails);
     }
 }

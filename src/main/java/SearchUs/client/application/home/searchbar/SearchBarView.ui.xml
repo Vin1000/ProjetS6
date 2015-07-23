@@ -14,6 +14,10 @@
         {
             margin-bottom:0px;
         }
+        img
+        {
+            margin-top: -14px;
+        }
     </ui:style>
     <g:HTMLPanel>
         <div align="center">
@@ -21,6 +25,7 @@
             <g:Image url="SearchUsLogo.png" ui:field="sideImage" width="200px"/>
             <g:TextBox ui:field="textBox"></g:TextBox>
             <g:Button ui:field="sendSearchButton">Rechercher</g:Button>
+            <g:Button ui:field="AdvancedButton">Options de recherche</g:Button>
         </div>
     </g:HTMLPanel>
 </ui:UiBinder>

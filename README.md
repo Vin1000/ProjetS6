@@ -1,33 +1,23 @@
 ﻿# ProjetS6 - SearchUs
-Recherche d’information dans un sous-ensemble du site avec Lucene
+Moteur de recherche permettant de chercher dans un FileSystem basé sur ElasticSearch
 
+## Installation d'ElasticSearch
+Version utilisé : 1.3.8
 
-##Utilisation de boostrap for gwt
-
-1. ajouter xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" du début du fichier
-
-2. puis pour ajouter un élément de type ui Binder de GWT ->
-```html
-<b:heading size="2">Hello World GWT-Bootstrap</b:heading>
+Installer les plugin Fs-River et JS-Lang de la façon suivante :
+```bash
+/usr/share/elasticsearch/bin/plugin -install fr.pilato.elasticsearch.river/fsriver/1.3.1
+/usr/share/elasticsearch/bin/plugin -install elasticsearch/elasticsearch-lang-javascript/2.3.1
 ```
 
-## Elasticsearch Bootstraping
-1. Installer NodeJs
-
-2. Dossier tools->ElasticSearch->serverBootstrap
-
+## Creation de l'index
+1. Téléverser les fichiers à indexé dans le dossier /var/www/files
+2. Installer NodeJs sur la machine
+2. Dossier tools/ElasticSearch/serverBootstrap
 3. Executer la commande "npm install" pour aller chercher toute les dependences (NOTE : Ne pas commiter le dossier node_modules)
+4. Executer la commande "node createIndex.js IP=XXX.XXX.XXX.XXX" (L'ip est optionnel, si aucune ip, utilise l'ip du serveur par defaut definit dans le fichier createIndex.js)
 
-4. Executer la commande "node createIndex.js IP=XXX.XXX.XXX.XXX" (L'ip est optionnel, si aucune ip, utilise l'ip du serveur par defaut)
-
-##Selenium
-**Set up windows local:**
-- Aller dans le dossier tools\Selenium\server\
-- Exécuter startServer.bat
-
-**Set up Linux:**
-- Aller dans le dossier tools\Selenium\server\
-- exécuter la commande java -jar selenium-server-standalone-2.45.0.jar
+Note : Sur linux, le package node est nommé nodejs.
 
 ##Database
 **Set up windows local:**
@@ -87,4 +77,20 @@ WHERE ug.group_id = 1
 	AND ug.member_id in(SELECT user_id from users where administrative_user_id = 'abcd1234');
 ```
 
+##Selenium
+**Set up windows local:**
+- Aller dans le dossier tools\Selenium\server\
+- Exécuter startServer.bat
 
+**Set up Linux:**
+- Aller dans le dossier tools\Selenium\server\
+- exécuter la commande java -jar selenium-server-standalone-2.45.0.jar
+
+##Utilisation de boostrap for gwt
+
+1. ajouter xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" du début du fichier
+
+2. puis pour ajouter un élément de type ui Binder de GWT ->
+```html
+<b:heading size="2">Hello World GWT-Bootstrap</b:heading>
+```

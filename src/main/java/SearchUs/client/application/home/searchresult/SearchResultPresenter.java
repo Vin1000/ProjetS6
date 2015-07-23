@@ -101,7 +101,7 @@ public class SearchResultPresenter extends Presenter<SearchResultPresenter.MyVie
         }
 
         SearchAction searchAction = new SearchAction(searchDetails);
-        if(searchDetails.getResultsPerPage() > 0 && resultsPerPage < 1000)
+        if(searchDetails.getResultsPerPage() > 0 && searchDetails.getResultsPerPage() < 1000)
         {
             resultsPerPage = searchDetails.getResultsPerPage();
         }
